@@ -1,8 +1,21 @@
-CREATE DATABASE `labanorodraugai_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE `labanorodraugai_db` 
 
-CREATE TABLE `labanorodraugai_db`.`user` (
-  `Name` varchar(50) NOT NULL,
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `labanorodraugai_db`.`account` (
+  `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,  
+  `Name` VARCHAR(50) NOT NULL,
+  `Lastname` VARCHAR(50) NOT NULL,
+  `Description` NVARCHAR(500) NULL,
+  `Image` BLOB NULL,
+  `Status` INT ZEROFILL NOT NULL,
+  `Email` VARCHAR(50) NOT NULL,
+  `FB_URL` VARCHAR(100) NULL,
+  `PointsQuantity` DECIMAL(30,2) ZEROFILL NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE INDEX `Name_UNIQUE` (`Name` ASC),
+  UNIQUE INDEX `FBAccountUrl_UNIQUE` (`FB_URL` ASC),
+  INDEX `Status` (`Status` ASC));
 
+-- test data for account seed
+INSERT INTO `labanorodraugai_db`.`account`
+(`Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `FB_URL`, `PointsQuantity`) 
+VALUES ('TestName', 'TestLastname', 'Test Description', null, 0, 'test@test.test', 'https://www.facebook.com/ddziaugys',0);

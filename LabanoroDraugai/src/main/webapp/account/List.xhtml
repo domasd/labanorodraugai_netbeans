@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <p:outputLabel value="#{bundle.ListAccountTitle}"></p:outputLabel>
+
+        <ui:define name="body">
+            <h:form id="AccountListForm">
+                <p:panel header="#{bundle.ListAccountTitle}">
+                    <p:growl id="growl" life="2000" />
+                    <p:dataTable id="datalist" value="#{accountController.items}" var="item"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 tableStyleClass="ui-table-columntoggle"
+                                 >
+
+<!--                        <p:ajax event="rowSelect" listener="#{accountController.onRowSelect}" />  -->
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAccountTitle_name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAccountTitle_lastname}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lastname}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAccountTitle_status}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.Facebook}"/>
+                            </f:facet>
+                            <div style="text-align: center;"> 
+                                <p:button style="center" value="#{bundle.OpenFacebook}" href="#{item.fbUrl}"  target="_blank" icon="fa fa-facebook-square">
+                                </p:button>
+                            </div>
+                        </p:column>
+                        <p:column style="width:32px;text-align: center">
+                            <p:commandButton update=":AccountListForm:accountDetail" oncomplete="PF('accountDialog').show()" icon="ui-icon-search" title="View">
+                                <f:setPropertyActionListener value="#{item}" target="#{accountController.selected}" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                   
+                    <ui:include src="View.xhtml" />
+
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
