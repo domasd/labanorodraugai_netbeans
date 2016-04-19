@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:dataGrid var="summerhouse" value="#{summerhouseViewController.summerhouses}" columns="2" 
+                        rows="2" paginator="true" id="summerhouses"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="2,4">
+                <f:facet name="header">
+                    Vasarnamiai nuomai.
+                </f:facet>
+                
+                <p:panel header="#{summerhouse.name}" style="text-align: center">
+                    <h:panelGrid columns="1" style="width: 100%">
+                        
+                        <p:graphicImage url="#{summerhouseViewController.selectedSummerhouse.url}" width="300" height="200"/>
+                        
+                        <h:outputText value="#{summerhouse.description}"/>
+                        
+                        <p:commandLink update=":form:summerhouseDetail" oncomplete="PF('summerhouseDialog').show()" title="View Detail">
+                            <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                            <f:setPropertyActionListener value="#{summerhouse}" target="#{summerhouseViewController.selectedSummerhouse}"/> 
+                        </p:commandLink>
+                                       
+                    </h:panelGrid>
+                </p:panel>
+            </p:dataGrid>
+            
+            <p:dialog header="Summerhouse Info" widgetVar="summerhouseDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="summerhouseDetail" style="text-align: center;">
+                    <p:panelGrid columns="2" rendered="#{not empty summerhouseViewController.selectedSummerhouse}"  columnClasses="label,value">
+                        <h:outputText value="Id:"/>
+                        <h:outputText value="#{summerhouseViewController.selectedSummerhouse.id}"/>
+                        
+                        <h:outputText value="Name:"/>
+                        <h:outputText value="#{summerhouseViewController.selectedSummerhouse.name}"/>
+                        
+                        <h:outputText value="Description:"/>
+                        <h:outputText value="#{summerhouseViewController.selectedSummerhouse.description}"/>
+                        
+                        <h:outputText value="Capacity:"/>
+                        <h:outputText value="#{summerhouseViewController.selectedSummerhouse.capacity}"/>
+                                   
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+            
+        
+    </h:body>
+</html>
