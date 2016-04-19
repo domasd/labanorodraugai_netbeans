@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+        <title>${initParam['pageTitle']}</title>
+        <h:outputStylesheet library="font-awesome" name="css/font-awesome.css" />
+        <!--<h:outputStylesheet library="css" name="jsfcrud.css"/>-->
+        <h:outputStylesheet library="css" name="custom.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
+    </h:head>
+
+    <h:body>
+        <p:layout fullPage="true"  >
+            <p:layoutUnit position="north" size="270" >
+                <p:graphicImage style="display: block;margin: auto;" name="images/labanorodraugai.JPG" />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60">
+                Bottom Content
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center" >
+                <p:menubar>
+                    <p:menuitem value="Registracija" url="/registration/registration.html"/>
+                    <p:menuitem value="Klubo nariai" url="/account/List.html"/>
+                    
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:submenu label="New" icon="ui-icon-contact">
+                            <p:menuitem value="Project" url="#" />
+                            <p:menuitem value="Other" url="#" />
+                        </p:submenu>
+                        <p:menuitem value="Open" url="#" />
+                        <p:menuitem value="Quit" url="#" />
+                    </p:submenu>
+
+                    <p:submenu label="Edit" icon="ui-icon-pencil">
+                        <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w"></p:menuitem>
+                        <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e"></p:menuitem>
+                    </p:submenu>
+
+                    <p:submenu label="Help" icon="ui-icon-help">
+                        <p:menuitem value="Contents" url="#" />
+                        <p:submenu label="Search" icon="ui-icon-search">
+                            <p:submenu label="Text">
+                                <p:menuitem value="Workspace" url="#" />
+                            </p:submenu>
+                            <p:menuitem value="File" url="#" />
+                        </p:submenu>
+                    </p:submenu>
+                </p:menubar>
+
+                
+                <ui:insert name="content">Content</ui:insert>
+
+                
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+
+</html>
