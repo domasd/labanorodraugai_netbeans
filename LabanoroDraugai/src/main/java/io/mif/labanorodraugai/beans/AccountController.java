@@ -4,6 +4,8 @@ import static com.sun.javafx.logging.PulseLogger.addMessage;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.beans.util.JsfUtil.PersistAction;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,7 +21,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.PhaseId;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+
 
 @Named("accountController")
 @SessionScoped
@@ -36,10 +44,9 @@ public class AccountController implements Serializable {
     public Account getSelected() {
         return selected;
     }
-    
-    public void onRowSelect(SelectEvent event)
-    {
-       addMessage(String.format("Selected account %s", (Account)event.getObject()));
+
+    public void onRowSelect(SelectEvent event) {
+        addMessage(String.format("Selected account %s", (Account) event.getObject()));
     }
 
     public void setSelected(Account selected) {
@@ -128,6 +135,21 @@ public class AccountController implements Serializable {
         return getFacade().findAll();
     }
 
+    // TODO move to another class - proabably another table and write service
+    public StreamedContent getImage() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        } else {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            String accountId = context.getExternalContext().getRequestParameterMap().get("accountId");
+            Account account = this.getAccount(Integer.valueOf(accountId));
+            return new DefaultStreamedContent(new ByteArrayInputStream(account.getImage()));
+        }
+    }
+
     @FacesConverter(forClass = Account.class)
     public static class AccountControllerConverter implements Converter {
 
@@ -168,6 +190,5 @@ public class AccountController implements Serializable {
         }
 
     }
-    
 
 }

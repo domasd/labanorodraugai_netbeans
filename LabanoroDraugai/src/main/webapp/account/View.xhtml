@@ -22,7 +22,9 @@
                 <p:panelGrid  columns="2" rendered="#{not empty accountController.selected}" columnClasses="label,value">
 
                     <f:facet name="header">
-                        <p:graphicImage value="#{accountController.selected.image}"  />
+                        <p:graphicImage value="#{accountController.image}">
+                             <f:param name="accountId" value="#{accountController.selected.id}" />
+                        </p:graphicImage>
                     </f:facet>
 
                     <h:outputText value="#{bundle.ViewAccountLabel_name}"/>
@@ -37,16 +39,11 @@
                     <h:outputText value="#{bundle.ViewAccountLabel_description}"/>
                     <h:outputText value="#{accountController.selected.description}" title="#{bundle.ViewAccountTitle_description}"/>
 
-
-
                     <h:outputText value="#{bundle.ViewAccountLabel_status}"/>
                     <h:outputText value="#{accountController.selected.status}" title="#{bundle.ViewAccountTitle_status}"/>
 
-
                 </p:panelGrid>
             </p:outputPanel>
-
-
         </p:dialog>
     </ui:composition>
 </html>
