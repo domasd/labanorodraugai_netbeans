@@ -1,7 +1,8 @@
 CREATE DATABASE `labanorodraugai_db` 
 
 CREATE TABLE `labanorodraugai_db`.`account` (
-  `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,  
+  `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Password` CHAR(32) NOT NULL, 
   `Name` VARCHAR(50) NOT NULL,
   `Lastname` VARCHAR(50) NOT NULL,
   `Description` NVARCHAR(500) NULL,
@@ -17,5 +18,5 @@ CREATE TABLE `labanorodraugai_db`.`account` (
 
 -- test data for account seed
 INSERT INTO `labanorodraugai_db`.`account`
-(`Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `FB_URL`, `PointsQuantity`) 
-VALUES ('TestName', 'TestLastname', 'Test Description', null, 0, 'test@test.test', 'https://www.facebook.com/ddziaugys',0);
+(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `FB_URL`, `PointsQuantity`) 
+VALUES ('202cb962ac5975b964b7152d234b70', 'TestName', 'TestLastname', 'Test Description', null, 0, 'test@test.test', 'https://www.facebook.com/ddziaugys',0);

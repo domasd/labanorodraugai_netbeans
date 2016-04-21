@@ -27,6 +27,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "account")
 @NamedQueries({
+    @NamedQuery(name = "Account.findByNameAndPassword", query = "SELECT u FROM Account u WHERE u.name = :name and u.password = :password"),
+    @NamedQuery(name = "Account.findByEmailAndPassword", query = "SELECT u FROM Account u WHERE u.email = :email and u.password = :password"),
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
     @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
     @NamedQuery(name = "Account.findByName", query = "SELECT a FROM Account a WHERE a.name = :name"),
@@ -39,12 +41,18 @@ public class Account implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "Lastname")
-    private String lastname;
+    @Size(min = 1, max = 32)
+    @Column(name = "Password")
+    private String password;
     @Lob
     @Column(name = "Image")
     private byte[] image;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "Lastname")
+    private String lastname;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -86,8 +94,9 @@ public class Account implements Serializable {
         this.id = id;
     }
 
-    public Account(Integer id, String name, int status, String email, BigDecimal pointsQuantity) {
+    public Account(Integer id, String paasword, String name, int status, String email, BigDecimal pointsQuantity) {
         this.id = id;
+        this.password = password;
         this.name = name;
         this.status = status;
         this.email = email;
@@ -182,6 +191,14 @@ public class Account implements Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public byte[] getImage() {

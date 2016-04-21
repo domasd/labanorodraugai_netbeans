@@ -25,34 +25,39 @@
             </p:layoutUnit>
 
             <p:layoutUnit position="center" >
-                <p:menubar>
-                    <p:menuitem value="Registracija" url="/registration/registration.html"/>
-                    <p:menuitem value="Klubo nariai" url="/account/List.html"/>
-                    
-                    <p:submenu label="File" icon="ui-icon-document">
-                        <p:submenu label="New" icon="ui-icon-contact">
-                            <p:menuitem value="Project" url="#" />
-                            <p:menuitem value="Other" url="#" />
-                        </p:submenu>
-                        <p:menuitem value="Open" url="#" />
-                        <p:menuitem value="Quit" url="#" />
-                    </p:submenu>
+                <h:form>
+                    <p:menubar>
+                        <p:menuitem value="Registracija" url="/registration/registration.html"/>
+                        <p:menuitem value="Klubo nariai" url="/account/List.html"/>
+                        <p:menuitem value="Prisijungimas" url="/login/login.html"/>
 
-                    <p:submenu label="Edit" icon="ui-icon-pencil">
-                        <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w"></p:menuitem>
-                        <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e"></p:menuitem>
-                    </p:submenu>
+                        <p:menuitem value="Atsijungti" action="#{loginBean.logout()}"/>
 
-                    <p:submenu label="Help" icon="ui-icon-help">
-                        <p:menuitem value="Contents" url="#" />
-                        <p:submenu label="Search" icon="ui-icon-search">
-                            <p:submenu label="Text">
-                                <p:menuitem value="Workspace" url="#" />
+                        <p:submenu label="File" icon="ui-icon-document">
+                            <p:submenu label="New" icon="ui-icon-contact">
+                                <p:menuitem value="Project" url="#" />
+                                <p:menuitem value="Other" url="#" />
                             </p:submenu>
-                            <p:menuitem value="File" url="#" />
+                            <p:menuitem value="Open" url="#" />
+                            <p:menuitem value="Quit" url="#" />
                         </p:submenu>
-                    </p:submenu>
-                </p:menubar>
+
+                        <p:submenu label="Edit" icon="ui-icon-pencil">
+                            <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w"></p:menuitem>
+                            <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e"></p:menuitem>
+                        </p:submenu>
+
+                        <p:submenu label="Help" icon="ui-icon-help">
+                            <p:menuitem value="Contents" url="#" />
+                            <p:submenu label="Search" icon="ui-icon-search">
+                                <p:submenu label="Text">
+                                    <p:menuitem value="Workspace" url="#" />
+                                </p:submenu>
+                                <p:menuitem value="File" url="#" />
+                            </p:submenu>
+                        </p:submenu>
+                    </p:menubar>
+                </h:form>
 
                 
                 <ui:insert name="content">Content</ui:insert>
