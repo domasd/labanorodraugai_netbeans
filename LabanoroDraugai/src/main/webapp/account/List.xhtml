@@ -19,9 +19,6 @@
                                  rowsPerPageTemplate="10,20,30,40,50"
                                  tableStyleClass="ui-table-columntoggle"
                                  >
-
-<!--                        <p:ajax event="rowSelect" listener="#{accountController.onRowSelect}" />  -->
-
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListAccountTitle_name}"/>
@@ -57,11 +54,12 @@
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
-                   
+
                     <ui:include src="View.xhtml" />
 
                 </p:panel>
             </h:form>
+
         </ui:define>
     </ui:composition>
 
