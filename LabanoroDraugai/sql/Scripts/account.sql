@@ -1,5 +1,3 @@
-CREATE DATABASE `labanorodraugai_db` 
-
 CREATE TABLE `labanorodraugai_db`.`account` (
   `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Password` CHAR(32) NOT NULL, 
