@@ -37,11 +37,11 @@
                             <f:facet name="header">
                                 <h:outputText value="#{AccountBundle.ListAccountTitle_status}"/>
                             </f:facet>
-                            <h:outputText value="#{item.status}"/>
+                            <h:outputText value="#{AccountBundle['Enum.AccountStatus.' += item.status]}"/>
                         </p:column>
-                        <p:column>
+                        <p:column> 
                             <f:facet name="header">
-                                <h:outputText value="#{AccountBundle.Facebook}"/>
+                                <h:outputText value="#{AccountBundle.Facebook}"/> 
                             </f:facet>
                             <div style="text-align: center;"> 
                                 <p:button style="center" value="#{AccountBundle.OpenFacebook}" href="#{item.fbUrl}"  target="_blank" icon="fa fa-facebook-square">

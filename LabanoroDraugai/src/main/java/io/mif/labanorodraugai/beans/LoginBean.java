@@ -2,6 +2,7 @@
 package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.entities.Account;
+import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.ejb.Stateful;
@@ -196,7 +197,7 @@ public class LoginBean implements Serializable {
         
         if(!name.isEmpty() && !password.isEmpty() && !email.isEmpty())
         {
-            account = new Account(1, password, name, 0, email, BigDecimal.valueOf(123456789.123456789));
+            account = new Account(1, password, name, AccountStatus.Candidate, email, BigDecimal.valueOf(123456789.123456789));
         }
         
         return account;

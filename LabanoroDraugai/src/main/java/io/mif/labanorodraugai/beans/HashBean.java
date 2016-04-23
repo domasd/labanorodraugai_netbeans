@@ -17,6 +17,7 @@ import javax.faces.bean.SessionScoped;
  *
  * @author SFILON
  */
+// TODO convert to simple java class (service) 
 @ManagedBean (name="hashBean")
 @SessionScoped
 @Stateless
