@@ -8,7 +8,7 @@
 
     <ui:composition>
 
-        <p:dialog header="#{bundle.ViewAccountTitle}" 
+        <p:dialog header="#{AccountBundle.ViewAccountTitle}" 
                   widgetVar="accountDialog" 
                   modal="true" 
                   showEffect="fade" 
@@ -18,32 +18,32 @@
 
 
             <p:outputPanel id="accountDetail" style="text-align:center;">
-
                 <p:panelGrid  columns="2" rendered="#{not empty accountController.selected}" columnClasses="label,value">
 
                     <f:facet name="header">
-                        <p:graphicImage value="#{accountController.image}">
-                             <f:param name="accountId" value="#{accountController.selected.id}" />
+                        <p:graphicImage value="#{accountController.image}" rendered="#{not empty accountController.selected.image}">
+                            <f:param name="accountId" value="#{accountController.selected.id}"/>
                         </p:graphicImage>
+                        <p:graphicImage library="images" name="EmptyUserImage.jpg" rendered="#{empty accountController.selected.image}"/>
                     </f:facet>
 
-                    <h:outputText value="#{bundle.ViewAccountLabel_name}"/>
-                    <h:outputText value="#{accountController.selected.name}" title="#{bundle.ViewAccountTitle_name}"/>
+                    <h:outputText value="#{AccountBundle.ViewAccountLabel_name}"/>
+                    <h:outputText value="#{accountController.selected.name}" title="#{AccountBundle.ViewAccountTitle_name}"/>
 
-                    <h:outputText value="#{bundle.ViewAccountLabel_lastname}"/>
-                    <h:outputText value="#{accountController.selected.lastname}" title="#{bundle.ViewAccountTitle_lastname}"/>
+                    <h:outputText value="#{AccountBundle.ViewAccountLabel_lastname}"/>
+                    <h:outputText value="#{accountController.selected.lastname}" title="#{AccountBundle.ViewAccountTitle_lastname}"/>
 
-                    <h:outputText value="#{bundle.ViewAccountLabel_email}"/>
-                    <h:outputText value="#{accountController.selected.email}" title="#{bundle.ViewAccountTitle_email}"/>
+                    <h:outputText value="#{AccountBundle.ViewAccountLabel_email}"/> 
+                    <h:outputText value="#{accountController.selected.email}" title="#{AccountBundle.ViewAccountTitle_email}"/>
 
-                    <h:outputText value="#{bundle.ViewAccountLabel_description}"/>
-                    <h:outputText value="#{accountController.selected.description}" title="#{bundle.ViewAccountTitle_description}"/>
+                    <h:outputText value="#{AccountBundle.ViewAccountLabel_description}"/>
+                    <h:outputText value="#{accountController.selected.description}" title="#{AccountBundle.ViewAccountTitle_description}"/>
 
-                    <h:outputText value="#{bundle.ViewAccountLabel_status}"/>
-                    <h:outputText value="#{accountController.selected.status}" title="#{bundle.ViewAccountTitle_status}"/>
+                    <h:outputText value="#{AccountBundle.ViewAccountLabel_status}"/> 
+                    <h:outputText value="#{AccountBundle['Enum.AccountStatus.' += accountController.selected.status]}" title="#{AccountBundle.ViewAccountTitle_status}"/>
 
                 </p:panelGrid>
             </p:outputPanel>
-        </p:dialog>
+        </p:dialog> 
     </ui:composition>
 </html>

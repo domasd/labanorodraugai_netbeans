@@ -10,7 +10,7 @@
 
         <ui:define name="content">
             <h:form id="AccountListForm">
-                <p:panel header="#{bundle.ListAccountTitle}">
+                <p:panel header="#{AccountBundle.ListAccountTitle}">
                     <p:growl id="growl" life="2000" />
                     <p:dataTable id="datalist" value="#{accountController.items}" var="item"
                                  paginator="true"
@@ -18,33 +18,33 @@
                                  rows="10"
                                  rowsPerPageTemplate="10,20,30,40,50"
                                  tableStyleClass="ui-table-columntoggle"
-                                 >
+                                 > 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAccountTitle_name}"/>
+                                <h:outputText value="#{AccountBundle.ListAccountTitle_name}"/>
                             </f:facet>
                             <h:outputText value="#{item.name}"/>
                         </p:column>
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAccountTitle_lastname}"/>
+                                <h:outputText value="#{AccountBundle.ListAccountTitle_lastname}"/>
                             </f:facet>
                             <h:outputText value="#{item.lastname}"/>
                         </p:column>
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAccountTitle_status}"/>
+                                <h:outputText value="#{AccountBundle.ListAccountTitle_status}"/>
                             </f:facet>
                             <h:outputText value="#{item.status}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.Facebook}"/>
+                                <h:outputText value="#{AccountBundle.Facebook}"/>
                             </f:facet>
                             <div style="text-align: center;"> 
-                                <p:button style="center" value="#{bundle.OpenFacebook}" href="#{item.fbUrl}"  target="_blank" icon="fa fa-facebook-square">
+                                <p:button style="center" value="#{AccountBundle.OpenFacebook}" href="#{item.fbUrl}"  target="_blank" icon="fa fa-facebook-square">
                                 </p:button>
                             </div>
                         </p:column>
