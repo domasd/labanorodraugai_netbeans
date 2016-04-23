@@ -5,9 +5,12 @@ import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.beans.util.JsfUtil.PersistAction;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -27,7 +30,6 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
-
 
 @Named("accountController")
 @SessionScoped
@@ -146,7 +148,8 @@ public class AccountController implements Serializable {
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String accountId = context.getExternalContext().getRequestParameterMap().get("accountId");
             Account account = this.getAccount(Integer.valueOf(accountId));
-            return new DefaultStreamedContent(new ByteArrayInputStream(account.getImage()));
+            byte[] imageBytes = account.getImage();
+            return new DefaultStreamedContent(new ByteArrayInputStream(imageBytes));
         }
     }
 
