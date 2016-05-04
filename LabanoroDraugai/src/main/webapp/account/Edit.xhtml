@@ -8,42 +8,91 @@
 
     <ui:composition>
 
-        <p:dialog header="#{AccountBundle.ViewAccountTitle}" 
-                  widgetVar="accountDialog" 
+        <p:dialog header="#{AccountBundle.EditAccountTitle}" 
+                  id="accountEditDialogId" 
+                  widgetVar="accountEditDialogWidgetVar" 
                   modal="true" 
                   showEffect="fade" 
                   hideEffect="fade" 
                   resizable="false" 
                   appendTo="@(body)">
 
+            <h:form id="accountEditFormId" enctype="multipart/form-data">
 
-            <p:outputPanel id="accountDetail" style="text-align:center;">
-                <p:panelGrid  columns="2" rendered="#{not empty accountController.selected}" columnClasses="label,value">
+                <h:panelGroup id="editPanelId">
 
-                    <f:facet name="header">
-                        <p:graphicImage value="#{accountController.image}" rendered="#{not empty accountController.selected.image}">
-                            <f:param name="accountId" value="#{accountController.selected.id}"/>
-                        </p:graphicImage>
-                        <p:graphicImage library="images" name="EmptyUserImage.jpg" rendered="#{empty accountController.selected.image}"/>
-                    </f:facet>
+                    <p:panelGrid columns="2" rendered="#{accountController.selected != null}">
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_name}"/>
-                    <h:outputText value="#{accountController.selected.name}" title="#{AccountBundle.ViewAccountTitle_name}"/>
+                        <p:outputLabel value="#{AccountBundle.Label_name}" 
+                                       for="name" />
+                        <p:inputText id="name" 
+                                     value="#{accountController.selected.name}" 
+                                     title="#{AccountBundle.Label_name}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredFieldMessage}"/>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_lastname}"/>
-                    <h:outputText value="#{accountController.selected.lastname}" title="#{AccountBundle.ViewAccountTitle_lastname}"/>
+                        <p:outputLabel value="#{AccountBundle.Title_lastname}" 
+                                       for="lastname" />
+                        <p:inputText id="lastname" 
+                                     value="#{accountController.selected.lastname}" 
+                                     title="#{AccountBundle.Label_lastname}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredFieldMessage}"/>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_email}"/> 
-                    <h:outputText value="#{accountController.selected.email}" title="#{AccountBundle.ViewAccountTitle_email}"/>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_description}"/>
-                    <h:outputText value="#{accountController.selected.description}" title="#{AccountBundle.ViewAccountTitle_description}"/>
+                        <p:outputLabel value="#{AccountBundle.Label_email}" 
+                                       for="email" />
+                        <p:inputText id="email" 
+                                     value="#{accountController.selected.email}" 
+                                     title="#{AccountBundle.Title_email}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredFieldMessage}"/>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_status}"/> 
-                    <h:outputText value="#{AccountBundle['Enum.AccountStatus.' += accountController.selected.status]}" title="#{AccountBundle.ViewAccountTitle_status}"/>
 
-                </p:panelGrid>
-            </p:outputPanel>
-        </p:dialog> 
+                        <p:outputLabel value="#{AccountBundle.Label_status}" 
+                                       for="status" />
+                        <p:selectOneMenu id="status" 
+                                         value="#{accountController.selected.status}">
+                            <f:selectItems value="#{accountController.statuses}"/>
+                        </p:selectOneMenu>
+
+
+                        <p:outputLabel value="#{AccountBundle.Label_description}" 
+                                       for="description" />
+                        <p:inputTextarea id="description" 
+                                         rows="4" 
+                                         cols="30"
+                                         value="#{accountController.selected.description}" 
+                                         title="#{AccountBundle.Title_description}" />
+
+
+                        <p:outputLabel value="#{AccountBundle.Label_fbUrl}" 
+                                       for="fbUrl" />
+                        <p:inputText id="fbUrl" 
+                                     value="#{accountController.selected.fbUrl}" 
+                                     title="#{AccountBundle.Title_fbUrl}" />
+
+
+                        <p:outputLabel value="#{AccountBundle.Label_pointsQuantity}" 
+                                       for="pointsQuantity" />
+                        <p:inputText id="pointsQuantity" 
+                                     value="#{accountController.selected.pointsQuantity}" 
+                                     title="#{AccountBundle.Title_pointsQuantity}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredFieldMessage}"/>
+                    </p:panelGrid>
+
+                    <p:commandButton update="editPanelId,:AccountListForm:datalist,:growl" 
+                                     value="#{CommonBundle.Save}" 
+                                     oncomplete="PF('accountEditDialogWidgetVar').hide()"
+                                     action="#{accountController.update}"
+                                     ajax="false"/>
+                    <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('accountEditDialogWidgetVar').hide()"/>
+                </h:panelGroup>
+
+            </h:form>          
+        </p:dialog>
     </ui:composition>
 </html>
+
+

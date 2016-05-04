@@ -4,8 +4,10 @@ import static com.sun.javafx.logging.PulseLogger.addMessage;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.beans.util.JsfUtil.PersistAction;
+import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,10 +22,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 @Named("accountController")
 @SessionScoped
@@ -33,7 +38,27 @@ public class AccountController implements Serializable {
     private io.mif.labanorodraugai.beans.AccountFacade ejbFacade;
     private List<Account> items = null;
     private Account selected;
+    private UploadedFile uploadedFile; //move to seperate service
 
+    public UploadedFile getUploadedFile() {
+        return uploadedFile;
+    }
+
+    public void setUploadedFile(UploadedFile uploadedFile) {
+        this.uploadedFile = uploadedFile;
+    }
+
+    // TODO add error handling
+    public void upload() throws IOException{
+        System.out.println("update invoked");
+        String fileName = uploadedFile.getFileName();
+        String contentType = uploadedFile.getContentType();    
+        InputStream inputstream = uploadedFile.getInputstream();
+        byte[] contents = IOUtils.toByteArray(inputstream);
+        selected.setImage(contents);
+        this.update();
+    }
+    
     public AccountController() {
     }
 
@@ -41,12 +66,12 @@ public class AccountController implements Serializable {
         return selected;
     }
 
-    public void onRowSelect(SelectEvent event) {
-        addMessage(String.format("Selected account %s", (Account) event.getObject()));
-    }
-
     public void setSelected(Account selected) {
         this.selected = selected;
+    }
+    
+    public void onRowSelect(SelectEvent event) {
+        addMessage(String.format("Selected account %s", (Account) event.getObject()));
     }
 
     protected void setEmbeddableKeys() {
@@ -72,8 +97,8 @@ public class AccountController implements Serializable {
         }
     }
 
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("AccountUpdated"));
+    public void update() {        
+        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/AccountBundle").getString("AccountUpdated"));
     }
 
     public void destroy() {
@@ -98,7 +123,7 @@ public class AccountController implements Serializable {
                 if (persistAction != PersistAction.DELETE) {
                     getFacade().edit(selected);
                 } else {
-                    getFacade().remove(selected);
+                    getFacade().remove(selected); 
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
@@ -145,6 +170,10 @@ public class AccountController implements Serializable {
             byte[] imageBytes = account.getImage();
             return new DefaultStreamedContent(new ByteArrayInputStream(imageBytes));
         }
+    }
+
+    public AccountStatus[] getStatuses() {
+        return AccountStatus.values();
     }
 
     @FacesConverter(forClass = Account.class)

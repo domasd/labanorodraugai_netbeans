@@ -9,7 +9,8 @@
     <ui:composition>
 
         <p:dialog header="#{AccountBundle.ViewAccountTitle}" 
-                  widgetVar="accountDialog" 
+                  id="accountViewDialogId" 
+                  widgetVar="accountDialogWidgetVar" 
                   modal="true" 
                   showEffect="fade" 
                   hideEffect="fade" 
@@ -17,7 +18,8 @@
                   appendTo="@(body)">
 
 
-            <p:outputPanel id="accountDetail" style="text-align:center;">
+            <p:outputPanel id="accountOutputPanelId" style="text-align:center;">
+
                 <p:panelGrid  columns="2" rendered="#{not empty accountController.selected}" columnClasses="label,value">
 
                     <f:facet name="header">
@@ -27,20 +29,24 @@
                         <p:graphicImage library="images" name="EmptyUserImage.jpg" rendered="#{empty accountController.selected.image}"/>
                     </f:facet>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_name}"/>
-                    <h:outputText value="#{accountController.selected.name}" title="#{AccountBundle.ViewAccountTitle_name}"/>
+                    <h:outputText value="#{AccountBundle.Title_name}"/>
+                    <h:outputText value="#{accountController.selected.name}" 
+                                  title="#{AccountBundle.Title_name}"/>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_lastname}"/>
-                    <h:outputText value="#{accountController.selected.lastname}" title="#{AccountBundle.ViewAccountTitle_lastname}"/>
+                    <h:outputText value="#{AccountBundle.Title_lastname}"/>
+                    <h:outputText value="#{accountController.selected.lastname}" 
+                                  title="#{AccountBundle.Title_lastname}"/>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_email}"/> 
-                    <h:outputText value="#{accountController.selected.email}" title="#{AccountBundle.ViewAccountTitle_email}"/>
+                    <h:outputText value="#{AccountBundle.Title_email}"/> 
+                    <h:outputText value="#{accountController.selected.email}" 
+                                  title="#{AccountBundle.Title_email}"/>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_description}"/>
-                    <h:outputText value="#{accountController.selected.description}" title="#{AccountBundle.ViewAccountTitle_description}"/>
+                    <h:outputText value="#{AccountBundle.Title_description}"/>
+                    <h:outputText value="#{accountController.selected.description}" 
+                                  title="#{AccountBundle.Title_description}"/>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_status}"/> 
-                    <h:outputText value="#{AccountBundle['Enum.AccountStatus.' += accountController.selected.status]}" title="#{AccountBundle.ViewAccountTitle_status}"/>
+                    <h:outputText value="#{AccountBundle.Title_status}"/> 
+                    <h:outputText value="#{AccountBundle['Enum.AccountStatus.' += accountController.selected.status]}" title="#{AccountBundle.Title_status}"/>
 
                 </p:panelGrid>
             </p:outputPanel>

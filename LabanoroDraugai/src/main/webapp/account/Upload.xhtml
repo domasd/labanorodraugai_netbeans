@@ -8,42 +8,35 @@
 
     <ui:composition>
 
-        <p:dialog header="#{AccountBundle.ViewAccountTitle}" 
-                  widgetVar="accountDialog" 
+        <p:dialog header="#{AccountBundle.UploadAccountTitle}" 
+                  id="accountUploadDialogId" 
+                  widgetVar="accountUploadDialogWidgetVar" 
                   modal="true" 
                   showEffect="fade" 
                   hideEffect="fade" 
                   resizable="false" 
                   appendTo="@(body)">
 
+            <h:form id="accountUploadFormId" enctype="multipart/form-data">
+                <p:messages></p:messages>
+                <h:panelGroup id="uploadPanelId">
 
-            <p:outputPanel id="accountDetail" style="text-align:center;">
-                <p:panelGrid  columns="2" rendered="#{not empty accountController.selected}" columnClasses="label,value">
+                    <p:panelGrid columns="2" rendered="#{accountController.selected != null}">
+                       <p:outputLabel value="#{AccountBundle.Label_image}" />
+                        <p:fileUpload value="#{accountController.uploadedFile}" 
+                                      mode="simple"/>
+                    </p:panelGrid>
 
-                    <f:facet name="header">
-                        <p:graphicImage value="#{accountController.image}" rendered="#{not empty accountController.selected.image}">
-                            <f:param name="accountId" value="#{accountController.selected.id}"/>
-                        </p:graphicImage>
-                        <p:graphicImage library="images" name="EmptyUserImage.jpg" rendered="#{empty accountController.selected.image}"/>
-                    </f:facet>
+                    <p:commandButton value="#{CommonBundle.Upload}" 
+                                     oncomplete="PF('accountUploadDialogWidgetVar').hide()"
+                                     action="#{accountController.upload}"
+                                     ajax="false"/>
+                    <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('accountUploadDialogWidgetVar').hide()"/>
+                </h:panelGroup>
 
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_name}"/>
-                    <h:outputText value="#{accountController.selected.name}" title="#{AccountBundle.ViewAccountTitle_name}"/>
-
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_lastname}"/>
-                    <h:outputText value="#{accountController.selected.lastname}" title="#{AccountBundle.ViewAccountTitle_lastname}"/>
-
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_email}"/> 
-                    <h:outputText value="#{accountController.selected.email}" title="#{AccountBundle.ViewAccountTitle_email}"/>
-
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_description}"/>
-                    <h:outputText value="#{accountController.selected.description}" title="#{AccountBundle.ViewAccountTitle_description}"/>
-
-                    <h:outputText value="#{AccountBundle.ViewAccountLabel_status}"/> 
-                    <h:outputText value="#{AccountBundle['Enum.AccountStatus.' += accountController.selected.status]}" title="#{AccountBundle.ViewAccountTitle_status}"/>
-
-                </p:panelGrid>
-            </p:outputPanel>
-        </p:dialog> 
+            </h:form>          
+        </p:dialog>
     </ui:composition>
 </html>
+
+
