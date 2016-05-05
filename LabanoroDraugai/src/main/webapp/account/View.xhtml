@@ -17,13 +17,14 @@
                   resizable="false" 
                   appendTo="@(body)">
 
-
             <p:outputPanel id="accountOutputPanelId" style="text-align:center;">
 
                 <p:panelGrid  columns="2" rendered="#{not empty accountController.selected}" columnClasses="label,value">
 
                     <f:facet name="header">
-                        <p:graphicImage value="#{accountController.image}" rendered="#{not empty accountController.selected.image}">
+                        <p:graphicImage value="#{accountController.image}" 
+                                        rendered="#{not empty accountController.selected.image}"
+                                        cache="false">
                             <f:param name="accountId" value="#{accountController.selected.id}"/>
                         </p:graphicImage>
                         <p:graphicImage library="images" name="EmptyUserImage.jpg" rendered="#{empty accountController.selected.image}"/>

@@ -18,7 +18,6 @@
                   appendTo="@(body)">
 
             <h:form id="accountUploadFormId" enctype="multipart/form-data">
-                <p:messages></p:messages>
                 <h:panelGroup id="uploadPanelId">
 
                     <p:panelGrid columns="2" rendered="#{accountController.selected != null}">
@@ -30,6 +29,7 @@
                     <p:commandButton value="#{CommonBundle.Upload}" 
                                      oncomplete="PF('accountUploadDialogWidgetVar').hide()"
                                      action="#{accountController.upload}"
+                                     update=":accountOutputPanelId,:growl" 
                                      ajax="false"/>
                     <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('accountUploadDialogWidgetVar').hide()"/>
                 </h:panelGroup>

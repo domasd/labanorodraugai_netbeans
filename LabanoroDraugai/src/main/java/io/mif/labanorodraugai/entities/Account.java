@@ -6,6 +6,7 @@
 package io.mif.labanorodraugai.entities;
 
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
+import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Formatter;
@@ -25,7 +26,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 /**
  *
  * @author dziaudom
@@ -82,8 +82,7 @@ public class Account implements Serializable {
     @Column(name = "Status")
     @Enumerated(EnumType.ORDINAL)
     private AccountStatus status;
-
-    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Invalid email")
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)

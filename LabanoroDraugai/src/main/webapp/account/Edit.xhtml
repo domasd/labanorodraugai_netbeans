@@ -17,28 +17,29 @@
                   resizable="false" 
                   appendTo="@(body)">
 
-            <h:form id="accountEditFormId" enctype="multipart/form-data">
+            <h:form id="accountEditFormId">
 
                 <h:panelGroup id="editPanelId">
-
+                    <p:messages autoUpdate="true"/>
                     <p:panelGrid columns="2" rendered="#{accountController.selected != null}">
 
                         <p:outputLabel value="#{AccountBundle.Label_name}" 
                                        for="name" />
                         <p:inputText id="name" 
                                      value="#{accountController.selected.name}" 
-                                     title="#{AccountBundle.Label_name}" 
+                                     title="#{AccountBundle.Title_name}" 
                                      required="true" 
-                                     requiredMessage="#{CommonBundle.RequiredFieldMessage}"/>
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_name}"/>
+           
 
-                        <p:outputLabel value="#{AccountBundle.Title_lastname}" 
+                        <p:outputLabel value="#{AccountBundle.Label_lastname}" 
                                        for="lastname" />
                         <p:inputText id="lastname" 
                                      value="#{accountController.selected.lastname}" 
-                                     title="#{AccountBundle.Label_lastname}" 
+                                     title="#{AccountBundle.Title_lastname}" 
                                      required="true" 
-                                     requiredMessage="#{CommonBundle.RequiredFieldMessage}"/>
-
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_lastname}"/>
+                      
 
                         <p:outputLabel value="#{AccountBundle.Label_email}" 
                                        for="email" />
@@ -46,7 +47,11 @@
                                      value="#{accountController.selected.email}" 
                                      title="#{AccountBundle.Title_email}" 
                                      required="true" 
-                                     requiredMessage="#{CommonBundle.RequiredFieldMessage}"/>
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_email}"
+                                     validatorMessage="#{CommonBundle.BadInputForField} #{AccountBundle.Title_email}">
+                            <f:validateRegex pattern="#{constants.regex_email}"/>
+                        </p:inputText>
+                        
 
 
                         <p:outputLabel value="#{AccountBundle.Label_status}" 
@@ -55,6 +60,7 @@
                                          value="#{accountController.selected.status}">
                             <f:selectItems value="#{accountController.statuses}"/>
                         </p:selectOneMenu>
+                       
 
 
                         <p:outputLabel value="#{AccountBundle.Label_description}" 
@@ -64,6 +70,7 @@
                                          cols="30"
                                          value="#{accountController.selected.description}" 
                                          title="#{AccountBundle.Title_description}" />
+                 
 
 
                         <p:outputLabel value="#{AccountBundle.Label_fbUrl}" 
@@ -71,6 +78,7 @@
                         <p:inputText id="fbUrl" 
                                      value="#{accountController.selected.fbUrl}" 
                                      title="#{AccountBundle.Title_fbUrl}" />
+          
 
 
                         <p:outputLabel value="#{AccountBundle.Label_pointsQuantity}" 
@@ -79,14 +87,22 @@
                                      value="#{accountController.selected.pointsQuantity}" 
                                      title="#{AccountBundle.Title_pointsQuantity}" 
                                      required="true" 
-                                     requiredMessage="#{CommonBundle.RequiredFieldMessage}"/>
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_pointsQuantity}"
+                                     converterMessage="#{CommonBundle.BadInputForField} #{AccountBundle.Title_pointsQuantity}"
+                                     >
+                            <f:validateDoubleRange minimum="0.0"/>
+                        </p:inputText>
+                     
+
+
                     </p:panelGrid>
 
                     <p:commandButton update="editPanelId,:AccountListForm:datalist,:growl" 
                                      value="#{CommonBundle.Save}" 
                                      oncomplete="PF('accountEditDialogWidgetVar').hide()"
                                      action="#{accountController.update}"
-                                     ajax="false"/>
+                                     ajax="false"
+                                     validateClient="true" />
                     <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('accountEditDialogWidgetVar').hide()"/>
                 </h:panelGroup>
 
