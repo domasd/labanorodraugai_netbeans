@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog header="#{AccountBundle.EditAccountTitle}" 
+                  id="accountEditDialogId" 
+                  widgetVar="accountEditDialogWidgetVar" 
+                  modal="true" 
+                  showEffect="fade" 
+                  hideEffect="fade" 
+                  resizable="false" 
+                  appendTo="@(body)">
+
+            <h:form id="accountEditFormId">
+
+                <h:panelGroup id="editPanelId">
+                    <p:messages autoUpdate="true"/>
+                    <p:panelGrid columns="2" rendered="#{accountController.selected != null}">
+
+                        <p:outputLabel value="#{AccountBundle.Label_name}" 
+                                       for="name" />
+                        <p:inputText id="name" 
+                                     value="#{accountController.selected.name}" 
+                                     title="#{AccountBundle.Title_name}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_name}"/>
+           
+
+                        <p:outputLabel value="#{AccountBundle.Label_lastname}" 
+                                       for="lastname" />
+                        <p:inputText id="lastname" 
+                                     value="#{accountController.selected.lastname}" 
+                                     title="#{AccountBundle.Title_lastname}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_lastname}"/>
+                      
+
+                        <p:outputLabel value="#{AccountBundle.Label_email}" 
+                                       for="email" />
+                        <p:inputText id="email" 
+                                     value="#{accountController.selected.email}" 
+                                     title="#{AccountBundle.Title_email}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_email}"
+                                     validatorMessage="#{CommonBundle.BadInputForField} #{AccountBundle.Title_email}">
+                            <f:validateRegex pattern="#{constants.regex_email}"/>
+                        </p:inputText>
+                        
+
+
+                        <p:outputLabel value="#{AccountBundle.Label_status}" 
+                                       for="status" />
+                        <p:selectOneMenu id="status" 
+                                         value="#{accountController.selected.status}">
+                            <f:selectItems value="#{accountController.statuses}"/>
+                        </p:selectOneMenu>
+                       
+
+
+                        <p:outputLabel value="#{AccountBundle.Label_description}" 
+                                       for="description" />
+                        <p:inputTextarea id="description" 
+                                         rows="4" 
+                                         cols="30"
+                                         value="#{accountController.selected.description}" 
+                                         title="#{AccountBundle.Title_description}" />
+                 
+
+
+                        <p:outputLabel value="#{AccountBundle.Label_fbUrl}" 
+                                       for="fbUrl" />
+                        <p:inputText id="fbUrl" 
+                                     value="#{accountController.selected.fbUrl}" 
+                                     title="#{AccountBundle.Title_fbUrl}" />
+          
+
+
+                        <p:outputLabel value="#{AccountBundle.Label_pointsQuantity}" 
+                                       for="pointsQuantity" />
+                        <p:inputText id="pointsQuantity" 
+                                     value="#{accountController.selected.pointsQuantity}" 
+                                     title="#{AccountBundle.Title_pointsQuantity}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_pointsQuantity}"
+                                     converterMessage="#{CommonBundle.BadInputForField} #{AccountBundle.Title_pointsQuantity}"
+                                     >
+                            <f:validateDoubleRange minimum="0.0"/>
+                        </p:inputText>
+                     
+
+
+                    </p:panelGrid>
+
+                    <p:commandButton update="editPanelId,:AccountListForm:datalist,:growl" 
+                                     value="#{CommonBundle.Save}" 
+                                     oncomplete="PF('accountEditDialogWidgetVar').hide()"
+                                     action="#{accountController.update}"
+                                     ajax="false"
+                                     validateClient="true" />
+                    <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('accountEditDialogWidgetVar').hide()"/>
+                </h:panelGroup>
+
+            </h:form>          
+        </p:dialog>
+    </ui:composition>
+</html>
+
+

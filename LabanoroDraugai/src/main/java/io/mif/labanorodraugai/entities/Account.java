@@ -6,8 +6,11 @@
 package io.mif.labanorodraugai.entities;
 
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
+import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Formatter;
+import java.util.Locale;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +26,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 /**
  *
  * @author dziaudom
@@ -39,7 +41,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Account.findByDescription", query = "SELECT a FROM Account a WHERE a.description = :description"),
     @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status"),
     @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email"),
-    @NamedQuery(name = "Account.findByFbUrl", query = "SELECT a FROM Account a WHERE a.fbUrl = :fbUrl"),    
+    @NamedQuery(name = "Account.findByFbUrl", query = "SELECT a FROM Account a WHERE a.fbUrl = :fbUrl"),
     @NamedQuery(name = "Account.findByPointsQuantity", query = "SELECT a FROM Account a WHERE a.pointsQuantity = :pointsQuantity")})
 public class Account implements Serializable {
 
@@ -64,34 +66,33 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "Name")
     private String name;
-    
+
     @Size(max = 500)
     @Column(name = "Description")
     private String description;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "Status")
     @Enumerated(EnumType.ORDINAL)
     private AccountStatus status;
     
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "Email")
     private String email;
-    
+
     @Size(max = 100)
     @Column(name = "FB_URL")
     private String fbUrl;
-    
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -105,7 +106,7 @@ public class Account implements Serializable {
         this.id = id;
     }
 
-    public Account(Integer id, String password,  String name, AccountStatus status, String email, BigDecimal pointsQuantity) {
+    public Account(Integer id, String password, String name, AccountStatus status, String email, BigDecimal pointsQuantity) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -137,7 +138,6 @@ public class Account implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public AccountStatus getStatus() {
         return status;
@@ -193,7 +193,9 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "io.mif.labanorodraugai.entities.Account[ id=" + id + " ]";
+        StringBuilder sb = new StringBuilder();
+        Formatter formatter = new Formatter(sb, Locale.ROOT);
+        return formatter.format("%s %s %s %s", name, lastname, email, status).toString();
     }
 
     public String getLastname() {
@@ -219,5 +221,5 @@ public class Account implements Serializable {
     public void setImage(byte[] image) {
         this.image = image;
     }
-    
+
 }
