@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <h:outputScript library="js" id="calendarUpdate"> 
+
+            function afterLoad(date) {    
+
+            
+            var disabledDays=#{summerhouseController.generateDisabledDates()}
+            
+                var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+
+                if (d==3) alert('trying to disabled dates');
+                
+                var b = disabledDays.length;
+                var j = 0;
+
+                while(j != b) {
+                    if($.inArray((m+1) + '-' + d + '-' + y,disabledDays) != -1) {
+                        return [false];
+                    }
+                    j++;
+                }
+                return [true];    
+            }
+        </h:outputScript>
+
+        <p:dialog header="#{SummerhouseBundle.ViewSumerhouseTitle}" 
+                  id="summerhouseViewDialogId" 
+                  widgetVar="summerhouseDialogWidgetVar" 
+                  modal="true" 
+                  showEffect="fade" 
+                  hideEffect="fade" 
+                  resizable="false" 
+                  appendTo="@(body)">
+
+
+            <p:outputPanel id="summerhouseOutputPanelId" style="text-align:center;">
+
+                <p:panelGrid columns="2" rendered="#{not empty summerhouseController.selected}">
+                    <f:facet name="header">
+                        <p:outputLabel value="#{summerhouseController.selected.name}"/>
+                    </f:facet>
+
+                    <p:graphicImage value="#{summerhouseController.image}" rendered="#{not empty summerhouseController.selected.image}">
+                        <f:param name="summerhouseId" value="#{summerhouseController.selected.id}"/>
+                    </p:graphicImage>
+                    <p:graphicImage library="images" name="EmptySummerhouseImage.png" rendered="#{empty summerhouseController.selected.image}"/>
+
+                    <p:panelGrid columns="2" rendered="#{not empty summerhouseController.selected}" columnClasses="label,value">
+
+                        <h:outputText value="#{SummerhouseBundle.Title_name}"/>
+                        <h:outputText value="#{summerhouseController.selected.name}" 
+                                      title="#{SummerhouseBundle.Title_name}"/>
+
+                        <h:outputText value="#{SummerhouseBundle.Title_number}"/>
+                        <h:outputText value="#{summerhouseController.selected.number}" 
+                                      title="#{SummerhouseBundle.Title_number}"/>
+
+                        <h:outputText value="#{SummerhouseBundle.Title_capacity}"/> 
+                        <h:outputText value="#{summerhouseController.selected.capacity}" 
+                                      title="#{SummerhouseBundle.Title_capacity}"/>
+
+                        <h:outputText value="#{SummerhouseBundle.Title_description}"/>
+                        <h:outputText value="#{summerhouseController.selected.description}" 
+                                      title="#{SummerhouseBundle.Title_description}"/>
+
+                        <h:outputText value="#{SummerhouseBundle.Title_availability}"/>
+
+                        <p:calendar binding="#{summerhouseController.calendar}"  navigator="true" pattern="MM-dd-yyyy" beforeShowDay="afterLoad" readonly="true" mode="inline"
+                                     showOn="button" widgetVar="dateVar"/>
+
+                    </p:panelGrid>
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog> 
+    </ui:composition>
+</html>

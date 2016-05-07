@@ -21,6 +21,15 @@
         <param-value>true</param-value>
     </context-param>
     
+    <filter>
+        <filter-name>LoggingFilter</filter-name>
+        <filter-class>io.mif.labanorodraugai.filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoggingFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+    
     
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

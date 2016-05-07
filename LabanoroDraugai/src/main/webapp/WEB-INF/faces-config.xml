@@ -12,5 +12,13 @@
             <base-name>/CommonBundle</base-name>
             <var>CommonBundle</var>
         </resource-bundle>
+                <resource-bundle>
+            <base-name>/SummerhouseBundle</base-name>
+            <var>SummerhouseBundle</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>/LoginBundle</base-name>
+            <var>loginBundle</var>
+        </resource-bundle>
     </application>
 </faces-config>

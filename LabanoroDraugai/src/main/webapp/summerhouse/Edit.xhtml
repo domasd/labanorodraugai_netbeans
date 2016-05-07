@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog header="#{SummerhouseBundle.EditSummerhouseTitle}" 
+                  id="summerhouseEditDialogId" 
+                  widgetVar="summerhouseEditDialogWidgetVar" 
+                  modal="true" 
+                  showEffect="fade" 
+                  hideEffect="fade" 
+                  resizable="false" 
+                  appendTo="@(body)">
+
+            <h:form id="summerhouseEditFormId" enctype="multipart/form-data">
+
+                <h:panelGroup id="editPanelId">
+
+                    <p:panelGrid columns="2" rendered="#{summerhouseController.selected != null}">
+
+                        <p:outputLabel value="#{SummerhouseBundle.Label_name}" 
+                                       for="name" />
+                        <p:inputText id="name" 
+                                     value="#{summerhouseController.selected.name}" 
+                                     title="#{SummerhouseBundle.Title_name}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{SummerhouseBundle.Title_name}"/>
+
+                        <p:outputLabel value="#{SummerhouseBundle.Label_number}" 
+                                       for="number" />
+                        <p:inputText id="number" 
+                                     value="#{summerhouseController.selected.number}" 
+                                     title="#{SummerhouseBundle.Title_number}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{SummerhouseBundle.Title_number}"/>
+
+
+                        <p:outputLabel value="#{SummerhouseBundle.Label_capacity}" 
+                                       for="capacity" />
+                        <p:inputText id="capacity" 
+                                     value="#{summerhouseController.selected.capacity}" 
+                                     title="#{SummerhouseBundle.Title_capacity}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{SummerhouseBundle.Title_capacity}"/>
+
+
+                        <p:outputLabel value="#{SummerhouseBundle.Label_description}" 
+                                       for="description" />        
+                        <p:inputText id="description" 
+                                     value="#{summerhouseController.selected.description}" 
+                                     title="#{SummerhouseBundle.Title_description}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{SummerhouseBundle.Title_description}"/>
+                    </p:panelGrid>
+
+                    <p:commandButton update="editPanelId,:SummerhouseListForm:datalist,:growl" 
+                                     value="#{CommonBundle.Save}" 
+                                     oncomplete="PF('summerhouseEditDialogWidgetVar').hide()"
+                                     action="#{summerhouseController.update}"
+                                     ajax="false"
+                                     validateClient="true"/>
+                    <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('summerhouseEditDialogWidgetVar').hide()"/>
+                </h:panelGroup>
+
+            </h:form>          
+        </p:dialog>
+    </ui:composition>
+</html>
+
+

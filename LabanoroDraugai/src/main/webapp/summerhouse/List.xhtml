@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="../template/commonLayout.xhtml">
+        <ui:define name="content">
+            <p:growl id="growl" life="2000" />
+            <h:form id="SummerhouseListForm">
+                <p:panel header="#{SummerhouseBundle.ListSummerhouseTitle}">
+                    
+                    <p:commandButton update=":summerhouseCreateFormId" 
+                                             oncomplete="PF('summerhouseCreateDialogWidgetVar').show()" 
+                                             icon="ui-icon-circle-plus" 
+                                             title="#{SummerhouseBundle.AddSummerhouse}"
+                                             actionListener="#{summerhouseController.prepareCreate()}"
+                                             />
+                    
+                        
+                    <p:dataTable id="datalist" value="#{summerhouseController.items}" var="item"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 tableStyleClass="ui-table-columntoggle"
+                                 tableStyle="table-layout: auto;"> 
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{SummerhouseBundle.Title_name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{SummerhouseBundle.Title_number}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.number}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{SummerhouseBundle.Title_capacity}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.capacity}"/>
+                        </p:column>
+
+
+                        <p:column style="width:180px;">  
+
+                            <f:facet name="header">
+                                <h:outputText value="#{SummerhouseBundle.Operations}"/> 
+                            </f:facet>
+
+                            <p:commandButton update=":summerhouseOutputPanelId" 
+                                             oncomplete="PF('summerhouseDialogWidgetVar').show()" 
+                                             icon="ui-icon-search" 
+                                             title="#{CommonBundle.View}">
+                                <f:setPropertyActionListener value="#{item}" 
+                                                             target="#{summerhouseController.selected}" />
+                            </p:commandButton>
+
+                            <p:commandButton update=":summerhouseEditFormId" 
+                                             oncomplete="PF('summerhouseEditDialogWidgetVar').show()" 
+                                             icon="fa fa-fw fa-edit" 
+                                             title="#{CommonBundle.Change}">
+                                <f:setPropertyActionListener value="#{item}" 
+                                                             target="#{summerhouseController.selected}" />
+                            </p:commandButton>
+
+                            <p:commandButton update=":summerhouseUploadFormId" 
+                                             oncomplete="PF('summerhouseUploadDialogWidgetVar').show()" 
+                                             icon="fa fa-fw fa-file-image-o" 
+                                             title="#{CommonBundle.Upload}">
+                                <f:setPropertyActionListener value="#{item}" 
+                                                             target="#{summerhouseController.selected}" />
+                            </p:commandButton>
+                            
+                            
+                            <p:commandButton action="#{summerhouseController.destroy}" 
+                                             update=":growl,:SummerhouseListForm:datalist"
+                                             icon="fa fa-trash-o" 
+                                             title="#{SummerhouseBundle.DeleteSummerhouse}">
+                                 <f:setPropertyActionListener value="#{item}" 
+                                                             target="#{summerhouseController.selected}" />
+                                <p:confirm header="#{SummerhouseBundle.DeleteSummerhouse}" 
+                                           message="#{SummerhouseBundle.DeleteConfirmation}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+            </h:form>
+            
+            <ui:include src="View.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="Upload.xhtml"/>
+            <ui:include src="New.xhtml"/>
+            <ui:include src="../common/Confirm.xhtml"/>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

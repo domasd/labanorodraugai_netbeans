@@ -3,37 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.mif.labanorodraugai.beans;
+package io.mif.labanorodraugai.beans.util;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import javax.ejb.Stateless;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author SFILON
  */
-// TODO convert to simple java class (service) 
-@ManagedBean (name="hashBean")
-@SessionScoped
-@Stateless
-public class HashBean {
-   
+public class AccountUtil {
+
     public String HashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
         byte[] b = md.digest();
         StringBuilder sb = new StringBuilder();
-        for (byte b1:b){
+        for (byte b1 : b) {
             sb.append(Integer.toHexString(b1 & 0xff));
         }
-        
-        return sb.toString();     
 
+        return sb.toString();
     }
-
 }

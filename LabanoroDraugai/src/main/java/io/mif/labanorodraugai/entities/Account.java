@@ -10,8 +10,10 @@ import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Formatter;
+import java.util.List;
 import java.util.Locale;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -22,10 +24,12 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 /**
  *
  * @author dziaudom
@@ -45,14 +49,24 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Account.findByPointsQuantity", query = "SELECT a FROM Account a WHERE a.pointsQuantity = :pointsQuantity")})
 public class Account implements Serializable {
 
+    @Lob
+    @Column(name = "Image")
+    private byte[] image;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "Status")
+    @Enumerated(EnumType.ORDINAL)
+    private AccountStatus status;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
+    private List<SummerhouseReservation> summerhouseReservationList;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
     @Column(name = "Password")
     private String password;
-    @Lob
-    @Column(name = "Image")
-    private byte[] image;
 
     @Basic(optional = false)
     @NotNull
@@ -77,11 +91,6 @@ public class Account implements Serializable {
     @Column(name = "Description")
     private String description;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Status")
-    @Enumerated(EnumType.ORDINAL)
-    private AccountStatus status;
     
     @Basic(optional = false)
     @NotNull
@@ -139,13 +148,6 @@ public class Account implements Serializable {
         this.description = description;
     }
 
-    public AccountStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(AccountStatus status) {
-        this.status = status;
-    }
 
     public String getEmail() {
         return email;
@@ -213,6 +215,15 @@ public class Account implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    @XmlTransient
+    public List<SummerhouseReservation> getSummerhouseReservationList() {
+        return summerhouseReservationList;
+    }
+
+    public void setSummerhouseReservationList(List<SummerhouseReservation> summerhouseReservationList) {
+        this.summerhouseReservationList = summerhouseReservationList;
+    }
 
     public byte[] getImage() {
         return image;
@@ -221,5 +232,14 @@ public class Account implements Serializable {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
+    public AccountStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AccountStatus status) {
+        this.status = status;
+    }
+
 
 }
