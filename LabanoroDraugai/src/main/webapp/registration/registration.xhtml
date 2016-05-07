@@ -7,7 +7,8 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <head>
         <title>Registracija</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -17,26 +18,38 @@ and open the template in the editor.
 
             <ui:define name="content">
                 <h:form id="registerForm">  
-                    <table>  
-                        <tr>  
-                            <td><h:outputText value="Įveskine vardą :" /></td>  
-                            <td><h:inputText id="fname" value="#{user.firstName}"  
-                                             required="true" requiredMessage="Prašome įvesti vardą" /></td>  
-                            <td><h:message for="fname" style="color:red" /></td>  
-                        </tr>  
+   
+                    <h:panelGrid columns="3" id="registrationGrid" cellpadding="5">    
 
-                        <tr>  
-                            <td><h:outputText value="Įveskite slaptažodį :" /></td>  
-                            <td><h:inputSecret id="psw" value="#{user.password}"  
-                                               required="true" requiredMessage="Prašome įvesti slaptažodį" /></td>  
-                            <td><h:message for="psw" style="color:red" /></td>  
-                        </tr>  
-                        <tr>  
-                            <td />  
-                            <td><h:commandButton value="Registruotis" action="#{user.add}" /></td>  
-                        </tr>  
-                    </table>  
-                </h:form>          
+                        <h:outputLabel for="name" value="Vardas" />
+                        <p:inputText id="name" value="#{registrationController.account.name}" required="true" requiredMessage="Būtinas laukas"/>
+                        <h:message for="name" style="color:red" />
+                        
+                        <h:outputLabel for="lastName" value="Pavardė" />
+                        <p:inputText id="lastName" value="#{registrationController.account.lastname}" required="true" requiredMessage="Būtinas laukas"/>
+                        <h:message for="lastName" style="color:red" />
+                            
+                        <h:outputLabel for="email" value="El. pašto adresas" />
+                        <p:inputText id="email" value="#{registrationController.account.email}" required="true" requiredMessage="Būtinas laukas"/>
+                        <h:message for="email" style="color:red" />
+                        
+                        <h:outputLabel for="pwd1" value="Slaptažodis" />
+                        <p:password id="pwd1" value="#{registrationController.account.password}" match="pwd2" label="Password 1" required="true" 
+                                    requiredMessage="Būtinas laukas" validatorMessage="Slaptažodžiai nesutampa"/>
+                        <h:message for="pwd1" style="color:red" />
+
+                        <h:outputLabel for="pwd2" value="Pakartokite slaptažodį" />
+                        <p:password id="pwd2" value="#{registrationController.account.password}" label="Password 2" required="true" requiredMessage="Būtinas laukas"/>
+                        <h:message for="pwd2" style="color:red" />
+
+                    </h:panelGrid>
+
+                    <p:commandButton update="registrationGrid" value="Registruotis" action="#{registrationController.registerAccount}" />
+                    <p:messages globalOnly="true" style="color:red" autoUpdate="true"/>
+   
+
+                </h:form>    
+
             </ui:define>
 
     	</ui:composition>

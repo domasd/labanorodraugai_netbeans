@@ -10,7 +10,7 @@ CREATE TABLE `labanorodraugai_db`.`account` (
   `FB_URL` VARCHAR(100) NULL,
   `PointsQuantity` DECIMAL(30,2) ZEROFILL NOT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE INDEX `Name_UNIQUE` (`Name` ASC),
+  UNIQUE INDEX `Name_UNIQUE` (`Email` ASC),
   UNIQUE INDEX `FBAccountUrl_UNIQUE` (`FB_URL` ASC),
   INDEX `Status` (`Status` ASC));
 
