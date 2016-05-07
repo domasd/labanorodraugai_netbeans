@@ -79,7 +79,7 @@ public class SummerhouseController implements Serializable {
           
         if (selected==null)
             return "[];";
-               
+                       
         List<SummerhouseReservation> records =  ejbFacade.summerhouseReservationList(selected.getId());
         
         List<String> disabledDates = new ArrayList<>();
@@ -151,6 +151,7 @@ public class SummerhouseController implements Serializable {
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
+        selected=null;
     }
 
     public void update() {        
