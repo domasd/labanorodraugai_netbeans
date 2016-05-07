@@ -60,9 +60,6 @@
                                      required="true" 
                                      requiredMessage="#{CommonBundle.RequiredField} #{SummerhouseBundle.Title_description}"/>
                         
-                        <p:outputLabel value="#{SummerhouseBundle.Label_image}" />
-                        <p:fileUpload value="#{summerhouseController.uploadedFile}" 
-                                      mode="simple"/>
                     </p:panelGrid>
 
                     <p:commandButton update="createPanelId,:SummerhouseListForm:datalist,:growl" 
