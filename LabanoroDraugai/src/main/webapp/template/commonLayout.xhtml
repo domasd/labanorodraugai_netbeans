@@ -27,12 +27,12 @@
             <p:layoutUnit position="center" >
                 <h:form>
                     <p:menubar>
-                        <p:menuitem rendered="#{authenticationBean.loginParameter==null}" value="Registracija" url="/registration/registration.html"/>
+                        <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Registracija" url="/registration/registration.html"/>
                         <p:menuitem value="Klubo nariai" url="/account/List.html"/>
                         <p:menuitem value="Klubo vasarnamiai" url="/summerhouse/List.html"/>
-                        <p:menuitem rendered="#{authenticationBean.loginParameter==null}" value="Prisijungimas" url="/login/login.html"/>
+                        <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Prisijungimas" url="/login/login.html"/>
 
-                        <p:menuitem rendered="#{authenticationBean.loginParameter!=null}" value="Atsijungti" action="/login/logout.html?faces-redirect=true"/>
+                        <p:menuitem rendered="#{authenticationBean.loggedAccount!=null}" value="Atsijungti" action="#{authenticationBean.logout()}"/>
                         <p:submenu label="File" icon="ui-icon-document">
                             <p:submenu label="New" icon="ui-icon-contact">
                                 <p:menuitem value="Project" url="#" />

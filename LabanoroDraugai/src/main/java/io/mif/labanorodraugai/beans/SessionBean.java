@@ -6,23 +6,32 @@
 package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.beans.util.AccountUtil;
+import io.mif.labanorodraugai.entities.Account;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ResourceBundle;
+import javax.annotation.ManagedBean;
+import javax.ejb.SessionContext;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.ejb.Stateful;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author SFILON
  */
-@ManagedBean(name="authenticationBean")
+@Named("authenticationBean")
 @SessionScoped
 @Stateful
 public class SessionBean implements Serializable{
@@ -32,12 +41,30 @@ public class SessionBean implements Serializable{
     
     private String loginParameter;
     private String password;
-    public boolean isLogged=false;
+    private Account loggedAccount;
     
     public SessionBean(){
         
     }
     
+    public void userIsAuthorized() throws IOException{
+        
+            if (loggedAccount==null){
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
+            }
+      
+    }
+    
+    public void userIsNotAuthorized() throws IOException{
+        
+            if (loggedAccount!=null){
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
+            }
+      
+    }
+        
     public String action(){
         // validation
         
@@ -65,15 +92,13 @@ public class SessionBean implements Serializable{
         
         if (findAccount.getResultList().size()>0)
         {
-            isLogged=true;
+            
+            loggedAccount = (Account) findAccount.getSingleResult();
             return "../index.html?faces-redirect=true";
         }
         
         else {
             
-            /*FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
-            */
             RequestContext.getCurrentInstance().update("growl");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -83,6 +108,12 @@ public class SessionBean implements Serializable{
         
         return null;
 
+    }
+    
+    public String logout(){
+        loggedAccount=null;
+
+        return "../login/login.html?faces-redirect=true";
     }
     
     public void redirectToIndex(){
@@ -138,20 +169,6 @@ public class SessionBean implements Serializable{
     }
 
     /**
-     * @return the isLogged
-     */
-    public boolean isIsLogged() {
-        return isLogged;
-    }
-
-    /**
-     * @param isLogged the isLogged to set
-     */
-    public void setIsLogged(boolean isLogged) {
-        this.isLogged = isLogged;
-    }
-
-    /**
      * @return the loginParameter
      */
     public String getLoginParameter() {
@@ -163,6 +180,20 @@ public class SessionBean implements Serializable{
      */
     public void setLoginParameter(String loginParameter) {
         this.loginParameter = loginParameter;
+    }
+
+    /**
+     * @return the loggedAccount
+     */
+    public Account getLoggedAccount() {
+        return loggedAccount;
+    }
+
+    /**
+     * @param loggedAccount the loggedAccount to set
+     */
+    public void setLoggedAccount(Account loggedAccount) {
+        this.loggedAccount = loggedAccount;
     }
     
     

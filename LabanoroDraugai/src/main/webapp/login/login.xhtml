@@ -21,8 +21,7 @@
                         <p:password value="#{authenticationBean.password}" required="true" requiredMessage="Enter" id="password"/>
                         <h:message for ="password" class="error_message"/>
 
-                        <p:commandButton value="#{loginBundle.LoginTitle_submit}" action="#{authenticationBean.action()}"/>
-
+                        <p:commandButton value="#{loginBundle.LoginTitle_submit}" action="#{authenticationBean.login()}"/>
                     </p:panelGrid>
                 </p:fieldset>
             </h:form>
