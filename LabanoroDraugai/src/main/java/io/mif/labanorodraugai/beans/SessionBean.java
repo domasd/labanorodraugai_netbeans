@@ -10,21 +10,14 @@ import io.mif.labanorodraugai.entities.Account;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ResourceBundle;
-import javax.annotation.ManagedBean;
-import javax.ejb.SessionContext;
 import javax.faces.application.FacesMessage;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -65,7 +58,7 @@ public class SessionBean implements Serializable{
       
     }
         
-    public String action(){
+    public String login(){
         // validation
         
         Query findAccount=null;

@@ -37,7 +37,6 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
-      <!--<welcome-file>account/list.html</welcome-file>-->
     </welcome-file-list>
     
     
