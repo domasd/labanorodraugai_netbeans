@@ -2,8 +2,8 @@
 <resources>
   <Resource id="LabanoroDraugaiDB" type="javax.sql.DataSource">#Thu Apr 14 18:58:15 EEST 2016
 jdbcDriver=com.mysql.jdbc.Driver
-password=ld_user
-userName=ld_user
+password=root
+userName=root
 jdbcUrl=jdbc\:mysql\://localhost\:3306/labanorodraugai_db?zeroDateTimeBehavior\=convertToNull
 </Resource>
 </resources>
