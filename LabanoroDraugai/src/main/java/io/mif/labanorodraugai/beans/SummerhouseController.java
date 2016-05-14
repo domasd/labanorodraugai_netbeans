@@ -77,7 +77,7 @@ public class SummerhouseController implements Serializable {
     
     public String generateDisabledDates(){
           
-        if (selected==null)
+        if (selected==null || selected.getId()==null)
             return "[];";
                        
         List<SummerhouseReservation> records =  ejbFacade.summerhouseReservationList(selected.getId());
