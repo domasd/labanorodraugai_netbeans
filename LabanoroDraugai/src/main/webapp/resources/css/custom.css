@@ -12,3 +12,12 @@ and open the template in the editor.
      text-indent:0px;
      background-image:none;
 }
+
+ .selected-menu-item {
+    background-color: #B7E888;
+}
+
+.selected-menu-item > .ui-menuitem-text, .selected-menu-item > .ui-menuitem-link, .selected-menu-item > .ui-menuitem-icon {
+    color: white;
+}
+

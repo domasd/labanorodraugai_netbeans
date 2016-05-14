@@ -47,11 +47,7 @@ public class RegistrationController {
                 .setParameter("email",this.account.getEmail());
 
         if (existing.getResultList().size() > 0) {
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/AccountBundle").getString("EmailExistsError"));
-//            FacesContext.getCurrentInstance().addMessage(
-//                    null, new FacesMessage(ResourceBundle.getBundle("/AccountBundle").getString("EmailExistsError"))
-//            );
-//            
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/AccountBundle").getString("EmailExistsError"));         
             return null;
         }
         
@@ -59,7 +55,7 @@ public class RegistrationController {
         this.account.setPassword(hashedPassword);
         
         em.persist(account);
-        
+                
         return "../index.html?faces-redirect=true";
     }
     
