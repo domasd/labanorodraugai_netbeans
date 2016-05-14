@@ -7,17 +7,22 @@ package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.beans.util.AccountUtil;
 import io.mif.labanorodraugai.entities.Account;
+import io.mif.labanorodraugai.services.PasswordHashService;
+import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -29,12 +34,16 @@ import org.primefaces.context.RequestContext;
 @Stateful
 public class SessionBean implements Serializable{
     
+    @Inject
+    PasswordHashService passwordHashService;
+    
     @PersistenceContext
     private EntityManager em;
     
     private String loginParameter;
     private String password;
     private Account loggedAccount;
+    private String stringToRedirect;
     
     public SessionBean(){
         
@@ -42,111 +51,63 @@ public class SessionBean implements Serializable{
     
     public void userIsAuthorized() throws IOException{
         
-            if (loggedAccount==null){
-                FacesContext fc = FacesContext.getCurrentInstance();
-                fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
-            }
-      
+       if (loggedAccount==null){
+           
+           HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+           stringToRedirect = ".."+req.getRequestURI().substring(req.getContextPath().length())+"?faces-redirect=true";
+           
+           FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getApplicationContextPath()+"/login/login.html");
+       } 
     }
     
-    public void userIsNotAuthorized() throws IOException{
-        
-            if (loggedAccount!=null){
-                FacesContext fc = FacesContext.getCurrentInstance();
-                fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
-            }
-      
+    public void userIsNotAuthorized() throws IOException {
+
+        if (loggedAccount != null) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath() + "/index.html");
+        }
+
     }
-        
-    public String login(){
-        // validation
-        
-        Query findAccount=null;
-        String hashedPassword=null;
-        
-        try{
-            AccountUtil au = new AccountUtil();
-            hashedPassword = au.HashPassword(password);
-        }
-        catch (Exception e){
-            
-        }
-        
-        if (getLoginParameter().matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
-                         
-            findAccount = em.createNamedQuery("Account.findByEmailAndPassword").setParameter("email", getLoginParameter()).setParameter("password",hashedPassword);         
-        }
-        else{    
-            
-            findAccount = em.createNamedQuery("Account.findByNameAndPassword").setParameter("name", getLoginParameter()).setParameter("password",hashedPassword);
-            
-        }
-        
-        if (findAccount.getResultList().size()>0)
-        {
-            
-            loggedAccount = (Account) findAccount.getSingleResult();
-            return "../index.html?faces-redirect=true";
-        }
-        
-        else {
-            
-            RequestContext.getCurrentInstance().update("growl");
+
+    public String login() throws NoSuchAlgorithmException {
+
+        String hashedPassword = passwordHashService.HashPassword(password);
+
+        if (getLoginParameter().matches(ConstantsBean.REGEX_EMAIL)) {
+
+            Query findAccount = em.createNamedQuery("Account.findByEmailAndPassword").setParameter("email", getLoginParameter()).setParameter("password", hashedPassword);
+
+            if (findAccount.getResultList().size() > 0) {
+                loggedAccount = (Account) findAccount.getSingleResult();
+                
+                if (stringToRedirect != null && !stringToRedirect.equals("..?faces-redirect=true")
+                        && !stringToRedirect.equals("../?faces-redirect=true")) {
+                    return stringToRedirect;
+                } else {
+                    return "../index.html?faces-redirect=true";
+                }
+            } else {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("/LoginBundle").getString("LoginErrorTitle"),
+                        ResourceBundle.getBundle("/LoginBundle").getString("LoginErrorMessage")));
+
+            }
+        } else {
+
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    ResourceBundle.getBundle("/Bundle").getString("LoginErrorTitle"),
-                    ResourceBundle.getBundle("/Bundle").getString("LoginErrorMessage")));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("/LoginBundle").getString("LoginErrorTitle"),
+                    ResourceBundle.getBundle("/LoginBundle").getString("LoginParameterMessage")));
+
         }
         
         return null;
-
     }
     
     public String logout(){
         loggedAccount=null;
-
-        return "../login/login.html?faces-redirect=true";
+        return "/login/login.html?faces-redirect=true";
     }
     
-    public void redirectToIndex(){
-        try{
-            FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/index.hmtl");
-            
-        }
-        catch(Exception e){
-            
-        }
-        
-    }
-    
-    public void redirectToLogout(){
-        try{
-            FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/logout.hmtl");
-            
-        }
-        catch(Exception e){
-            
-        }
-        
-    }
-    
-    public void redirect(String page){
-        try{
-            FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+page);
-            
-        }
-        catch(Exception e){
-            
-        }
-        
-    
-    }
-    
-
     /**
      * @return the password
      */
