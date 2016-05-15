@@ -2,7 +2,6 @@ package io.mif.labanorodraugai.utils;
 
 
 import javax.ejb.Stateless;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 

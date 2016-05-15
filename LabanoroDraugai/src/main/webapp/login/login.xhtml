@@ -7,21 +7,25 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="../template/commonLayout.xhtml">
+        <ui:define name="metadata">
+            <f:metadata>
+                <f:viewAction action="#{authenticationBean.userIsNotAuthorized()}" />
+            </f:metadata>
+        </ui:define>
+        
         <ui:define name="content">
             <h:form>
                 <p:growl id="growl" sticky="true" showDetail="true" />
 
                 <p:fieldset legend="#{loginBundle.LoginFormTitle}" style="position: absolute; top:100px; left:500px;">
-                    <p:panelGrid columns="3">
+                    <p:panelGrid columns="2">
                         <p:outputLabel value="#{loginBundle.LoginLabel_loginParameter}" />
-                        <p:inputText value="#{authenticationBean.loginParameter}" required="true" requiredMessage="Enter" id="username"/>
-                        <h:message for ="username" class="error_message"/>
+                        <p:inputText value="#{authenticationBean.loginParameter}" required="true" requiredMessage="#{loginBundle.EmailIsRequired}" id="username"/>
 
                         <p:outputLabel value="#{loginBundle.LoginLabel_password}" />
-                        <p:password value="#{authenticationBean.password}" required="true" requiredMessage="Enter" id="password"/>
-                        <h:message for ="password" class="error_message"/>
+                        <p:password value="#{authenticationBean.password}" required="true" requiredMessage="#{loginBundle.PasswordIsRequired}" id="password"/>
 
-                        <p:commandButton value="#{loginBundle.LoginTitle_submit}" action="#{authenticationBean.login()}"/>
+                        <p:commandButton value="#{loginBundle.LoginTitle_submit}" action="#{authenticationBean.login()}" update="growl"/>
                     </p:panelGrid>
                 </p:fieldset>
             </h:form>
