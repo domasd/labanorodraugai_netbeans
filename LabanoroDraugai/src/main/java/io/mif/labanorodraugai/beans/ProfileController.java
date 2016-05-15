@@ -75,7 +75,6 @@ public class ProfileController {
             return new DefaultStreamedContent();
         } else {
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-            String accountId = context.getExternalContext().getRequestParameterMap().get("accountId");
             byte[] imageBytes = currentAccount.getImage();
             return new DefaultStreamedContent(new ByteArrayInputStream(imageBytes));
         }
@@ -134,7 +133,7 @@ public class ProfileController {
                 JsfUtil.addErrorMessage(ResourceBundle.getBundle("/ProfileBundle").getString("PasswordMismatch"));
                 return false;
             }
-            
+
             String hashedPassword = passwordHashService.HashPassword(this.password1);
             currentAccount.setPassword(hashedPassword);
         }

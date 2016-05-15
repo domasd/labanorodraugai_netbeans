@@ -12,7 +12,7 @@
                 <f:viewAction action="#{authenticationBean.userIsAuthorized()}" />
             </f:metadata>
         </ui:define>
-        
+
         <ui:define name="content">
             <p:growl id="growl" life="2000" />
             <h:form id="AccountListForm">
@@ -88,13 +88,12 @@
                                              update=":growl,:AccountListForm:datalist"
                                              icon="fa fa-trash-o" 
                                              title="#{AccountBundle.DeleteAccount}">
-                                 <f:setPropertyActionListener value="#{item}" 
+                                <f:setPropertyActionListener value="#{item}" 
                                                              target="#{accountController.selected}" />
                                 <p:confirm header="#{AccountBundle.DeleteAccount}" 
                                            message="#{AccountBundle.DeleteConfirmation}" 
                                            icon="ui-icon-alert"/>
                             </p:commandButton>
-
 
                         </p:column>
                     </p:dataTable>

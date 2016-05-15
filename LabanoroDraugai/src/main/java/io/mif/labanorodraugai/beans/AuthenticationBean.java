@@ -34,7 +34,7 @@ public class AuthenticationBean implements Serializable {
 
     @Inject
     PasswordHashService passwordHashService;
-    
+
     @PersistenceContext
     private EntityManager em;
 
@@ -48,13 +48,13 @@ public class AuthenticationBean implements Serializable {
 
     public void userIsAuthorized() throws IOException {
 
-       if (loggedAccount==null){
-           
-           HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-           stringToRedirect = ".."+req.getRequestURI().substring(req.getContextPath().length())+"?faces-redirect=true";
-           
-           FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getApplicationContextPath()+"/login/login.html");
-       } 
+        if (loggedAccount == null) {
+
+            HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            stringToRedirect = ".." + req.getRequestURI().substring(req.getContextPath().length()) + "?faces-redirect=true";
+
+            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getApplicationContextPath() + "/login/login.html");
+        }
     }
 
     public void userIsNotAuthorized() throws IOException {
@@ -76,7 +76,7 @@ public class AuthenticationBean implements Serializable {
 
             if (findAccount.getResultList().size() > 0) {
                 loggedAccount = (Account) findAccount.getSingleResult();
-                
+
                 if (stringToRedirect != null && !stringToRedirect.equals("..?faces-redirect=true")
                         && !stringToRedirect.equals("../?faces-redirect=true")) {
                     return stringToRedirect;

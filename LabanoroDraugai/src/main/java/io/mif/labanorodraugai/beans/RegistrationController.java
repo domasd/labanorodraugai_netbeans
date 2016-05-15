@@ -15,8 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
-
 /**
  *
  * @author Vytautas
@@ -48,10 +46,6 @@ public class RegistrationController {
 
         if (existing.getResultList().size() > 0) {
             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/AccountBundle").getString("EmailExistsError"));
-//            FacesContext.getCurrentInstance().addMessage(
-//                    null, new FacesMessage(ResourceBundle.getBundle("/AccountBundle").getString("EmailExistsError"))
-//            );
-//            
             return null;
         }
         
