@@ -24,128 +24,117 @@ import org.primefaces.context.RequestContext;
  *
  * @author SFILON
  */
-@Named("authenticationBean")
+@Named
 @SessionScoped
 @Stateful
-public class SessionBean implements Serializable{
-    
+public class AuthenticationBean implements Serializable {
+
     @PersistenceContext
     private EntityManager em;
-    
+
     private String loginParameter;
     private String password;
     private Account loggedAccount;
-    
-    public SessionBean(){
-        
+
+    public AuthenticationBean() {
     }
-    
-    public void userIsAuthorized() throws IOException{
-        
-            if (loggedAccount==null){
-                FacesContext fc = FacesContext.getCurrentInstance();
-                fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
-            }
-      
+
+    public void userIsAuthorized() throws IOException {
+
+        if (loggedAccount == null) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath() + "/login/login.html");
+        }
+
     }
-    
-    public void userIsNotAuthorized() throws IOException{
-        
-            if (loggedAccount!=null){
-                FacesContext fc = FacesContext.getCurrentInstance();
-                fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
-            }
-      
+
+    public void userIsNotAuthorized() throws IOException {
+
+        if (loggedAccount != null) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath() + "/login/login.html");
+        }
+
     }
-        
-    public String login(){
+
+    public String login() {
         // validation
-        
-        Query findAccount=null;
-        String hashedPassword=null;
-        
-        try{
+
+        Query findAccount = null;
+        String hashedPassword = null;
+
+        try {
             AccountUtil au = new AccountUtil();
             hashedPassword = au.HashPassword(password);
-        }
-        catch (Exception e){
-            
+        } catch (Exception e) {
+
         }
         
         if (getLoginParameter().matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
-                         
-            findAccount = em.createNamedQuery("Account.findByEmailAndPassword").setParameter("email", getLoginParameter()).setParameter("password",hashedPassword);         
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+
+            findAccount = em.createNamedQuery("Account.findByEmailAndPassword").setParameter("email", getLoginParameter()).setParameter("password", hashedPassword);
+        } else {
+
+            findAccount = em.createNamedQuery("Account.findByNameAndPassword").setParameter("name", getLoginParameter()).setParameter("password", hashedPassword);
+
         }
-        else{    
-            
-            findAccount = em.createNamedQuery("Account.findByNameAndPassword").setParameter("name", getLoginParameter()).setParameter("password",hashedPassword);
-            
-        }
-        
-        if (findAccount.getResultList().size()>0)
-        {
-            
+
+        if (findAccount.getResultList().size() > 0) {
+
             loggedAccount = (Account) findAccount.getSingleResult();
             return "../index.html?faces-redirect=true";
-        }
-        
-        else {
-            
+        } else {
+
             RequestContext.getCurrentInstance().update("growl");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     ResourceBundle.getBundle("/Bundle").getString("LoginErrorTitle"),
                     ResourceBundle.getBundle("/Bundle").getString("LoginErrorMessage")));
         }
-        
+
         return null;
 
     }
-    
-    public String logout(){
-        loggedAccount=null;
+
+    public String logout() {
+        loggedAccount = null;
 
         return "../login/login.html?faces-redirect=true";
     }
-    
-    public void redirectToIndex(){
-        try{
+
+    public void redirectToIndex() {
+        try {
             FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/index.hmtl");
-            
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath() + "/index.hmtl");
+
+        } catch (Exception e) {
+
         }
-        catch(Exception e){
-            
-        }
-        
+
     }
-    
-    public void redirectToLogout(){
-        try{
+
+    public void redirectToLogout() {
+        try {
             FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/logout.hmtl");
-            
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath() + "/login/logout.hmtl");
+
+        } catch (Exception e) {
+
         }
-        catch(Exception e){
-            
-        }
-        
+
     }
-    
-    public void redirect(String page){
-        try{
+
+    public void redirect(String page) {
+        try {
             FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+page);
-            
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath() + page);
+
+        } catch (Exception e) {
+
         }
-        catch(Exception e){
-            
-        }
-        
-    
+
     }
-    
 
     /**
      * @return the password
@@ -188,6 +177,5 @@ public class SessionBean implements Serializable{
     public void setLoggedAccount(Account loggedAccount) {
         this.loggedAccount = loggedAccount;
     }
-    
-    
+
 }

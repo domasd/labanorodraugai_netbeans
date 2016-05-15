@@ -20,13 +20,21 @@ public class AccountFacade extends AbstractFacade<Account> {
     @PersistenceContext(unitName = "io.mif_LabanoroDraugai_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    public AccountFacade() {
+        super(Account.class);
+    }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
-    public AccountFacade() {
-        super(Account.class);
+    public boolean doesSameEmailExist(String email, int userId) {
+        Long count = (Long)em.createNamedQuery("Account.doesSameEmailExist")
+                .setParameter("email", email)
+                .setParameter("userId", userId)
+                .getSingleResult();
+        return count > 0;
     }
-    
+
 }

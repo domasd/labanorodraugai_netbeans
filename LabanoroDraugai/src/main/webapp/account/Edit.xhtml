@@ -30,7 +30,7 @@
                                      title="#{AccountBundle.Title_name}" 
                                      required="true" 
                                      requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_name}"/>
-           
+
 
                         <p:outputLabel value="#{AccountBundle.Label_lastname}" 
                                        for="lastname" />
@@ -39,7 +39,7 @@
                                      title="#{AccountBundle.Title_lastname}" 
                                      required="true" 
                                      requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_lastname}"/>
-                      
+
 
                         <p:outputLabel value="#{AccountBundle.Label_email}" 
                                        for="email" />
@@ -48,10 +48,11 @@
                                      title="#{AccountBundle.Title_email}" 
                                      required="true" 
                                      requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_email}"
-                                     validatorMessage="#{CommonBundle.BadInputForField} #{AccountBundle.Title_email}">
-                            <f:validateRegex pattern="#{constants.regex_email}"/>
+                                     validator="#{emailValidator.validate}">
+                             <f:attribute name="userId" value="#{accountController.selected.id}" /> 
+                             <f:ajax event="blur" render="editPanelId" />  
                         </p:inputText>
-                        
+
 
 
                         <p:outputLabel value="#{AccountBundle.Label_status}" 
@@ -60,7 +61,7 @@
                                          value="#{accountController.selected.status}">
                             <f:selectItems value="#{accountController.statuses}"/>
                         </p:selectOneMenu>
-                       
+
 
 
                         <p:outputLabel value="#{AccountBundle.Label_description}" 
@@ -70,7 +71,7 @@
                                          cols="30"
                                          value="#{accountController.selected.description}" 
                                          title="#{AccountBundle.Title_description}" />
-                 
+
 
 
                         <p:outputLabel value="#{AccountBundle.Label_fbUrl}" 
@@ -78,7 +79,7 @@
                         <p:inputText id="fbUrl" 
                                      value="#{accountController.selected.fbUrl}" 
                                      title="#{AccountBundle.Title_fbUrl}" />
-          
+
 
 
                         <p:outputLabel value="#{AccountBundle.Label_pointsQuantity}" 
@@ -92,7 +93,7 @@
                                      >
                             <f:validateDoubleRange minimum="0.0"/>
                         </p:inputText>
-                     
+
 
 
                     </p:panelGrid>
