@@ -6,7 +6,6 @@
 package io.mif.labanorodraugai.entities;
 
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
-import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Formatter;
@@ -27,7 +26,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 /**
@@ -45,6 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Account.findByDescription", query = "SELECT a FROM Account a WHERE a.description = :description"),
     @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status"),
     @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email"),
+    @NamedQuery(name = "Account.doesSameEmailExist", query = "SELECT count(a.id) FROM Account a WHERE a.email = :email AND a.id <> :userId"),
     @NamedQuery(name = "Account.findByFbUrl", query = "SELECT a FROM Account a WHERE a.fbUrl = :fbUrl"),
     @NamedQuery(name = "Account.findByPointsQuantity", query = "SELECT a FROM Account a WHERE a.pointsQuantity = :pointsQuantity")})
 public class Account implements Serializable {
@@ -63,7 +62,6 @@ public class Account implements Serializable {
     private List<SummerhouseReservation> summerhouseReservationList;
     
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 32)
     @Column(name = "Password")
     private String password;
