@@ -20,5 +20,7 @@
             <base-name>/LoginBundle</base-name>
             <var>loginBundle</var>
         </resource-bundle>
+        
     </application>
+    
 </faces-config>

@@ -13,6 +13,7 @@
 
                 <p:fieldset legend="#{loginBundle.LoginFormTitle}" style="position: absolute; top:100px; left:500px;">
                     <p:panelGrid columns="3">
+                        
                         <p:outputLabel value="#{loginBundle.LoginLabel_loginParameter}" />
                         <p:inputText value="#{authenticationBean.loginParameter}" required="true" requiredMessage="Enter" id="username"/>
                         <h:message for ="username" class="error_message"/>
@@ -24,7 +25,18 @@
                         <p:commandButton value="#{loginBundle.LoginTitle_submit}" action="#{authenticationBean.login()}"/>
                     </p:panelGrid>
                 </p:fieldset>
+                
+                
             </h:form>
+            
+                
+                    <div id="status"></div>
+                    <h:commandButton onclick="login()" value="Prisujungti su Facebook"/>
+                
+                    <h:outputScript library="js" name="newjavascript.js" />
+                 <h:form>
+                    <p:remoteCommand name="myremote" action="#{facebook.registerAndLogin()}" process="@this" />
+                </h:form>
         </ui:define>
     </ui:composition>
 </html>

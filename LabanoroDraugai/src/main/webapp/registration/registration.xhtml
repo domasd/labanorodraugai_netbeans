@@ -24,13 +24,13 @@ and open the template in the editor.
 
             <ui:define name="content">
                 <div id="status"></div>
-                <!--<button onclick="getInfo()">Get Info</button>-->
-                <button onclick="login()" id="registerFB">Registracija su Facebook</button>
-                
+                <!--<button onclick="getInfo()">Get Info</button>
+                <button onclick="login()" id="registerFB">Registracija su Facebook</button>-->
+                <h:commandButton onclick="login()" value="Registr su Facebook"/>
                 
                 <h:outputScript library="js" name="newjavascript.js" />
                 <h:form>
-                    <p:remoteCommand name="myremote" actionListener="#{facebook.listen}"/>
+                    <p:remoteCommand name="myremote" action="#{facebook.registerAndLogin()}" process="@this" />
                 </h:form>
                 <h:form id="registerForm">  
                     

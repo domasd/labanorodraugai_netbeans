@@ -8,12 +8,12 @@ window.fbAsyncInit = function () {
     });
     FB.getLoginStatus(function (response) {
         if (response.status === 'connected') {
-            document.getElementById('status').innerHTML = 'We are connected.';
-
+            //document.getElementById('status').innerHTML = 'We are connected.';
+            
         } else if (response.status === 'not_authorized') {
-            document.getElementById('status').innerHTML = 'We are not logged in.';
+            //document.getElementById('status').innerHTML = 'We are not logged in.';
         } else {
-            document.getElementById('status').innerHTML = 'You are not logged into Facebook.';
+            //document.getElementById('status').innerHTML = 'You are not logged into Facebook.';
         }
     });
 };
@@ -32,17 +32,14 @@ window.fbAsyncInit = function () {
 function login() {
     FB.login(function (response) {
         if (response.status === 'connected') {
-            document.getElementById('status').innerHTML = 'We are connected.';
+            //document.getElementById('status').innerHTML = 'We are connected.';
             FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,email'}, function (response) {
-                document.getElementById('status').innerHTML = 'Registacija su Facebook paskyra sekminga!';
+                
                 myremote([{name:'email', value:response.email},{name:'first_name', value:response.first_name},{name:'last_name', value:response.last_name}]);
             });
-        } else if (response.status === 'not_authorized') {
-            document.getElementById('status').innerHTML = 'We are not logged in.';
-        } else {
-            document.getElementById('status').innerHTML = 'You are not logged into Facebook.';
-        }
+        } 
     }, {scope: 'email'});
+    
     
 }
 
@@ -50,7 +47,7 @@ function login() {
 function getInfo() {
     login();
     FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,email'}, function (response) {
-        document.getElementById('status').innerHTML = response.first_name + response.last_name + response.email;
+        
         myremote([{name:'email', value:response.email}]);
     });
     

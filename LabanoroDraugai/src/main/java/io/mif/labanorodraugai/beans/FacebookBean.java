@@ -5,6 +5,7 @@
  */
 package io.mif.labanorodraugai.beans;
 
+import io.mif.labanorodraugai.beans.util.AccountUtil;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
@@ -15,6 +16,7 @@ import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,17 +29,23 @@ import javax.persistence.Query;
  * @author Vies
  */
 @Named("facebook")
-@RequestScoped
+@SessionScoped
 @Stateful
 public class FacebookBean {
     
     private Account account;
+    private String loginParameter;
+    private String password;
+    
 
     @PersistenceContext
     private EntityManager em;
 
     @Inject
     private PasswordHashService paswordHashService;
+    
+    @Inject
+    private SessionBean sessionBean;
     
     @PostConstruct
     public void init(){
@@ -46,19 +54,20 @@ public class FacebookBean {
         this.account.setStatus(AccountStatus.Candidate);
     }
     
-    public void listen(){
+    public String registerAndLogin(){
         String email = FacesContext.getCurrentInstance()
                 .getExternalContext().getRequestParameterMap().get("email");
         String firstName = FacesContext.getCurrentInstance()
                 .getExternalContext().getRequestParameterMap().get("first_name");
         String lastname = FacesContext.getCurrentInstance()
                 .getExternalContext().getRequestParameterMap().get("last_name");
-        System.out.println(email + " " + firstName + " " + lastname);
         
         this.account.setEmail(email);
         this.account.setName(firstName);
         this.account.setLastname(lastname);
         this.account.setPassword("asasas");
+        String hashedPassword = paswordHashService.HashPassword(this.account.getPassword());
+        this.account.setPassword(hashedPassword);
         
         
         Query existing = em
@@ -70,19 +79,38 @@ public class FacebookBean {
 //            FacesContext.getCurrentInstance().addMessage(
 //                    null, new FacesMessage(ResourceBundle.getBundle("/AccountBundle").getString("EmailExistsError"))
 //            );
-//            
-            return;
+                
+            sessionBean.setLoggedAccount((Account) existing.getSingleResult());
+            
+            
+            
+            return "../index.html?faces-redirect=true";
+            
+            
+  //          return null;
         }
         
-        String hashedPassword = paswordHashService.HashPassword(this.account.getPassword());
-        this.account.setPassword(hashedPassword);
+        
         
         em.persist(account);
         
-       // return "../index.html?faces-redirect=true";
+        Query persisted = em
+                .createNamedQuery("Account.findByEmail")
+                .setParameter("email",this.account.getEmail());
+        sessionBean.setLoggedAccount((Account) persisted.getSingleResult());
+        return "../index.html?faces-redirect=true";
         
         
     }
+    
+    public String Login(){
+        
+        
+        
+        return "../index.html?faces-redirect=true";
+    }
+    
+    
     
     /**
      * @return the account
@@ -96,5 +124,30 @@ public class FacebookBean {
      */
     public void setAccount(Account account) {
         this.account = account;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @return the loginParameter
+     */
+    public String getLoginParameter() {
+        return loginParameter;
+    }
+
+    /**
+     * @param loginParameter the loginParameter to set
+     */
+    public void setLoginParameter(String loginParameter) {
+        this.loginParameter = loginParameter;
     }
 }
