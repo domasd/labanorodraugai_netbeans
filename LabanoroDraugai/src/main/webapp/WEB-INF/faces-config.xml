@@ -24,5 +24,9 @@
             <base-name>/ProfileBundle</base-name>
             <var>ProfileBundle</var>
         </resource-bundle>
+        <resource-bundle>
+            <base-name>/ReservationBundle</base-name>
+            <var>ReservationBundle</var>
+        </resource-bundle>
     </application>
 </faces-config>

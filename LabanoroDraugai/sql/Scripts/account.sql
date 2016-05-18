@@ -21,3 +21,19 @@ VALUES ('202cb962ac5975b964b7152d234b70', 'TestName', 'TestLastname', 'Test Desc
 INSERT INTO `labanorodraugai_db`.`account`
 (`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `FB_URL`, `PointsQuantity`) 
 VALUES ('cc175b9c0f1b6a831c399e269772661', 'a', 'TestLastname', 'Test Description', null, 0, 'a@a.a', 'https://www.facebook.com/serg.filon',0);
+
+INSERT INTO `labanorodraugai_db`.`account`
+(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `PointsQuantity`) 
+VALUES ('202cb962ac5975b964b7152d234b70', 'User', 'B', 'Test Description2', null, 0, 'userb@somemail.com',100);
+
+INSERT INTO `labanorodraugai_db`.`account`
+(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `PointsQuantity`) 
+VALUES ('202cb962ac5975b964b7152d234b70', 'User', 'C', 'Test Description3', null, 0, 'userc@somemail.com',100);
+
+INSERT INTO `labanorodraugai_db`.`account`
+(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `PointsQuantity`) 
+VALUES ('202cb962ac5975b964b7152d234b70', 'User', 'D', 'Test Description4', null, 0, 'userd@somemail.com',100);
+
+INSERT INTO `labanorodraugai_db`.`account`
+(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `PointsQuantity`) 
+VALUES ('202cb962ac5975b964b7152d234b70', 'User', 'E', 'Test Description5', null, 0, 'usere@somemail.com',100);

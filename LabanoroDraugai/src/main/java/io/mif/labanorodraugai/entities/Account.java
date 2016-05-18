@@ -20,7 +20,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -57,6 +59,13 @@ public class Account implements Serializable {
     @Column(name = "Status")
     @Enumerated(EnumType.ORDINAL)
     private AccountStatus status;
+    @Column(name = "ReservationGroup2")
+    private Integer reservationGroup2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
+    private List<AdditionalServicesReservation> additionalServicesReservationList;
+    @JoinColumn(name = "ReservationGroup", referencedColumnName = "GroupNumber")
+    @ManyToOne
+    private ReservationGroups reservationGroup;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     private List<SummerhouseReservation> summerhouseReservationList;
@@ -237,6 +246,31 @@ public class Account implements Serializable {
 
     public void setStatus(AccountStatus status) {
         this.status = status;
+    }
+
+    public Integer getReservationGroup2() {
+        return reservationGroup2;
+    }
+
+    public void setReservationGroup2(Integer reservationGroup2) {
+        this.reservationGroup2 = reservationGroup2;
+    }
+
+    @XmlTransient
+    public List<AdditionalServicesReservation> getAdditionalServicesReservationList() {
+        return additionalServicesReservationList;
+    }
+
+    public void setAdditionalServicesReservationList(List<AdditionalServicesReservation> additionalServicesReservationList) {
+        this.additionalServicesReservationList = additionalServicesReservationList;
+    }
+
+    public ReservationGroups getReservationGroup() {
+        return reservationGroup;
+    }
+
+    public void setReservationGroup(ReservationGroups reservationGroup) {
+        this.reservationGroup = reservationGroup;
     }
 
 

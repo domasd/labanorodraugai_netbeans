@@ -47,9 +47,7 @@ public class SummerhouseController implements Serializable {
     private List<Summerhouse> items = null;
     private Summerhouse selected;
     private UploadedFile uploadedFile; //move to seperate service
-    
-    private org.primefaces.component.calendar.Calendar calendar;
-    
+        
     private String calendarReservedDates;
     
     public UploadedFile getUploadedFile() {
@@ -244,21 +242,6 @@ public class SummerhouseController implements Serializable {
         this.calendarReservedDates = calendarReservedDates;
     }
 
-    /**
-     * @return the calendar
-     */
-    public org.primefaces.component.calendar.Calendar getCalendar() {
-        
-        return new org.primefaces.component.calendar.Calendar();
-    }
-
-    /**
-     * @param calendar the calendar to set
-     */
-    public void setCalendar(org.primefaces.component.calendar.Calendar calendar) {
-        this.calendar = calendar;
-        
-    }
 
     @FacesConverter(forClass = Summerhouse.class)
     public static class SummerhouseControllerConverter implements Converter {

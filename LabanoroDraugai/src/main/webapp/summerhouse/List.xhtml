@@ -21,14 +21,20 @@
                     
                     <p:commandButton update=":summerhouseCreateFormId" 
                                              oncomplete="PF('summerhouseCreateDialogWidgetVar').show()" 
-                                             icon="ui-icon-circle-plus" 
+                                             icon="fa fa-plus-square-o" 
+                                             value="#{SummerhouseBundle.AddSummerhouse}"
                                              title="#{SummerhouseBundle.AddSummerhouse}"
                                              actionListener="#{summerhouseController.prepareCreate()}"
                                              />
                     
+                    <p:commandButton update=":summerhouseSearchFormId" 
+                                             oncomplete="PF('summerhouseSearchDialogWidgetVar').show()"
+                                             icon="fa fa-search"
+                                             title="#{CommonBundle.SearchButtonTitle}"
+                                             value="#{CommonBundle.SearchButtonTitle}"/>
                     
                     
-                        
+                
                     <p:dataTable id="datalist" value="#{summerhouseController.items}" var="item"
                                  paginator="true"
                                  rowKey="#{item.id}"
@@ -64,10 +70,9 @@
                                 <h:outputText value="#{SummerhouseBundle.Operations}"/> 
                             </f:facet>
 
-                            <p:commandButton update=":summerhouseOutputPanelId" 
-                                             oncomplete="PF('summerhouseDialogWidgetVar').show()" 
-                                             icon="ui-icon-search" 
-                                             title="#{CommonBundle.View}">
+                            <p:commandButton icon="ui-icon-search" 
+                                             title="#{CommonBundle.View}"
+                                             action="View">
                                 <f:setPropertyActionListener value="#{item}" 
                                                              target="#{summerhouseController.selected}" />
                             </p:commandButton>
@@ -106,10 +111,11 @@
 
             </h:form>
             
-            <ui:include src="View.xhtml"/>
+
             <ui:include src="Edit.xhtml"/>
             <ui:include src="Upload.xhtml"/>
             <ui:include src="New.xhtml"/>
+            <ui:include src="Search.xhtml"/>
             <ui:include src="../common/Confirm.xhtml"/>
 
         </ui:define>

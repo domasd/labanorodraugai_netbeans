@@ -11,6 +11,7 @@ import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.ejb.Stateful;
@@ -66,6 +67,10 @@ public class AuthenticationBean implements Serializable {
 
     }
 
+    public String logint2(){
+        return null;
+    }
+    
     public String login() throws NoSuchAlgorithmException {
 
         String hashedPassword = passwordHashService.HashPassword(password);
@@ -97,6 +102,14 @@ public class AuthenticationBean implements Serializable {
         }
 
         return null;
+    }
+    
+    public boolean canReserve(){
+        
+        Date currentDate = new Date();
+        Date startDate = loggedAccount.getReservationGroup().getStartOfReservationDate();
+        
+        return currentDate.compareTo(startDate)>0;        		
     }
 
     public String logout() {

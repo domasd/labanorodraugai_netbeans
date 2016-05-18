@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SummerhouseReservation.findByAccountID", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.accountID = :accountID"),
     @NamedQuery(name = "SummerhouseReservation.findBySummerhouseID", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.summerhouseID = :summerhouseID"),
     @NamedQuery(name = "SummerhouseReservation.findByBeginDate", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.beginDate = :beginDate"),
+    @NamedQuery(name = "SummerhouseReservation.findByAccountAndSummerhouse", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.accountID = :accountID and s.summerhouseReservationPK.summerhouseID=:summerhouseID"),
     @NamedQuery(name = "SummerhouseReservation.findByEndDate", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.endDate = :endDate")})
 public class SummerhouseReservation implements Serializable {
 
