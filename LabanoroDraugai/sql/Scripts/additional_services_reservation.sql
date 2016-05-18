@@ -14,4 +14,5 @@ CREATE TABLE `labanorodraugai_db`.`additional_services_reservation` (
     FOREIGN KEY (`ServiceID`)
     REFERENCES `labanorodraugai_db`.`additional_services` (`ServiceID`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON UPDATE NO ACTION,
+    PRIMARY KEY (`ServiceID`, `AccountID`, `BeginDate`, `EndDate`));
