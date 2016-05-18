@@ -42,7 +42,7 @@ public class PriorityGroupsController {
         this.startOfRegistration = CalendarUtils.getDate(LocalDateTime.now().getYear(), 3, 1);
         this.numberOfUsersInOneGroup=2;
         if (generationDate==null)
-            this.generationDate = CalendarUtils.getDate(2016, 3, 1);
+            this.generationDate = CalendarUtils.getDate(2015, 3, 1);
         //
         
         if ((generationDate == null || Integer.parseInt(yearFormat.format(generationDate)) < Integer.parseInt(yearFormat.format(new Date())))){

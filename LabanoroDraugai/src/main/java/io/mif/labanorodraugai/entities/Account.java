@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "account")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Account.doesSameEmailExist", query = "SELECT count(a.id) FROM Account a WHERE a.email = :email AND a.id <> :userId"),
     @NamedQuery(name="Account.findByEmailAndPassword", query="SELECT a FROM Account a Where a.email=:email and a.password=:password"),
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
     @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),

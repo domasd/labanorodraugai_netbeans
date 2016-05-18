@@ -39,9 +39,6 @@
             }
         </h:outputScript>
 
-
-
-
             <p:outputPanel id="summerhouseOutputPanelId" style="text-align:center;">
 
                 <p:panelGrid columns="2" rendered="#{not empty summerhouseController.selected}">
@@ -58,7 +55,7 @@
                     </p:panelGrid>
                     <p:panelGrid>
                         <p:fieldset style="background: chocolate;" >
-                            <p:commandButton rendered="#{authenticationBean.canReserve()}" value="#{ReservationBundle.ReserveButtonTitle}" action="../reservation/reserve.html?faces-redirect=true"/>
+                            <p:commandButton rendered="#{authenticationBean.canReserve()}" value="#{ReservationBundle.ReservatioButtonTitle}" action="../reservation/reserve.html?faces-redirect=true"/>
                             <p:outputLabel rendered="#{!authenticationBean.canReserve()}" value="#{ReservationBundle.DaysLeftTillReservationBegin} #{reservationController.remainingDaysTillReservationBegin}"/>
                             <br/>
                         </p:fieldset>
