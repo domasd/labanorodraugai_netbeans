@@ -6,6 +6,7 @@
 package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.entities.Account;
+import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import io.mif.labanorodraugai.services.PasswordHashService;
 import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.IOException;
@@ -66,7 +67,21 @@ public class AuthenticationBean implements Serializable {
         }
 
     }
-
+    
+    public void userIsAuthorizedAndCandidate() throws IOException{
+        FacesContext fc = FacesContext.getCurrentInstance();
+        
+        if (loggedAccount==null){
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
+        } else if (loggedAccount.getStatus() == AccountStatus.Member){
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/index.html");
+        }
+    }
+    
+    public boolean isAuthorizedAndCandidate() {
+        return loggedAccount != null && loggedAccount.getStatus() == AccountStatus.Candidate;
+    }
+    
     public String logint2(){
         return null;
     }

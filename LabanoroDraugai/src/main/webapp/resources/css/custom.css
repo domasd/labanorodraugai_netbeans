@@ -25,3 +25,32 @@ and open the template in the editor.
 .full-width {
     width: 100%;
 }
+
+.image-autofit {
+    max-width:100%;
+    max-height:100%;
+}
+
+.margin-sm {
+    margin: 10px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+ .selected-menu-item {
+    background-color: #B7E888;
+}
+
+.selected-menu-item > .ui-menuitem-text, .selected-menu-item > .ui-menuitem-link, .selected-menu-item > .ui-menuitem-icon {
+    color: white;
+}
+
+.approval-output-panel {
+    text-align: center;
+}
+
+.approval-output-panel .ui-panelgrid {
+    margin:auto;
+}

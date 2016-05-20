@@ -45,8 +45,7 @@ and open the template in the editor.
                     </h:panelGrid>
 
                     <p:commandButton update="registrationGrid" value="Registruotis" action="#{registrationController.registerAccount}" />
-                    <p:messages globalOnly="true" style="color:red" autoUpdate="true"/>
-   
+                    <p:growl globalOnly="true" sticky="true" autoUpdate="true"/>     
 
                 </h:form>    
 
