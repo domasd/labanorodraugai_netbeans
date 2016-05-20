@@ -59,6 +59,11 @@ public class Account implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private AccountStatus status;
     
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "approver")
+    private List<AccountApproval> approversList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    private List<AccountApproval> candidatesList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     private List<SummerhouseReservation> summerhouseReservationList;
     
@@ -175,9 +180,7 @@ public class Account implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+        return email.hashCode();
     }
 
     @Override
@@ -187,7 +190,7 @@ public class Account implements Serializable {
             return false;
         }
         Account other = (Account) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.email == null && other.email != null) || (this.email != null && !this.email.equals(other.email))) {
             return false;
         }
         return true;
@@ -239,6 +242,22 @@ public class Account implements Serializable {
 
     public void setStatus(AccountStatus status) {
         this.status = status;
+    }
+
+    public List<AccountApproval> getApproversList() {
+        return approversList;
+    }
+
+    public void setApproversList(List<AccountApproval> approversList) {
+        this.approversList = approversList;
+    }
+
+    public List<AccountApproval> getCandidatesList() {
+        return candidatesList;
+    }
+
+    public void setCandidatesList(List<AccountApproval> candidatesList) {
+        this.candidatesList = candidatesList;
     }
 
 

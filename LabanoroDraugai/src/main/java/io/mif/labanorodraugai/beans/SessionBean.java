@@ -7,6 +7,7 @@ package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.beans.util.AccountUtil;
 import io.mif.labanorodraugai.entities.Account;
+import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -57,6 +58,16 @@ public class SessionBean implements Serializable{
             }
       
     }
+    
+    public void userIsAuthorizedAndCandidate() throws IOException{
+        FacesContext fc = FacesContext.getCurrentInstance();
+        
+        if (loggedAccount==null){
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
+        } else if (loggedAccount.getStatus() == AccountStatus.Member){
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/index.html");
+        }
+    }
         
     public String login(){
         // validation
@@ -95,8 +106,8 @@ public class SessionBean implements Serializable{
             RequestContext.getCurrentInstance().update("growl");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    ResourceBundle.getBundle("/Bundle").getString("LoginErrorTitle"),
-                    ResourceBundle.getBundle("/Bundle").getString("LoginErrorMessage")));
+                    ResourceBundle.getBundle("/LoginBundle").getString("LoginErrorTitle"),
+                    ResourceBundle.getBundle("/LoginBundle").getString("LoginErrorMessage")));
         }
         
         return null;
@@ -144,6 +155,10 @@ public class SessionBean implements Serializable{
         }
         
     
+    }
+    
+    public boolean isAuthorizedAndCandidate() {
+        return loggedAccount != null && loggedAccount.getStatus() == AccountStatus.Candidate;
     }
     
 

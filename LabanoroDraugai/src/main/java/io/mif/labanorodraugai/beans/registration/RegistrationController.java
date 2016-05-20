@@ -1,4 +1,4 @@
-package io.mif.labanorodraugai.beans;
+package io.mif.labanorodraugai.beans.registration;
 
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.entities.Account;
@@ -56,7 +56,7 @@ public class RegistrationController {
         
         em.persist(account);
                 
-        return "../index.html?faces-redirect=true";
+        return "/askingForApproval.html?faces-redirect=true";
     }
     
     /**

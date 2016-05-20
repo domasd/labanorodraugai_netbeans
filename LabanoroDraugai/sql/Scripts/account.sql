@@ -10,11 +10,12 @@ CREATE TABLE `labanorodraugai_db`.`account` (
   `FB_URL` VARCHAR(100) NULL,
   `PointsQuantity` DECIMAL(30,2) ZEROFILL NOT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE INDEX `Name_UNIQUE` (`Email` ASC),
-  UNIQUE INDEX `FBAccountUrl_UNIQUE` (`FB_URL` ASC),
+  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC),
   INDEX `Status` (`Status` ASC));
 
 -- test data for account seed
 INSERT INTO `labanorodraugai_db`.`account`
-(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `FB_URL`, `PointsQuantity`) 
-VALUES ('202cb962ac5975b964b7152d234b70', 'TestName', 'TestLastname', 'Test Description', null, 0, 'test@test.test', 'https://www.facebook.com/ddziaugys',0);
+(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `FB_URL`, `PointsQuantity`) VALUES 
+('90005c954a300e7a071d5c0f87440e7b', 'Labanoro1', 'Draugai1', 'Test Description', null, 0, 'vytautas.labanoro1@gmail.com', 'https://www.facebook.com/ddziaugys',0),
+('77cf552a2fd4c58b4154a2045779d19c', 'Labanoro2', 'Draugai2', 'Test Description', null, 0, 'vytautas.labanoro2@gmail.com', 'https://www.facebook.com/ddziaugys',0),
+('202cb962ac5975b964b7152d234b70', 'TestName', 'TestLastname', 'Test Description', null, 1, 'test@test.test', 'https://www.facebook.com/ddziaugys',0);

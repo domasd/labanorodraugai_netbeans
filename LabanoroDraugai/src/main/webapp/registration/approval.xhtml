@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <head>
+        <title>Rekomendacija</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition template="../template/commonLayout.xhtml">
+
+            <ui:define name="metadata">
+                <f:metadata>
+                    <f:viewAction action="#{authenticationBean.userIsAuthorized}" />
+                </f:metadata>
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form>  
+                    <p:outputPanel id="approvalOutputPanelId" styleClass="approval-output-panel">
+
+                        <p:panelGrid  columns="2" rendered="#{not empty accountApprovalController.approval.candidate}" columnClasses="label,value">
+                            <f:facet name="header">
+                                <p:graphicImage value="#{accountApprovalController.image}" 
+                                                rendered="#{not empty accountApprovalController.approval.candidate.image}"
+                                                cache="false">
+                                    <f:param name="accountId" value="#{accountApprovalController.approval.candidate.id}"/>
+                                </p:graphicImage>
+                                <p:graphicImage library="images" name="EmptyUserImage.jpg" rendered="#{empty accountApprovalController.approval.candidate.image}"/>
+                            </f:facet>
+
+                            <h:outputText value="#{AccountBundle.Title_name}"/>
+                            <h:outputText value="#{accountApprovalController.approval.candidate.name}" 
+                                          title="#{AccountBundle.Title_name}"/>
+
+                            <h:outputText value="#{AccountBundle.Title_lastname}"/>
+                            <h:outputText value="#{accountApprovalController.approval.candidate.lastname}" 
+                                          title="#{AccountBundle.Title_lastname}"/>
+
+                            <h:outputText value="#{AccountBundle.Title_email}"/> 
+                            <h:outputText value="#{accountApprovalController.approval.candidate.email}" 
+                                          title="#{AccountBundle.Title_email}"/>
+
+                            <h:outputText value="#{AccountBundle.Title_description}"/>
+                            <h:outputText value="#{accountApprovalController.approval.candidate.description}" 
+                                          title="#{AccountBundle.Title_description}"/>
+                        </p:panelGrid>
+                    
+                        <p:commandButton rendered="#{empty accountApprovalController.approval.approvalDate}"
+                                         value="Rekomenduoti" icon="fa fa-fw fa-check"
+                                         actionListener="#{accountApprovalController.approve()}"
+                                         update="approvalOutputPanelId"/>
+                        <h:outputText rendered="#{not empty accountApprovalController.approval.approvalDate}" 
+                                      value="Jūs rekomendavote šį kandidatą."
+                                      style="font-weight: bold"/>
+                    </p:outputPanel>
+
+
+                    
+                    <p:growl globalOnly="true" sticky="true" autoUpdate="true"/>     
+
+                </h:form>    
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

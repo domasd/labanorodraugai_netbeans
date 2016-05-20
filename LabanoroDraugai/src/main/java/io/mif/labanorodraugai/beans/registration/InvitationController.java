@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.mif.labanorodraugai.beans;
+package io.mif.labanorodraugai.beans.registration;
 
+import io.mif.labanorodraugai.beans.SessionBean;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.services.EmailService;
 import java.net.MalformedURLException;

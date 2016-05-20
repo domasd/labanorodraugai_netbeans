@@ -7,3 +7,4 @@ SOURCE Scripts/database.sql;
 SOURCE Scripts/account.sql;
 SOURCE Scripts/summerhouse.sql;
 SOURCE Scripts/summerhouse_reservation.sql;
+SOURCE Scripts/account_approval.sql;
