@@ -5,21 +5,16 @@
  */
 package io.mif.labanorodraugai.beans.registration;
 
-import io.mif.labanorodraugai.beans.SessionBean;
+import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.services.EmailService;
-import java.net.MalformedURLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -36,7 +31,7 @@ public class InvitationController {
     private EntityManager em;
 
     @Inject
-    SessionBean session;
+    AuthenticationBean authenticationBean;
     
     @Inject
     EmailService emailService;
@@ -52,7 +47,7 @@ public class InvitationController {
         }
         
         try {
-            emailService.SendInvitationEmail(session.getLoggedAccount(), email);
+            emailService.SendInvitationEmail(authenticationBean.getLoggedAccount(), email);
             JsfUtil.addSuccessMessage("Pakvietimas " + email + " išsiųstas sėkmingai");
         } catch (Exception ex) {
             JsfUtil.addErrorMessage("Nusiųsti pakvietimo nepavyko. Bandykite vėliau");

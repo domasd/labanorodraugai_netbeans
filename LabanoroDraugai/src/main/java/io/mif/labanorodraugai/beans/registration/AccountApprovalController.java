@@ -5,25 +5,18 @@
  */
 package io.mif.labanorodraugai.beans.registration;
 
-import io.mif.labanorodraugai.beans.SessionBean;
+import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.entities.AccountApproval;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
-import io.mif.labanorodraugai.services.EmailService;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -51,11 +44,11 @@ public class AccountApprovalController implements Serializable {
     private EntityManager em;
 
     @Inject
-    private SessionBean sessionBean;
+    private AuthenticationBean authenticationBean;
         
     @PostConstruct
     public void init() {
-        this.currentUser = sessionBean.getLoggedAccount();
+        this.currentUser = authenticationBean.getLoggedAccount();
         
         String generatedId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("gen");
 

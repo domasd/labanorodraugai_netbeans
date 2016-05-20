@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog header="#{CommonBundle.SearchDialogTitle}" 
+                  id="summerhouseSearchDialogId" 
+                  widgetVar="summerhouseSearchDialogWidgetVar" 
+                  modal="true" 
+                  showEffect="fade" 
+                  hideEffect="fade" 
+                  resizable="false" 
+                  appendTo="@(body)"
+                  >
+
+            <h:form id="summerhouseSearchFormId" enctype="multipart/form-data">
+
+                <p:panelGrid columns="2">
+                <h:panelGroup id="searchPanelId">
+                    <p:panelGrid columns="2" >
+
+                        <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseTitle}" for="title" />
+                        <p:inputText id="title" value="#{searchController.name}" />
+                        
+                        <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseMinCapacity}" for="min" />
+                        <p:inputText id="min" value="#{searchController.minCapacity}"/>
+
+                        <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseMaxCapacity}" for="max" />
+                        <p:inputText id="max" value="#{searchController.maxCapacity}" />
+                        
+                        <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseMaxPoint}" for="maxPoints" />
+                        <p:inputText id="maxPoints" value="#{searchController.maxPoints}" />
+                        
+                        <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseStartReservationDate}" for="beginDate" />
+                        <p:calendar id="beginDate" value="#{searchController.beginDate}"/>
+                        
+                        <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseEndReservationDate}" for="endDate" />
+                        <p:calendar id="endDate" value="#{searchController.endDate}" />
+
+                    </p:panelGrid>
+
+
+                    <p:commandButton update="searchPanelId, result" 
+                                     value="#{CommonBundle.SearchActionTitle}"
+                                     actionListener="#{searchController.filter()}"
+                                     
+                                     />
+                    <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('summerhouseSearchDialogWidgetVar').hide()"/>
+
+
+                </h:panelGroup>
+
+                <h:panelGroup id="result" rendered="#{searchController.results!=null}">
+
+                    <p:dataTable id="filterdata" value="#{searchController.results}" var="item"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 tableStyleClass="ui-table-columntoggle"
+                                 tableStyle="table-layout: auto;"> 
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{SummerhouseBundle.Title_name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        
+                        <p:column>  
+
+                            <f:facet name="header">
+                                <h:outputText value="#{SummerhouseBundle.Operations}"/> 
+                            </f:facet>
+
+                            <p:commandButton icon="ui-icon-search" 
+                                             title="#{CommonBundle.View}"
+                                             action="View">
+                                <f:setPropertyActionListener value="#{item}" 
+                                                             target="#{summerhouseController.selected}" />
+                            </p:commandButton>
+
+                            
+                        </p:column>
+
+                    </p:dataTable>
+                </h:panelGroup>
+
+                </p:panelGrid>
+
+            </h:form>   
+
+
+
+        </p:dialog>
+    </ui:composition>
+</html>
+
+

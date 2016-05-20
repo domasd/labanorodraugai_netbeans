@@ -15,8 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
-
 /**
  *
  * @author Vytautas
@@ -55,8 +53,8 @@ public class RegistrationController {
         this.account.setPassword(hashedPassword);
         
         em.persist(account);
-                
-        return "/askingForApproval.html?faces-redirect=true";
+        
+        return "../login/login.html";
     }
     
     /**

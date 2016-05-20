@@ -31,7 +31,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
-@Named("accountController")
+@Named
 @SessionScoped
 public class AccountController implements Serializable {
 
@@ -56,9 +56,6 @@ public class AccountController implements Serializable {
 
     // TODO add error handling
     public void upload() throws IOException {
-        System.out.println("update invoked");
-        String fileName = uploadedFile.getFileName();
-        String contentType = uploadedFile.getContentType();
         InputStream inputstream = uploadedFile.getInputstream();
         byte[] contents = IOUtils.toByteArray(inputstream);
         selected.setImage(contents);
@@ -187,6 +184,8 @@ public class AccountController implements Serializable {
 
         return selectItems;
     }
+    
+    
 
     @FacesConverter(forClass = Account.class)
     public static class AccountControllerConverter implements Converter {

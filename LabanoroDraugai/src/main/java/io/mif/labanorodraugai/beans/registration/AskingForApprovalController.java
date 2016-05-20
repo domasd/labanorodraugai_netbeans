@@ -5,7 +5,7 @@
  */
 package io.mif.labanorodraugai.beans.registration;
 
-import io.mif.labanorodraugai.beans.SessionBean;
+import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.entities.AccountApproval;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
@@ -43,14 +43,14 @@ public class AskingForApprovalController implements Serializable {
     private EntityManager em;
 
     @Inject
-    private SessionBean sessionBean;
+    private AuthenticationBean authenticationBean;
     
     @Inject
     private EmailService emailService;
     
     @PostConstruct
     public void init(){
-        this.currentUser = sessionBean.getLoggedAccount();
+        this.currentUser = authenticationBean.getLoggedAccount();
         this.approvedMembers = em.createNamedQuery("Account.findByStatus")
                                 .setParameter("status", AccountStatus.Member)
                                 .getResultList();

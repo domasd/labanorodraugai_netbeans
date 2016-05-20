@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -42,6 +43,10 @@ public class Summerhouse implements Serializable {
     @Lob
     @Column(name = "Image")
     private byte[] image;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PointsPerDay")
+    private int pointsPerDay;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouse")
     private List<SummerhouseReservation> summerhouseReservationList;
    
@@ -150,6 +155,14 @@ public class Summerhouse implements Serializable {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public int getPointsPerDay() {
+        return pointsPerDay;
+    }
+
+    public void setPointsPerDay(int pointsPerDay) {
+        this.pointsPerDay = pointsPerDay;
     }
 
     

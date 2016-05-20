@@ -11,6 +11,7 @@
         <h:outputStylesheet library="font-awesome" name="css/font-awesome.css" />
         <!--<h:outputStylesheet library="css" name="jsfcrud.css"/>-->
         <h:outputStylesheet library="css" name="custom.css"/>
+        <h:outputStylesheet name="grid/grid.css" library="primefaces" />
         <h:outputScript library="js" name="jsfcrud.js"/>
     </h:head>
 
@@ -21,7 +22,7 @@
             </p:layoutUnit>
 
             <p:layoutUnit position="south" size="60">
-                Bottom Content
+                Bottom Content 
             </p:layoutUnit>
 
             <p:layoutUnit position="center" >
@@ -30,6 +31,8 @@
                         <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Registracija" url="/registration/registration.html"/>
                         <p:menuitem rendered="#{authenticationBean.authorizedAndCandidate}" value="Paskyros patvirtinimas" url="/registration/askingForApproval.html"/>
                         
+
+                        <p:menuitem value="#{AccountBundle.Title_MyProfile}" url="/profile/MyProfile.html"/>
                         <p:submenu rendered="#{authenticationBean.loggedAccount!=null}" label="Klubo nariai" icon="fa fa-fw fa-users" >
                             <p:menuitem value="Narių sąrašas" url="/account/List.html" icon="fa fa-fw fa-list"/>
                             <p:menuitem value="Pakviesti narį" url="/registration/invite.html" icon="fa fa-fw fa-user-plus"/>
@@ -65,10 +68,10 @@
                     </p:menubar>
                 </h:form>
 
-                
+
                 <ui:insert name="content">Content</ui:insert>
 
-                
+
             </p:layoutUnit>
 
         </p:layout>

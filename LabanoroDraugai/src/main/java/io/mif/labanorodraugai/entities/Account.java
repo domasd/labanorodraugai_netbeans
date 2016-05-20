@@ -6,12 +6,9 @@
 package io.mif.labanorodraugai.entities;
 
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
-import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Formatter;
 import java.util.List;
-import java.util.Locale;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,27 +18,33 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
 /**
  *
- * @author dziaudom
+ * @author SFILON
  */
 @Entity
 @Table(name = "account")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Account.findByNameAndPassword", query = "SELECT u FROM Account u WHERE u.name = :name and u.password = :password"),
-    @NamedQuery(name = "Account.findByEmailAndPassword", query = "SELECT u FROM Account u WHERE u.email = :email and u.password = :password"),
+    @NamedQuery(name = "Account.doesSameEmailExist", query = "SELECT count(a.id) FROM Account a WHERE a.email = :email AND a.id <> :userId"),
+    @NamedQuery(name="Account.findByEmailAndPassword", query="SELECT a FROM Account a Where a.email=:email and a.password=:password"),
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
     @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
+    @NamedQuery(name = "Account.findByPassword", query = "SELECT a FROM Account a WHERE a.password = :password"),
     @NamedQuery(name = "Account.findByName", query = "SELECT a FROM Account a WHERE a.name = :name"),
+    @NamedQuery(name = "Account.findByLastname", query = "SELECT a FROM Account a WHERE a.lastname = :lastname"),
     @NamedQuery(name = "Account.findByDescription", query = "SELECT a FROM Account a WHERE a.description = :description"),
     @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status"),
     @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email"),
@@ -52,13 +55,13 @@ public class Account implements Serializable {
     @Lob
     @Column(name = "Image")
     private byte[] image;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "Status")
     @Enumerated(EnumType.ORDINAL)
-    private AccountStatus status;
-    
+    private  AccountStatus status;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
+    private List<AdditionalServicesReservation> additionalServicesReservationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "approver")
     private List<AccountApproval> approversList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
@@ -66,18 +69,6 @@ public class Account implements Serializable {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     private List<SummerhouseReservation> summerhouseReservationList;
-    
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
-    @Column(name = "Password")
-    private String password;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "Lastname")
-    private String lastname;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -85,33 +76,39 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-
+    @Size(max = 32)
+    @Column(name = "Password")
+    private String password;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "Name")
     private String name;
-
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "Lastname")
+    private String lastname;
     @Size(max = 500)
     @Column(name = "Description")
     private String description;
-
-    
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "Email")
     private String email;
-
     @Size(max = 100)
     @Column(name = "FB_URL")
     private String fbUrl;
-
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "PointsQuantity")
     private BigDecimal pointsQuantity;
+    @JoinColumn(name = "ReservationGroup", referencedColumnName = "GroupNumber")
+    @ManyToOne
+    private ReservationGroups reservationGroup;
 
     public Account() {
     }
@@ -120,10 +117,10 @@ public class Account implements Serializable {
         this.id = id;
     }
 
-    public Account(Integer id, String password, String name, AccountStatus status, String email, BigDecimal pointsQuantity) {
+    public Account(Integer id, String name, String lastname, AccountStatus status, String email, BigDecimal pointsQuantity) {
         this.id = id;
-        this.password = password;
         this.name = name;
+        this.lastname = lastname;
         this.status = status;
         this.email = email;
         this.pointsQuantity = pointsQuantity;
@@ -137,12 +134,28 @@ public class Account implements Serializable {
         this.id = id;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getDescription() {
@@ -178,6 +191,14 @@ public class Account implements Serializable {
         this.pointsQuantity = pointsQuantity;
     }
 
+    public ReservationGroups getReservationGroup() {
+        return reservationGroup;
+    }
+
+    public void setReservationGroup(ReservationGroups reservationGroup) {
+        this.reservationGroup = reservationGroup;
+    }
+
     @Override
     public int hashCode() {
         return email.hashCode();
@@ -198,34 +219,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        Formatter formatter = new Formatter(sb, Locale.ROOT);
-        return formatter.format("%s %s %s %s", name, lastname, email, status).toString();
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    @XmlTransient
-    public List<SummerhouseReservation> getSummerhouseReservationList() {
-        return summerhouseReservationList;
-    }
-
-    public void setSummerhouseReservationList(List<SummerhouseReservation> summerhouseReservationList) {
-        this.summerhouseReservationList = summerhouseReservationList;
+        return "io.mif.labanorodraugai.entities.Account[ id=" + id + " ]";
     }
 
     public byte[] getImage() {
@@ -260,5 +254,22 @@ public class Account implements Serializable {
         this.candidatesList = candidatesList;
     }
 
+    @XmlTransient
+    public List<AdditionalServicesReservation> getAdditionalServicesReservationList() {
+        return additionalServicesReservationList;
+    }
 
+    public void setAdditionalServicesReservationList(List<AdditionalServicesReservation> additionalServicesReservationList) {
+        this.additionalServicesReservationList = additionalServicesReservationList;
+    }
+
+    @XmlTransient
+    public List<SummerhouseReservation> getSummerhouseReservationList() {
+        return summerhouseReservationList;
+    }
+
+    public void setSummerhouseReservationList(List<SummerhouseReservation> summerhouseReservationList) {
+        this.summerhouseReservationList = summerhouseReservationList;
+    }
+    
 }

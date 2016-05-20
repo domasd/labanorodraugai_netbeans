@@ -6,35 +6,27 @@
 package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.entities.Account;
+import io.mif.labanorodraugai.entities.AdditionalServices;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author dziaudom
+ * @author SFILON
  */
 @Stateless
-public class AccountFacade extends AbstractFacade<Account> {
+public class AdditionalServicesFacade extends AbstractFacade<AdditionalServices> {
 
     @PersistenceContext(unitName = "io.mif_LabanoroDraugai_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public AccountFacade() {
-        super(Account.class);
+    public AdditionalServicesFacade() {
+        super(AdditionalServices.class);
     }
 
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-
-    public boolean doesSameEmailExist(String email, int userId) {
-        Long count = (Long)em.createNamedQuery("Account.doesSameEmailExist")
-                .setParameter("email", email)
-                .setParameter("userId", userId)
-                .getSingleResult();
-        return count > 0;
-    }
-
 }

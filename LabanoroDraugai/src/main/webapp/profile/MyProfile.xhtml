@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="../template/commonLayout.xhtml">
+        <ui:define name="metadata">
+            <f:metadata>
+                <f:viewAction action="#{authenticationBean.userIsAuthorized()}" />
+            </f:metadata>
+        </ui:define>
+
+
+        <ui:define name="content">
+            <c:set var="currentAccount" value="#{authenticationBean.loggedAccount}" scope="request" />
+            <p:growl id="growl" life="2000" />
+            <h:form id="accountEditFormId">
+
+                <h:panelGroup id="editPanelId">
+                    <div class="ui-grid ui-grid-responsive"  style="padding:10px;">
+                        <p:messages autoUpdate="true"/>
+                        <div class="ui-grid-row">
+                            <h1>#{currentAccount.name} #{currentAccount.lastname} #{ProfileBundle.Title_Profile} </h1>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-3">  
+                                <p:graphicImage value="#{profileController.image}" 
+                                                rendered="#{not empty currentAccount.image}"
+                                                cache="false"
+                                                styleClass="image-autofit">
+                                    <f:param name="accountId" value="#{currentAccount.id}"/>
+                                </p:graphicImage>
+                                <p:graphicImage library="images" 
+                                                name="EmptyUserImage.jpg" 
+                                                rendered="#{empty currentAccount.image}"
+                                                styleClass="image-autofit"/>
+                                <p:commandButton update=":imageUploadFormId" 
+                                                 oncomplete="PF('imageUploadDialogWidgetVar').show()" 
+                                                 icon="fa fa-file-image-o" 
+                                                 title="#{CommonBundle.ChangeImage}"
+                                                 value="#{CommonBundle.ChangeImage}" 
+                                                 style="margin: 0 20%; width: 60%;">
+                                </p:commandButton>
+
+                            </div>
+                            <div class="ui-grid-col-6 margin-sm">
+                                <h:panelGrid columns="2" cellpadding="5">  
+                                    <p:outputLabel value="#{AccountBundle.Label_name}" 
+                                                   for="name" />
+                                    <p:inputText id="name" 
+                                                 value="#{currentAccount.name}" 
+                                                 title="#{AccountBundle.Title_name}" 
+                                                 required="true" 
+                                                 requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_name}"
+                                                 styleClass="full-width"/>
+
+                                    <p:outputLabel value="#{AccountBundle.Label_lastname}" 
+                                                   for="lastname" />
+                                    <p:inputText id="lastname" 
+                                                 value="#{currentAccount.lastname}" 
+                                                 title="#{AccountBundle.Title_lastname}" 
+                                                 required="true" 
+                                                 requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_lastname}"
+                                                 styleClass="full-width"/>
+
+
+                                    <p:outputLabel value="#{AccountBundle.Label_email}" 
+                                                   for="email" />
+                                    <p:inputText id="email" 
+                                                 value="#{currentAccount.email}" 
+                                                 title="#{AccountBundle.Title_email}" 
+                                                 required="true" 
+                                                 requiredMessage="#{CommonBundle.RequiredField} #{AccountBundle.Title_email}"
+                                                 validator="#{emailValidator.validate}" 
+                                                 styleClass="full-width">
+                                        <f:attribute name="userId" value="#{currentAccount.id}" /> 
+                                    </p:inputText>
+
+                                    <p:outputLabel value="#{AccountBundle.Label_description}" 
+                                                   for="description" />
+                                    <p:inputTextarea id="description" 
+                                                     rows="4" 
+                                                     cols="30"
+                                                     value="#{currentAccount.description}" 
+                                                     title="#{AccountBundle.Title_description}" 
+                                                     styleClass="full-width"/>
+
+                                    <p:outputLabel value="#{AccountBundle.Label_fbUrl}" 
+                                                   for="fbUrl" />
+                                    <p:inputText id="fbUrl" 
+                                                 value="#{currentAccount.fbUrl}" 
+                                                 title="#{AccountBundle.Title_fbUrl}" 
+                                                 styleClass="full-width"/>
+                                </h:panelGrid>
+                                <h3>#{ProfileBundle.Title_ChangePassword}</h3>
+
+                                <h:panelGroup rendered="#{empty currentAccount.password}">
+                                    <div class="ui-messages-warn">
+                                        <span class="ui-messages-warn-icon"></span>
+                                        <span class="ui-messages-warn-summary">#{ProfileBundle.YouDontHavePassword} </span>
+                                        <span class="ui-messages-warn-detail">#{ProfileBundle.PleaseCreateInOrderToLoginWithouFacebook}</span>
+                                    </div>
+                                </h:panelGroup>
+
+                                <h:panelGrid columns="2" cellpadding="5">  
+
+                                    <p:outputLabel value="#{ProfileBundle.Title_CurrentPassword}" 
+                                                   for="currentPsw" 
+                                                   rendered="#{not empty currentAccount.password}"/>
+                                    <p:password id="currentPsw" value="#{profileController.currentPassword}" 
+                                                title="#{ProfileBundle.Title_CurrentPassword}"
+                                                styleClass="full-width"
+                                                rendered="#{not empty currentAccount.password}"/>
+
+                                    <p:outputLabel value="#{ProfileBundle.Title_NewPassword}" 
+                                                   for="newPsw" />
+                                    <p:password id="newPsw" value="#{profileController.password1}" 
+                                                title="#{ProfileBundle.Title_NewPassword}"
+                                                styleClass="full-width"
+                                                feedback="true" 
+                                                promptLabel="#{ProfileBundle.EnterPassword}"
+                                                weakLabel="#{ProfileBundle.WeakPassword}"
+                                                goodLabel="#{ProfileBundle.GoodPassword}"
+                                                strongLabel="#{ProfileBundle.StrongPassword}"/>
+
+                                    <p:outputLabel value="#{ProfileBundle.Title_RepeatNewPassword}" 
+                                                   for="newPsw2" />
+                                    <p:password id="newPsw2" value="#{profileController.password2}" 
+                                                title="#{ProfileBundle.Title_RepeatNewPassword}"
+                                                styleClass="full-width"/>
+
+                                </h:panelGrid>
+                                <p:commandButton update="editPanelId" 
+                                                 value="#{CommonBundle.Save}" 
+                                                 action="#{profileController.update}"
+                                                 ajax="false"
+                                                 validateClient="true" 
+                                                 styleClass="margin-sm"/>
+                            </div>
+                            <div class="ui-grid-col-3"></div>
+                        </div>    
+                    </div>
+                </h:panelGroup>
+
+            </h:form> 
+            <ui:include src="Upload.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

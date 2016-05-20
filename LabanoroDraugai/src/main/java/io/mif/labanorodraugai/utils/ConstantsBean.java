@@ -1,7 +1,7 @@
 package io.mif.labanorodraugai.utils;
 
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Named;
 
 
@@ -11,7 +11,7 @@ import javax.inject.Named;
  */
 
 @Named("constants")
-@ApplicationScoped
+@Stateless
 public class ConstantsBean {
     
     // global compile-time constants 

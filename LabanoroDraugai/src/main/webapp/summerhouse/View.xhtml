@@ -6,7 +6,14 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition>
+   <ui:composition template="../template/commonLayout.xhtml">
+        <ui:define name="metadata">
+            <f:metadata>
+                <f:viewAction action="#{authenticationBean.userIsNotAuthorized()}" />
+            </f:metadata>
+        </ui:define>
+        
+        <ui:define name="content">
 
         <h:outputScript library="js" id="calendarUpdate"> 
 
@@ -32,16 +39,6 @@
             }
         </h:outputScript>
 
-        <p:dialog header="#{SummerhouseBundle.ViewSumerhouseTitle}" 
-                  id="summerhouseViewDialogId" 
-                  widgetVar="summerhouseDialogWidgetVar" 
-                  modal="true" 
-                  showEffect="fade" 
-                  hideEffect="fade" 
-                  resizable="false" 
-                  appendTo="@(body)">
-
-
             <p:outputPanel id="summerhouseOutputPanelId" style="text-align:center;">
 
                 <p:panelGrid columns="2" rendered="#{not empty summerhouseController.selected}">
@@ -49,37 +46,48 @@
                         <p:outputLabel value="#{summerhouseController.selected.name}"/>
                     </f:facet>
 
-                    <p:graphicImage value="#{summerhouseController.image}" rendered="#{not empty summerhouseController.selected.image}">
-                        <f:param name="summerhouseId" value="#{summerhouseController.selected.id}"/>
-                    </p:graphicImage>
-                    <p:graphicImage library="images" name="EmptySummerhouseImage.png" rendered="#{empty summerhouseController.selected.image}"/>
+                    <p:panelGrid style="width: 600px;">
 
-                    <p:panelGrid columns="2" rendered="#{not empty summerhouseController.selected}" columnClasses="label,value">
+                        <p:graphicImage value="#{summerhouseController.image}" rendered="#{not empty summerhouseController.selected.image}">
+                            <f:param name="summerhouseId" value="#{summerhouseController.selected.id}"/>
+                        </p:graphicImage>
+                        <p:graphicImage library="images" name="EmptySummerhouseImage.png" rendered="#{empty summerhouseController.selected.image}"/>
+                    </p:panelGrid>
+                    <p:panelGrid>
+                        <p:fieldset style="background: chocolate;" >
+                            <p:commandButton rendered="#{authenticationBean.canReserve()}" value="#{ReservationBundle.ReservatioButtonTitle}" action="../reservation/reserve.html?faces-redirect=true"/>
+                            <p:outputLabel rendered="#{!authenticationBean.canReserve()}" value="#{ReservationBundle.DaysLeftTillReservationBegin} #{reservationController.remainingDaysTillReservationBegin}"/>
+                            <br/>
+                        </p:fieldset>
+                        <br/>
+                        <p:panelGrid columns="2" rendered="#{not empty summerhouseController.selected}" columnClasses="label,value">
 
-                        <h:outputText value="#{SummerhouseBundle.Title_name}"/>
-                        <h:outputText value="#{summerhouseController.selected.name}" 
-                                      title="#{SummerhouseBundle.Title_name}"/>
+                            <h:outputText value="#{SummerhouseBundle.Title_name}"/>
+                            <h:outputText value="#{summerhouseController.selected.name}" 
+                                          title="#{SummerhouseBundle.Title_name}"/>
 
-                        <h:outputText value="#{SummerhouseBundle.Title_number}"/>
-                        <h:outputText value="#{summerhouseController.selected.number}" 
-                                      title="#{SummerhouseBundle.Title_number}"/>
+                            <h:outputText value="#{SummerhouseBundle.Title_number}"/>
+                            <h:outputText value="#{summerhouseController.selected.number}" 
+                                          title="#{SummerhouseBundle.Title_number}"/>
 
-                        <h:outputText value="#{SummerhouseBundle.Title_capacity}"/> 
-                        <h:outputText value="#{summerhouseController.selected.capacity}" 
-                                      title="#{SummerhouseBundle.Title_capacity}"/>
+                            <h:outputText value="#{SummerhouseBundle.Title_capacity}"/> 
+                            <h:outputText value="#{summerhouseController.selected.capacity}" 
+                                          title="#{SummerhouseBundle.Title_capacity}"/>
 
-                        <h:outputText value="#{SummerhouseBundle.Title_description}"/>
-                        <h:outputText value="#{summerhouseController.selected.description}" 
-                                      title="#{SummerhouseBundle.Title_description}"/>
+                            <h:outputText value="#{SummerhouseBundle.Title_description}"/>
+                            <h:outputText value="#{summerhouseController.selected.description}" 
+                                          title="#{SummerhouseBundle.Title_description}"/>
 
-                        <h:outputText value="#{SummerhouseBundle.Title_availability}"/>
+                            <h:outputText value="#{SummerhouseBundle.Title_availability}"/>
 
-                        <p:calendar binding="#{summerhouseController.calendar}"  navigator="true" pattern="MM-dd-yyyy" beforeShowDay="afterLoad" readonly="true" mode="inline"
-                                     showOn="button" widgetVar="dateVar"/>
+                            <p:calendar navigator="true" pattern="MM-dd-yyyy" beforeShowDay="afterLoad" readonly="true" mode="inline"
+                                        showOn="button" widgetVar="dateVar"/>
 
+                        </p:panelGrid>
                     </p:panelGrid>
                 </p:panelGrid>
             </p:outputPanel>
-        </p:dialog> 
-    </ui:composition>
+        </ui:define>
+   </ui:composition>
+
 </html>
