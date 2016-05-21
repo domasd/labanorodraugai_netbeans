@@ -1,5 +1,6 @@
 package io.mif.labanorodraugai.beans;
 
+import io.mif.labanorodraugai.beans.registration.RegistrationController;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import java.math.BigDecimal;
@@ -13,12 +14,12 @@ import javax.persistence.PersistenceContext;
 @Named
 @RequestScoped
 public class FacebookBean {
- 
+
     @PersistenceContext
     private EntityManager em;
 
     @Inject
-    private AuthenticationBean sessionBean;
+    private AuthenticationBean authenticationBean;
 
     @Inject
     private RegistrationController registrationController;
@@ -43,11 +44,13 @@ public class FacebookBean {
 
         Account retrievedFromDb = (Account) accountFacade.getAccountByEmail(account.getEmail());
         if (retrievedFromDb != null) {
-            sessionBean.setLoggedAccount(retrievedFromDb);
+            authenticationBean.setLoggedAccount(retrievedFromDb);
         } else {
             registrationController.setAccount(account);
             registrationController.registerAccount();
+            authenticationBean.setLoggedAccount(account);
         }
+
         return "../index.html?faces-redirect=true";
     }
 

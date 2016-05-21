@@ -93,8 +93,7 @@ public abstract class AbstractPriorityGenerationService {
             
 
             em.persist(newGroup);
-            em.flush();
-            
+          
             account.setReservationGroup(newGroup);
             
             ArrayList<Account> accountList = new ArrayList<>();

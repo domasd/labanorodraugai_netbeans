@@ -1,9 +1,11 @@
 package io.mif.labanorodraugai.beans.registration;
 
+import io.mif.labanorodraugai.beans.AccountFacade;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import io.mif.labanorodraugai.services.PasswordHashService;
+import io.mif.labanorodraugai.services.StandartPriorityGenerationService;
 import java.math.BigDecimal;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
@@ -33,6 +35,9 @@ public class RegistrationController {
 
     @Inject
     private AccountFacade accountFacade;
+    
+    @Inject
+    StandartPriorityGenerationService reservationController; 
 
     @PostConstruct
     public void init() {
@@ -53,7 +58,7 @@ public class RegistrationController {
             String hashedPassword = paswordHashService.HashPassword(this.account.getPassword());
             this.account.setPassword(hashedPassword);
         }
-
+        reservationController.AddNewUser(this.account);
         em.persist(account);
 
         return "../login/login.html";
