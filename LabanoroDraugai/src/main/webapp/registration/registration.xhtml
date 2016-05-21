@@ -17,22 +17,31 @@ and open the template in the editor.
         <ui:composition template="../template/commonLayout.xhtml">
 
             <ui:define name="content">
+                <h:outputScript library="js" name="fblogin.js" />
+
+                <p:commandButton id="fbLoginClick" onclick="login()" value="#{loginBundle.LoginWithFacebook}" styleClass="fb-button-override-original" icon="fa fa-facebook-square"/>
+                <h:form>
+                    <p:remoteCommand name="myremote" action="#{facebookBean.authenticate()}" process="@this" />
+                </h:form>
+
+                <div>#{CommonBundle.Or}</div>
+
                 <h:form id="registerForm">  
-   
+
                     <h:panelGrid columns="3" id="registrationGrid" cellpadding="5">    
 
                         <h:outputLabel for="name" value="Vardas" />
                         <p:inputText id="name" value="#{registrationController.account.name}" required="true" requiredMessage="Būtinas laukas"/>
                         <h:message for="name" style="color:red" />
-                        
+
                         <h:outputLabel for="lastName" value="Pavardė" />
                         <p:inputText id="lastName" value="#{registrationController.account.lastname}" required="true" requiredMessage="Būtinas laukas"/>
                         <h:message for="lastName" style="color:red" />
-                            
+
                         <h:outputLabel for="email" value="El. pašto adresas" />
                         <p:inputText id="email" value="#{registrationController.account.email}" required="true" requiredMessage="Būtinas laukas"/>
                         <h:message for="email" style="color:red" />
-                        
+
                         <h:outputLabel for="pwd1" value="Slaptažodis" />
                         <p:password id="pwd1" value="#{registrationController.account.password}" match="pwd2" label="Password 1" required="true" 
                                     requiredMessage="Būtinas laukas" validatorMessage="Slaptažodžiai nesutampa"/>
@@ -47,11 +56,11 @@ and open the template in the editor.
                     <p:commandButton update="registrationGrid" value="Registruotis" action="#{registrationController.registerAccount}" />
                     <p:growl globalOnly="true" sticky="true" autoUpdate="true"/>     
 
-                </h:form>    
+                </h:form>   
 
             </ui:define>
 
-    	</ui:composition>
+        </ui:composition>
 
     </body>
 </html>
