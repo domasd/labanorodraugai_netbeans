@@ -13,17 +13,16 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
  * @author Vytautas
  */
-
-@RequestScoped 
+@RequestScoped
 @Stateful
 @Named
 public class RegistrationController {
+
     private Account account;
 
     @PersistenceContext
@@ -31,32 +30,35 @@ public class RegistrationController {
 
     @Inject
     private PasswordHashService paswordHashService;
-    
+
+    @Inject
+    private AccountFacade accountFacade;
+
     @PostConstruct
-    public void init(){
+    public void init() {
         this.account = new Account();
         this.account.setPointsQuantity(BigDecimal.ZERO);
         this.account.setStatus(AccountStatus.Candidate);
     }
-    
-    public String registerAccount() {
-        Query existing = em
-                .createNamedQuery("Account.findByEmail")
-                .setParameter("email",this.account.getEmail());
 
-        if (existing.getResultList().size() > 0) {
+    public String registerAccount() {
+
+        Account retrievedFromDb = accountFacade.getAccountByEmail(this.account.getEmail());
+        if (retrievedFromDb != null) {
             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/AccountBundle").getString("EmailExistsError"));
             return null;
         }
-        
-        String hashedPassword = paswordHashService.HashPassword(this.account.getPassword());
-        this.account.setPassword(hashedPassword);
-        
+
+        if (this.account.getPassword() != null) {
+            String hashedPassword = paswordHashService.HashPassword(this.account.getPassword());
+            this.account.setPassword(hashedPassword);
+        }
+
         em.persist(account);
-        
+
         return "../index.html?faces-redirect=true";
     }
-    
+
     /**
      * @return the account
      */
@@ -70,6 +72,5 @@ public class RegistrationController {
     public void setAccount(Account account) {
         this.account = account;
     }
-    
-    
+
 }

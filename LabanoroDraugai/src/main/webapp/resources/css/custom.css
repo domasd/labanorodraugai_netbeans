@@ -14,8 +14,8 @@ and open the template in the editor.
 }
 
 .image-autofit {
-    max-width:100%;
-    max-height:100%;
+    width:100%;
+    height:100%;
 }
 
 .margin-sm {
@@ -24,4 +24,9 @@ and open the template in the editor.
 
 .full-width {
     width: 100%;
+}
+
+.fb-button-override-original {
+    background:#3b5998 !important;
+    border: none !important;
 }
