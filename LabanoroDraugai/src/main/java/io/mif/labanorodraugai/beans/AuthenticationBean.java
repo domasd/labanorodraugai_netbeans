@@ -6,7 +6,6 @@
 package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.entities.Account;
-import io.mif.labanorodraugai.entities.ReservationGroups;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import io.mif.labanorodraugai.services.PasswordHashService;
 import io.mif.labanorodraugai.utils.ConstantsBean;

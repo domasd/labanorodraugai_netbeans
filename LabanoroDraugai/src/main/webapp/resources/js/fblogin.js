@@ -43,12 +43,4 @@ function login() {
     
 }
 
-// getting basic user info
-function getInfo() {
-    login();
-    FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,email'}, function (response) {
-        myremote([{name:'email', value:response.email}]);
-    });
-    
-}
 
