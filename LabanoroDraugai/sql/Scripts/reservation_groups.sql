@@ -3,13 +3,6 @@ CREATE TABLE `labanorodraugai_db`.`reservation_groups` (
   `StartOfReservationDate` DATE NOT NULL,
   PRIMARY KEY (`GroupNumber`));
 
-ALTER TABLE `labanorodraugai_db`.`account` 
-ADD COLUMN `ReservationGroup` INT(11) NULL,
-ADD INDEX `ReservationGroupFK_idx` (`ReservationGroup` ASC);
+INSERT INTO `labanorodraugai_db`.`reservation_groups` (`GroupNumber`, `StartOfReservationDate`) VALUES ('0', '2016-04-01');
+INSERT INTO `labanorodraugai_db`.`reservation_groups` (`GroupNumber`, `StartOfReservationDate`) VALUES ('1', '2016-07-01');
 
-ALTER TABLE `labanorodraugai_db`.`account` 
-ADD CONSTRAINT `ReservationGroupFK`
-  FOREIGN KEY (`ReservationGroup`)
-  REFERENCES `labanorodraugai_db`.`reservation_groups` (`GroupNumber`)
-  ON DELETE SET NULL
-  ON UPDATE SET NULL;

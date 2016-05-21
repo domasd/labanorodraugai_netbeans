@@ -3,6 +3,8 @@ CREATE TABLE `labanorodraugai_db`.`additional_services_reservation` (
   `AccountID` INT(11) UNSIGNED NOT NULL,
   `BeginDate` DATE NOT NULL,
   `EndDate` DATE NOT NULL,
+  `RecordCreated` DATE NOT NULL,
+  `PointsAmount` DECIMAL(30,2) ZEROFILL NOT NULL,
   INDEX `AccountFK_idx` (`AccountID` ASC),
   INDEX `ServiceFK_idx` (`ServiceID` ASC),
   CONSTRAINT `AccountFK`

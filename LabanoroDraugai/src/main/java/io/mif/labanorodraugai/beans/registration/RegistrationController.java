@@ -1,4 +1,4 @@
-package io.mif.labanorodraugai.beans;
+package io.mif.labanorodraugai.beans.registration;
 
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.entities.Account;
@@ -45,7 +45,7 @@ public class RegistrationController {
 
         Account retrievedFromDb = accountFacade.getAccountByEmail(this.account.getEmail());
         if (retrievedFromDb != null) {
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/AccountBundle").getString("EmailExistsError"));
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/AccountBundle").getString("EmailExistsError"));         
             return null;
         }
 
@@ -56,7 +56,7 @@ public class RegistrationController {
 
         em.persist(account);
 
-        return "../index.html?faces-redirect=true";
+        return "../login/login.html";
     }
 
     /**

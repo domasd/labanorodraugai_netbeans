@@ -29,13 +29,26 @@
                 <h:form>
                     <p:menubar>
                         <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Registracija" url="/registration/registration.html"/>
+                        <p:menuitem rendered="#{authenticationBean.authorizedAndCandidate}" value="Paskyros patvirtinimas" url="/registration/askingForApproval.html"/>
+                        
 
-                        <p:menuitem value="#{AccountBundle.Title_MyProfile}" url="/profile/MyProfile.html"/>
-                        <p:menuitem value="Klubo nariai" url="/account/List.html"/>
-                        <p:menuitem value="Klubo vasarnamiai" url="/summerhouse/List.html"/>
+                        <p:submenu label="#{AccountBundle.Title_MyProfile}" rendered="#{authenticationBean.loggedAccount!=null}">
+                            <p:menuitem value="#{AccountBundle.Title_ProfileInformation}" url="/profile/MyProfile.html"/>
+                            <p:menuitem value="#{AccountBundle.Title_ReservationHistory}" url="/profile/History.html"/>
+                        </p:submenu>
+                        
+                        <p:submenu rendered="#{authenticationBean.loggedAccount!=null}" label="Klubo nariai" icon="fa fa-fw fa-users" >
+                            <p:menuitem value="Narių sąrašas" url="/account/List.html" icon="fa fa-fw fa-list"/>
+                            <p:menuitem value="Pakviesti narį" url="/registration/invite.html" icon="fa fa-fw fa-user-plus"/>
+                        </p:submenu>
+
+                        <p:menuitem value="Klubo vasarnamiai" url="/summerhouse/List.html" icon="fa fa-fw fa-bed" />
                         <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Prisijungimas" url="/login/login.html"/>
 
                         <p:menuitem rendered="#{authenticationBean.loggedAccount!=null}" value="Atsijungti" action="#{authenticationBean.logout()}"/>
+                        
+
+                        
                         <p:submenu label="File" icon="ui-icon-document">
                             <p:submenu label="New" icon="ui-icon-contact">
                                 <p:menuitem value="Project" url="#" />
@@ -72,4 +85,17 @@
 
     </h:body>
 
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('.ui-menuitem-link').each(function(){
+                if(window.location.pathname.indexOf($(this).attr('href')) !== -1) {
+                    $(this).addClass('selected-menu-item');
+                    $(this).parents('.ui-menu-parent').addClass('selected-menu-item');
+                }
+            });  
+
+        })
+    </script>
+    
 </html>

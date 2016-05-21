@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog header="#{ReservationBundle.PointPaymentDialogHeader}" 
+                  id="pointsPaymentDialogId" 
+                  widgetVar="pointsPaymentDialogWidgetVar" 
+                  modal="true" 
+                  showEffect="fade" 
+                  hideEffect="fade" 
+                  resizable="false" 
+                  appendTo="@(body)">
+            <h:form id="pointsPayingForm">
+                <h:panelGroup id="pointsPaymentPanelId">
+
+                    <h:panelGrid columns="2">
+
+                        <p:outputLabel value="#{ReservationBundle.PointsUserHave}"/>
+                        <p:outputLabel value="#{authenticationBean.loggedAccount.pointsQuantity}"/>
+
+                        <p:outputLabel value="#{ReservationBundle.PointsToPay}"/>
+                        <p:outputLabel value="#{reservationController.pointsSum}"/>
+
+                        <p:commandButton update="pointsPaymentPanelId" 
+                                         value="#{ReservationBundle.DoPaymentButtonTitle}"
+                                         action="#{reservationController.submitWithPoints()}"
+                                         oncomplete="PF('pointsPaymentDialogWidgetVar').hide()"
+                                         ajax="false"
+                                         validateClient="true">
+                        </p:commandButton>
+                        <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('pointsPaymentDialogWidgetVar').hide()"/>
+                    </h:panelGrid>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+
+

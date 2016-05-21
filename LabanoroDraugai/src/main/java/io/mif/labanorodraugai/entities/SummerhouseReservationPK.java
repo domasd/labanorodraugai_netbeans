@@ -116,7 +116,7 @@ public class SummerhouseReservationPK implements Serializable {
 
     @Override
     public String toString() {
-        return "io.mif.labanorodraugai.beans.SummerhouseReservationPK[ accountID=" + accountID + ", summerhouseID=" + summerhouseID + ", beginDate=" + beginDate + ", endDate=" + endDate + " ]";
+        return "io.mif.labanorodraugai.entities.SummerhouseReservationPK[ accountID=" + accountID + ", summerhouseID=" + summerhouseID + ", beginDate=" + beginDate + ", endDate=" + endDate + " ]";
     }
     
 }
