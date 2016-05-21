@@ -25,6 +25,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -49,21 +50,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status"),
     @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email"),
     @NamedQuery(name = "Account.findByFbUrl", query = "SELECT a FROM Account a WHERE a.fbUrl = :fbUrl"),
-    @NamedQuery(name = "Account.findByPointsQuantity", query = "SELECT a FROM Account a WHERE a.pointsQuantity = :pointsQuantity")})
+    @NamedQuery(name = "Account.findByPointsQuantity", query = "SELECT a FROM Account a WHERE a.pointsQuantity = :pointsQuantity"),
+    @NamedQuery(name = "Account.findByOptLockVersion", query = "SELECT a FROM Account a WHERE a.optLockVersion = :optLockVersion")})
 public class Account implements Serializable {
-
-    @Lob
-    @Column(name = "Image")
-    private byte[] image;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Status")
-    @Enumerated(EnumType.ORDINAL)
-    private  AccountStatus status;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
-    private List<AdditionalServicesReservation> additionalServicesReservationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
-    private List<SummerhouseReservation> summerhouseReservationList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -87,6 +76,14 @@ public class Account implements Serializable {
     @Size(max = 500)
     @Column(name = "Description")
     private String description;
+    @Lob
+    @Column(name = "Image")
+    private byte[] image;
+    @Basic(optional = false)
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "Status")
+    private AccountStatus status;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -101,6 +98,12 @@ public class Account implements Serializable {
     @NotNull
     @Column(name = "PointsQuantity")
     private BigDecimal pointsQuantity;
+    @Column(name = "OptLockVersion")
+    private Integer optLockVersion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
+    private List<AdditionalServicesReservation> additionalServicesReservationList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
+    private List<SummerhouseReservation> summerhouseReservationList;
     @JoinColumn(name = "ReservationGroup", referencedColumnName = "GroupNumber")
     @ManyToOne
     private ReservationGroups reservationGroup;
@@ -161,6 +164,21 @@ public class Account implements Serializable {
         this.description = description;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public AccountStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AccountStatus status) {
+        this.status = status;
+    }
 
     public String getEmail() {
         return email;
@@ -184,6 +202,32 @@ public class Account implements Serializable {
 
     public void setPointsQuantity(BigDecimal pointsQuantity) {
         this.pointsQuantity = pointsQuantity;
+    }
+
+    public Integer getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(Integer optLockVersion) {
+        this.optLockVersion = optLockVersion;
+    }
+
+    @XmlTransient
+    public List<AdditionalServicesReservation> getAdditionalServicesReservationList() {
+        return additionalServicesReservationList;
+    }
+
+    public void setAdditionalServicesReservationList(List<AdditionalServicesReservation> additionalServicesReservationList) {
+        this.additionalServicesReservationList = additionalServicesReservationList;
+    }
+
+    @XmlTransient
+    public List<SummerhouseReservation> getSummerhouseReservationList() {
+        return summerhouseReservationList;
+    }
+
+    public void setSummerhouseReservationList(List<SummerhouseReservation> summerhouseReservationList) {
+        this.summerhouseReservationList = summerhouseReservationList;
     }
 
     public ReservationGroups getReservationGroup() {
@@ -217,40 +261,6 @@ public class Account implements Serializable {
     @Override
     public String toString() {
         return "io.mif.labanorodraugai.entities.Account[ id=" + id + " ]";
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public AccountStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(AccountStatus status) {
-        this.status = status;
-    }
-
-    @XmlTransient
-    public List<AdditionalServicesReservation> getAdditionalServicesReservationList() {
-        return additionalServicesReservationList;
-    }
-
-    public void setAdditionalServicesReservationList(List<AdditionalServicesReservation> additionalServicesReservationList) {
-        this.additionalServicesReservationList = additionalServicesReservationList;
-    }
-
-    @XmlTransient
-    public List<SummerhouseReservation> getSummerhouseReservationList() {
-        return summerhouseReservationList;
-    }
-
-    public void setSummerhouseReservationList(List<SummerhouseReservation> summerhouseReservationList) {
-        this.summerhouseReservationList = summerhouseReservationList;
     }
     
 }

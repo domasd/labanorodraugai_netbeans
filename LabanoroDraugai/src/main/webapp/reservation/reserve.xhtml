@@ -9,93 +9,106 @@
     <ui:composition template="../template/commonLayout.xhtml">
 
         <ui:define name="content">
-                   <h:outputScript library="js" id="calendarUpdate"> 
+            <h:outputScript library="js" id="calendarUpdate"> 
 
-            function afterLoad(date) {    
+                function afterLoad(date) {    
 
-            
-            var disabledDays=#{summerhouseController.generateDisabledDates()}
-            
+
+                var disabledDays=#{summerhouseController.generateDisabledDates()}
+
                 var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
 
                 //if (d==3) alert('trying to disabled dates');
-                
+
                 var b = disabledDays.length;
                 var j = 0;
 
                 while(j != b) {
-                    if($.inArray((m+1) + '-' + d + '-' + y,disabledDays) != -1) {
-                        return [false];
-                    }
-                    j++;
+                if($.inArray((m+1) + '-' + d + '-' + y,disabledDays) != -1) {
+                return [false];
+                }
+                j++;
                 }
                 return [true];    
-            }
-            
-            
-        </h:outputScript>
+                }
+
+
+            </h:outputScript>
             <div style="width:500px;">
-            <h:form>
-                <p:wizard flowListener="#{reservationController.onFlowProcess}" backLabel="#{CommonBundle.Back}" nextLabel="#{CommonBundle.Next}">
-                    <p:tab id="chooseReservationDate" title="#{ReservationBundle.ReservationTab}" >
-                        <p:panel header="#{ReservationBundle.SelectReservationDate}">
-                            <p:messages />
-                            <h:panelGrid columns="2" columnClasses="label, value">
+                <h:form>
+                    <p:wizard flowListener="#{reservationController.onFlowProcess}" backLabel="#{CommonBundle.Back}" nextLabel="#{CommonBundle.Next}">
+                        <p:tab id="chooseReservationDate" title="#{ReservationBundle.ReservationTab}" >
+                            <p:panel header="#{ReservationBundle.SelectReservationDate}">
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
 
-                                <p:outputLabel value="#{ReservationBundle.ReserveBeginDate}"/>
-                                <p:calendar value="#{reservationController.reservationBeginDate}"
-                                            beforeShowDay="afterLoad" 
-                                            mindate="#{reservationController.startOfReservationProcess}" 
-                                            maxdate="#{reservationController.endOfReservationProcess}"
-                                            required="true" requiredMessage="#{ReservationBundle.BeginDateNotSelectedError}"/>
+                                    <p:outputLabel value="#{ReservationBundle.ReserveBeginDate}"/>
+                                    <p:calendar value="#{reservationController.reservationBeginDate}"
+                                                beforeShowDay="afterLoad" 
+                                                mindate="#{reservationController.startOfReservationProcess}" 
+                                                maxdate="#{reservationController.endOfReservationProcess}"
+                                                required="true" requiredMessage="#{ReservationBundle.BeginDateNotSelectedError}"/>
 
-                                <p:outputLabel value="#{ReservationBundle.ReserveEndDate}"/>
-                                <p:calendar value="#{reservationController.reservationEndDate}"
-                                            beforeShowDay="afterLoad" 
-                                            mindate="#{reservationController.startOfReservationProcess}" 
-                                            maxdate="#{reservationController.endOfReservationProcess}"
-                                            required="true" requiredMessage="#{ReservationBundle.EndDateNotSelected}"/>                             
-                           </h:panelGrid>
-                        </p:panel>
-                    </p:tab>
+                                    <p:outputLabel value="#{ReservationBundle.ReserveEndDate}"/>
+                                    <p:calendar value="#{reservationController.reservationEndDate}"
+                                                beforeShowDay="afterLoad" 
+                                                mindate="#{reservationController.startOfReservationProcess}" 
+                                                maxdate="#{reservationController.endOfReservationProcess}"
+                                                required="true" requiredMessage="#{ReservationBundle.EndDateNotSelected}"/>                             
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
 
-                    <p:tab id="selectAdditionalServices" title="#{ReservationBundle.AdditionalOptionsTab}">
+                        <p:tab id="selectAdditionalServices" title="#{ReservationBundle.AdditionalOptionsTab}">
 
-                        <p:panel header="#{ReservationBundle.AdditionalOptionsTab}">
-                            <p:messages />
+                            <p:panel header="#{ReservationBundle.AdditionalOptionsTab}">
+                                <p:messages />
 
-                            <p:outputLabel value="Is viso tasku"/>
-                            <p:outputLabel value="#{pointsService.points}"/>
-                            
-                            <h:panelGrid columns="3" cellpadding="5">
-                            <h:outputLabel for="checkbox" value="#{ReservationBundle.AdditionalServices}" />
-                                <p:selectCheckboxMenu  id="checkbox" value="#{additionalServicesController.selectedItems}"
-                                                      label="#{ReservationBundle.AdditionalServices}"
-                                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                                    <f:selectItems value="#{additionalServicesController.items}" />
-                                </p:selectCheckboxMenu>
-                            </h:panelGrid>
-                        </p:panel>
-                    </p:tab>
-                    
-                    
-                    <p:tab id="payment" title="Payment">
-
-                        <p:panel header="Payment Details">
-                            <p:messages />
-                            <h:panelGrid columns="2" columnClasses="label, value">
-                                <p:outputLabel value="Is viso tasku:"/>
+                                <p:outputLabel value="#{ReservationBundle.PointsToPay}"/>
                                 <p:outputLabel value="#{pointsService.points}"/>
-                                <p:outputLabel value=""/>
-                                <p:commandButton value="#{ReservationBundle.SubmitReservation}" action="#{reservationController.submit()}"/>
-                            </h:panelGrid>
-                        </p:panel>
-                    </p:tab>
 
-                </p:wizard>
+                                <h:panelGrid columns="3" cellpadding="5">
+                                    <h:outputLabel for="checkbox" value="#{ReservationBundle.AdditionalServices}" />
+                                    <p:selectCheckboxMenu  id="checkbox" value="#{additionalServicesController.selectedItems}"
+                                                           label="#{ReservationBundle.AdditionalServices}"
+                                                           filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                        <f:selectItems value="#{additionalServicesController.items}" />
+                                    </p:selectCheckboxMenu>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
 
-            </h:form>
-                </div>
+
+                        <p:tab id="payment" title="#{ReservationBundle.PaymentTab}">
+
+                            <p:panel header="#{ReservationBundle.PaymentTab}">
+                                <p:messages />
+                                <h:panelGrid>
+                                    <div>
+                                        <p:fieldset legend="#{ReservationBundle.PaymentOptions}">
+                                            <p:outputLabel value="#{ReservationBundle.PointsToPay}#{pointsService.points}"/><br/>
+                                            <p:commandButton oncomplete="PF('pointsPaymentDialogWidgetVar').show()"
+                                                             update=":pointsPayingForm"
+                                                             title="#{ReservationBundle.PayByPoints}"
+                                                             value="#{ReservationBundle.PayByPoints}"/>
+
+                                            <p:commandButton title="#{ReservationBundle.PayByPayPal}"
+                                                             value="#{ReservationBundle.PayByPayPal}"/>
+                                        </p:fieldset>
+                                    </div>
+
+
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                    </p:wizard>
+
+                </h:form>
+            </div>
+            
+            <ui:include src="points.xhtml"/>
+
         </ui:define>
     </ui:composition>
 </html>

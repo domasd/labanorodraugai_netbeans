@@ -6,6 +6,7 @@
 package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.entities.Account;
+import io.mif.labanorodraugai.entities.ReservationGroups;
 import io.mif.labanorodraugai.services.PasswordHashService;
 import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.IOException;
@@ -65,10 +66,6 @@ public class AuthenticationBean implements Serializable {
             fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath() + "/index.html");
         }
 
-    }
-
-    public String logint2(){
-        return null;
     }
     
     public String login() throws NoSuchAlgorithmException {

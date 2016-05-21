@@ -9,6 +9,7 @@ import io.mif.labanorodraugai.entities.AdditionalServices;
 import io.mif.labanorodraugai.entities.AdditionalServicesReservation;
 import io.mif.labanorodraugai.entities.SummerhouseReservation;
 import io.mif.labanorodraugai.utils.CalendarUtils;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +28,7 @@ import javax.persistence.PersistenceContext;
 @Stateful
 @ViewScoped
 @Named
-public class ReservationService {
+public class ReservationService implements Serializable{
 
     
     @PersistenceContext

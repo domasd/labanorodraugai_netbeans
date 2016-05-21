@@ -8,29 +8,18 @@ package io.mif.labanorodraugai.services;
 import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.ReservationGroups;
-import io.mif.labanorodraugai.entities.SummerhouseReservation;
 import io.mif.labanorodraugai.utils.CalendarUtils;
-import java.time.LocalDateTime;
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.Schedule;
-import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -41,16 +30,16 @@ import javax.persistence.Query;
 public abstract class AbstractPriorityGenerationService {
     
     @Inject
-    private AuthenticationBean authenticationBean;
+    protected AuthenticationBean authenticationBean;
     
     @PersistenceContext
-    private EntityManager em;
+    protected EntityManager em;
     
-    private Account selectedAccount;
+    protected Account selectedAccount;
             
-    abstract List<ReservationGroups> createReservationGroups(int numberOfGroups, Date reservationStartDate);
+    protected abstract List<ReservationGroups> createReservationGroups(int numberOfGroups, Date reservationStartDate);
         
-    abstract Map<String,Integer> setReservationGroupsToAccounts(List<Account> allAccounts, int numberOfUsersInOneGroup);
+    protected abstract Map<String,Integer> setReservationGroupsToAccounts(List<Account> allAccounts, int numberOfUsersInOneGroup);
             
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void generateReservationPriority(int numberOfUsersInOneGroup, Date startOfReservation){
@@ -86,6 +75,33 @@ public abstract class AbstractPriorityGenerationService {
             accToUpdate.setReservationGroup(group);
             em.merge(accToUpdate);
 
+        }
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void AddNewUser(Account account){
+        List<ReservationGroups> allgroups = em.createNamedQuery("ReservationGroups.findAll").getResultList();
+        ReservationGroups lastGroup = allgroups.get(allgroups.size()-1);
+        
+        if (lastGroup.getAccountList().size()<2){
+            account.setReservationGroup(lastGroup);
+        }
+        else{
+            ReservationGroups newGroup = new ReservationGroups();
+            newGroup.setGroupNumber(lastGroup.getGroupNumber()+1);
+            newGroup.setStartOfReservationDate(CalendarUtils.addDays(lastGroup.getStartOfReservationDate(),7));
+            
+
+            em.persist(newGroup);
+            em.flush();
+            
+            account.setReservationGroup(newGroup);
+            
+            ArrayList<Account> accountList = new ArrayList<>();
+            accountList.add(account);
+            
+            newGroup.setAccountList(accountList);
+            em.merge(account);
         }
     }
 }

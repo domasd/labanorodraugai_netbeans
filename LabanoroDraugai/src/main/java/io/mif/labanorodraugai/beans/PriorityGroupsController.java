@@ -5,14 +5,14 @@
  */
 package io.mif.labanorodraugai.beans;
 
+import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.services.StandartPriorityGenerationService;
 import io.mif.labanorodraugai.utils.CalendarUtils;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
-import javax.ejb.Stateful;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -20,39 +20,27 @@ import javax.inject.Named;
  *
  * @author SFILON
  */
-@ApplicationScoped
+
 @Singleton
+@Startup
 @Named
 public class PriorityGroupsController {
     
     @Inject
     StandartPriorityGenerationService reservationController; 
-            
-    private Date generationDate;
     
     private Date startOfRegistration;
     
     private int numberOfUsersInOneGroup;
-    
-    public void regenerateIfNeed(){
         
-        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-        
+    @Schedule(year="*", month="1", dayOfMonth = "1", hour = "0",minute = "0", second = "2", persistent = false)
+    public void regeneratePriorityGroups(){
+        System.out.println("SOMETHING VERY BAD IS HAPPENING!");
         //for testing
         this.startOfRegistration = CalendarUtils.getDate(LocalDateTime.now().getYear(), 3, 1);
         this.numberOfUsersInOneGroup=2;
-        if (generationDate==null)
-            this.generationDate = CalendarUtils.getDate(2015, 3, 1);
-        //
-        
-        if ((generationDate == null || Integer.parseInt(yearFormat.format(generationDate)) < Integer.parseInt(yearFormat.format(new Date())))){
             
-            
-            reservationController.generateReservationPriority(numberOfUsersInOneGroup, this.startOfRegistration);
-            this.generationDate = new Date();
-        }
-        
-    }
-    
+        reservationController.generateReservationPriority(numberOfUsersInOneGroup, this.startOfRegistration);        
+    }   
 
 }

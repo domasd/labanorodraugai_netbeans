@@ -1,6 +1,7 @@
 package io.mif.labanorodraugai.beans;
 
 
+import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.AdditionalServices;
 import io.mif.labanorodraugai.entities.AdditionalServicesReservation;
 import io.mif.labanorodraugai.entities.AdditionalServicesReservationPK;
@@ -8,7 +9,9 @@ import io.mif.labanorodraugai.entities.SummerhouseReservation;
 import io.mif.labanorodraugai.entities.SummerhouseReservationPK;
 import io.mif.labanorodraugai.services.PointsService;
 import io.mif.labanorodraugai.services.ReservationService;
+import io.mif.labanorodraugai.services.StandartPriorityGenerationService;
 import io.mif.labanorodraugai.utils.CalendarUtils;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -17,6 +20,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -26,7 +33,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
+import javax.swing.text.html.HTML;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 
 /**
@@ -37,6 +47,7 @@ import org.primefaces.event.FlowEvent;
 @ViewScoped
 @Stateful
 @Named
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class ReservationController {
        
     @Inject
@@ -66,27 +77,45 @@ public class ReservationController {
     private Date endOfReservationProcess;
     
     private List<String> errorList;
-    
-    public void submit(){
-        
-      submitReservation();
-      submitAdditionalServices();  
-        
-    }    
 
-    private void submitReservation() {
+        
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public String submitWithPoints(){
+        
+      if (pointsService.makeTransaction(pointsService.getPoints())){
+            Date recordDate = new Date();
+            submitReservation(recordDate);
+            submitAdditionalServices(recordDate);             
+ 
+            return "success.html";
+      }
+      else{
+          RequestContext requestContext = RequestContext.getCurrentInstance();  
+          requestContext.execute("PF('pointsPaymentDialogWidgetVar').hide()");
+  
+          FacesContext f = FacesContext.getCurrentInstance();
+          f.addMessage(null,new FacesMessage("Ivyko klaida!"));
+          
+          return null;
+      }
+  
+    }    
+       
+    private void submitReservation(Date recordDate) {
 
         SummerhouseReservationPK newRecordPK = new SummerhouseReservationPK(sessionBean.getLoggedAccount().getId(),
                 summerhouseController.getSelected().getId(), reservationBeginDate, reservationEndDate);
         SummerhouseReservation newRecord = new SummerhouseReservation(newRecordPK);
 
-        newRecord.setAccount(sessionBean.getLoggedAccount());
-        newRecord.setSummerhouse(summerhouseController.getSelected());
+        newRecord.setPointsAmount(pointsService.getSummerhousePoints());
+        newRecord.setRecordCreated(recordDate);
         em.persist(newRecord);
-        
+//        newRecord.setAccount(sessionBean.getLoggedAccount());
+//        newRecord.setSummerhouse(summerhouseController.getSelected());   
+                
     }
-    
-    private void submitAdditionalServices(){
+ 
+    private void submitAdditionalServices(Date recordDate){
         
         List<AdditionalServices> allItems = additionalServicesController.getItems();
         List<String> selectedItems = additionalServicesController.getSelectedItems();
@@ -100,6 +129,8 @@ public class ReservationController {
                 service.getServiceID(), reservationBeginDate, reservationEndDate);
        
                 AdditionalServicesReservation newADRecord = new AdditionalServicesReservation(newADRecordPK);
+                newADRecord.setPointsAmount(pointsService.getAdditionalServicesPoints());
+                newADRecord.setRecordCreated(recordDate);
                 em.persist(newADRecord);
             }
         }
@@ -161,9 +192,8 @@ public class ReservationController {
         return event.getNewStep();
         
     }
-
     
-    public List<SummerhouseReservation> getAllReservationsByUser(){
+    public List<SummerhouseReservation> getLoggedAccountAllReservations(){
         
         return em.createNamedQuery("SummerhouseReservation.findByAccountID")
                 .setParameter("accountID", sessionBean.getLoggedAccount().getId()).getResultList();
@@ -224,5 +254,5 @@ public class ReservationController {
     public void setEndOfReservationProcess(Date endOfReservationProcess) {
         this.endOfReservationProcess = endOfReservationProcess;
     }
-    
+
 }

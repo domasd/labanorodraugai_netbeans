@@ -10,6 +10,7 @@ import io.mif.labanorodraugai.entities.Summerhouse;
 import io.mif.labanorodraugai.entities.SummerhouseReservation;
 import io.mif.labanorodraugai.utils.CalendarUtils;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +56,7 @@ public class SearchController implements Serializable{
         for(Summerhouse summerhouse:allHouses){
             
             if ((summerhouse.getCapacity()>=getMinCapacity() || getMinCapacity()==0)
-                 && (summerhouse.getPointsPerDay()<=getMaxPoints() || getMaxPoints()==0)
+                 && (summerhouse.getPointsPerDay().compareTo(new BigDecimal(getMaxPoints()))>0 || getMaxPoints()==0)
                  && (summerhouse.getCapacity()<= getMaxCapacity() || getMaxCapacity()==0)
                  && (getName()==null || summerhouse.getName().indexOf(getName())>=0 || getName().isEmpty())
                  && (getBeginDate()==null || getEndDate()==null || checkSummerhouseAvailability(getBeginDate(), getEndDate(), summerhouse.getId()))){

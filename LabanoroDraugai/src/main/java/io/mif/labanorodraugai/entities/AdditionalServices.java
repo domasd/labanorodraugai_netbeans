@@ -6,6 +6,7 @@
 package io.mif.labanorodraugai.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -35,16 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "AdditionalServices.findByServiceID", query = "SELECT a FROM AdditionalServices a WHERE a.serviceID = :serviceID"),
     @NamedQuery(name = "AdditionalServices.findByName", query = "SELECT a FROM AdditionalServices a WHERE a.name = :name"),
     @NamedQuery(name = "AdditionalServices.findByDescription", query = "SELECT a FROM AdditionalServices a WHERE a.description = :description"),
-    @NamedQuery(name = "AdditionalServices.findByPoints", query = "SELECT a FROM AdditionalServices a WHERE a.points = :points")})
+    @NamedQuery(name = "AdditionalServices.findByPointsPerDay", query = "SELECT a FROM AdditionalServices a WHERE a.pointsPerDay = :pointsPerDay")})
 public class AdditionalServices implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "additionalServices")
-    private List<AdditionalServicesReservation> additionalServicesReservationList;
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Points")
-    private int points;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,12 +51,24 @@ public class AdditionalServices implements Serializable {
     @Size(max = 256)
     @Column(name = "Description")
     private String description;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PointsPerDay")
+    private BigDecimal pointsPerDay;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "additionalServices")
+    private List<AdditionalServicesReservation> additionalServicesReservationList;
 
     public AdditionalServices() {
     }
 
     public AdditionalServices(Integer serviceID) {
         this.serviceID = serviceID;
+    }
+
+    public AdditionalServices(Integer serviceID, BigDecimal pointsPerDay) {
+        this.serviceID = serviceID;
+        this.pointsPerDay = pointsPerDay;
     }
 
     public Integer getServiceID() {
@@ -90,6 +95,22 @@ public class AdditionalServices implements Serializable {
         this.description = description;
     }
 
+    public BigDecimal getPointsPerDay() {
+        return pointsPerDay;
+    }
+
+    public void setPointsPerDay(BigDecimal pointsPerDay) {
+        this.pointsPerDay = pointsPerDay;
+    }
+
+    @XmlTransient
+    public List<AdditionalServicesReservation> getAdditionalServicesReservationList() {
+        return additionalServicesReservationList;
+    }
+
+    public void setAdditionalServicesReservationList(List<AdditionalServicesReservation> additionalServicesReservationList) {
+        this.additionalServicesReservationList = additionalServicesReservationList;
+    }
 
     @Override
     public int hashCode() {
@@ -114,23 +135,6 @@ public class AdditionalServices implements Serializable {
     @Override
     public String toString() {
         return name;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    @XmlTransient
-    public List<AdditionalServicesReservation> getAdditionalServicesReservationList() {
-        return additionalServicesReservationList;
-    }
-
-    public void setAdditionalServicesReservationList(List<AdditionalServicesReservation> additionalServicesReservationList) {
-        this.additionalServicesReservationList = additionalServicesReservationList;
     }
     
 }
