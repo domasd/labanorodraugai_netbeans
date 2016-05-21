@@ -8,11 +8,11 @@ import io.mif.labanorodraugai.entities.AdditionalServicesReservationPK;
 import io.mif.labanorodraugai.entities.SummerhouseReservation;
 import io.mif.labanorodraugai.entities.SummerhouseReservationPK;
 import io.mif.labanorodraugai.services.PointsService;
-import io.mif.labanorodraugai.services.ReservationService;
 import io.mif.labanorodraugai.services.StandartPriorityGenerationService;
 import io.mif.labanorodraugai.utils.CalendarUtils;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -50,10 +50,7 @@ import org.primefaces.event.FlowEvent;
 @Named
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class ReservationController implements Serializable{
-       
-    @Inject
-    private ReservationService reservationService;
-    
+           
     @Inject
     private PointsService pointsService;
     
@@ -77,13 +74,19 @@ public class ReservationController implements Serializable{
     
     private Date endOfReservationProcess;
     
+    private BigDecimal pointsSum;
+    
+    private BigDecimal summerhousePoints;
+    
+    private BigDecimal additionalServicesPoints;
+    
     private List<String> errorList;
 
         
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public String submitWithPoints(){
         
-      if (pointsService.makeTransaction(pointsService.getPoints())){
+      if (pointsService.makeTransaction(pointsSum)){
             Date recordDate = new Date();
             submitReservation(recordDate);
             submitAdditionalServices(recordDate);             
@@ -108,7 +111,7 @@ public class ReservationController implements Serializable{
                 summerhouseController.getSelected().getId(), reservationBeginDate, reservationEndDate);
         SummerhouseReservation newRecord = new SummerhouseReservation(newRecordPK);
 
-        newRecord.setPointsAmount(pointsService.getSummerhousePoints());
+        newRecord.setPointsAmount(summerhousePoints);
         newRecord.setRecordCreated(recordDate);
         em.persist(newRecord);
 //        newRecord.setAccount(sessionBean.getLoggedAccount());
@@ -130,7 +133,7 @@ public class ReservationController implements Serializable{
                 service.getServiceID(), reservationBeginDate, reservationEndDate);
        
                 AdditionalServicesReservation newADRecord = new AdditionalServicesReservation(newADRecordPK);
-                newADRecord.setPointsAmount(pointsService.getAdditionalServicesPoints());
+                newADRecord.setPointsAmount(additionalServicesPoints);
                 newADRecord.setRecordCreated(recordDate);
                 em.persist(newADRecord);
             }
@@ -147,12 +150,14 @@ public class ReservationController implements Serializable{
 
         switch(event.getOldStep()){
             case "chooseReservationDate":
-                boolean areDatesCorrect = reservationService.validateSummerhouseReservationDates(reservationBeginDate, reservationEndDate, summerhouseController.getSelected().getId());
+                boolean areDatesCorrect = validateSummerhouseReservationDates(reservationBeginDate, reservationEndDate, summerhouseController.getSelected().getId());
                 
                 if (areDatesCorrect)
                 {
-                    pointsService.calculateAllPoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
-                
+                    summerhousePoints=pointsService.calculateSummerhousePoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
+                    additionalServicesPoints = pointsService.calculateAdditionalServicesPoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
+                    pointsSum=summerhousePoints.add(additionalServicesPoints);
+
                     return event.getNewStep();
                 } else{
                     FacesContext context = FacesContext.getCurrentInstance();
@@ -166,10 +171,12 @@ public class ReservationController implements Serializable{
                 if (!event.getNewStep().equals("payment"))
                     return event.getNewStep();
                                 
-                areDatesCorrect = reservationService.validateAdditionalServicesValidationDates(reservationBeginDate, reservationEndDate,additionalServicesController.getItems(), additionalServicesController.getSelectedItems());
+                areDatesCorrect = validateAdditionalServicesValidationDates(reservationBeginDate, reservationEndDate,additionalServicesController.getItems(), additionalServicesController.getSelectedItems());
                 
                 if (areDatesCorrect){
-                    pointsService.calculateAllPoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
+                    summerhousePoints=pointsService.calculateSummerhousePoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
+                    additionalServicesPoints = pointsService.calculateAdditionalServicesPoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
+                    pointsSum=summerhousePoints.add(additionalServicesPoints);
                     return event.getNewStep();
                 } else{
                     
@@ -191,6 +198,90 @@ public class ReservationController implements Serializable{
         }
                     
         return event.getNewStep();
+        
+    }
+    
+    public boolean validateSummerhouseReservationDates(Date startDate, Date endDate,int summerhouseID){
+        
+        errorList = new ArrayList<>();
+        
+        if (CalendarUtils.countDaysBetweenDatesBySpecificYear(startDate, endDate, LocalDateTime.now().getYear())>4){
+            errorList.add(ResourceBundle.getBundle("/ReservationBundle").getString("BadReservationLength"));
+            return false;
+        }
+        
+        if (startDate.after(endDate)){
+            errorList.add(ResourceBundle.getBundle("/ReservationBundle").getString("StartDateIsAfterEndError"));
+            return false;
+        }
+            
+        
+        List<Date> selectedDates= CalendarUtils.getDatesBetweenDates(startDate, endDate);
+        
+        List<SummerhouseReservation> reservationHistory =  em.createNamedQuery("SummerhouseReservation.findBySummerhouseID")
+                .setParameter("summerhouseID", summerhouseID).getResultList();
+        
+        List<Date> allSummerhouseDates = new ArrayList<>();
+        
+        for(SummerhouseReservation record:reservationHistory){
+            Date recordStartDate = record.getSummerhouseReservationPK().getBeginDate();
+            Date recordEndDate = record.getSummerhouseReservationPK().getEndDate();
+            
+            allSummerhouseDates.addAll(CalendarUtils.getDatesBetweenDates(recordStartDate, recordEndDate));
+        }
+        
+        for(Date date:selectedDates){
+            if (allSummerhouseDates.contains(date)){
+                errorList.add(ResourceBundle.getBundle("/ReservationBundle").getString("BadReservationDates"));
+                return false;
+            }
+        }
+        
+        return true;
+    }    
+    
+    private boolean validateAdditionalServiceReservationDate(int additionalServiceID, List<Date> selectedDates){
+        
+        List<AdditionalServicesReservation> reservationHistory =  em.createNamedQuery("AdditionalServicesReservation.findByServiceID")
+                .setParameter("serviceID", additionalServiceID).getResultList();
+        
+        List<Date> allServiceDates = new ArrayList<>();
+        
+        for(AdditionalServicesReservation record:reservationHistory){
+            Date recordStartDate = record.getAdditionalServicesReservationPK().getBeginDate();
+            Date recordEndDate = record.getAdditionalServicesReservationPK().getEndDate();
+            
+            allServiceDates.addAll(CalendarUtils.getDatesBetweenDates(recordStartDate, recordEndDate));
+        }
+        
+        for(Date date:selectedDates){
+            if (allServiceDates.contains(date)){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public boolean validateAdditionalServicesValidationDates(Date startDate, Date endDate, List<AdditionalServices> allItems, List<String> selectedItems){
+        
+        errorList = new ArrayList<>();
+        
+        List<Date> selectedDates= CalendarUtils.getDatesBetweenDates(startDate, endDate);
+        
+        for(AdditionalServices service:allItems){
+            
+            if (selectedItems.contains(service.getName())){
+            
+                if (!validateAdditionalServiceReservationDate(service.getServiceID(), selectedDates)){
+                    errorList.add(service.getName());
+                    return false;
+                }
+            }
+            
+        }
+        
+        return true;
         
     }
     
@@ -254,6 +345,50 @@ public class ReservationController implements Serializable{
      */
     public void setEndOfReservationProcess(Date endOfReservationProcess) {
         this.endOfReservationProcess = endOfReservationProcess;
+    }
+
+
+
+    /**
+     * @return the summerhousePoints
+     */
+    public BigDecimal getSummerhousePoints() {
+        return summerhousePoints;
+    }
+
+    /**
+     * @param summerhousePoints the summerhousePoints to set
+     */
+    public void setSummerhousePoints(BigDecimal summerhousePoints) {
+        this.summerhousePoints = summerhousePoints;
+    }
+
+    /**
+     * @return the additionalServicesPoints
+     */
+    public BigDecimal getAdditionalServicesPoints() {
+        return additionalServicesPoints;
+    }
+
+    /**
+     * @param additionalServicesPoints the additionalServicesPoints to set
+     */
+    public void setAdditionalServicesPoints(BigDecimal additionalServicesPoints) {
+        this.additionalServicesPoints = additionalServicesPoints;
+    }
+
+    /**
+     * @return the pointsSum
+     */
+    public BigDecimal getPointsSum() {
+        return pointsSum;
+    }
+
+    /**
+     * @param pointsSum the pointsSum to set
+     */
+    public void setPointsSum(BigDecimal pointsSum) {
+        this.pointsSum = pointsSum;
     }
 
 }

@@ -65,7 +65,7 @@
                                 <p:messages />
 
                                 <p:outputLabel value="#{ReservationBundle.PointsToPay}"/>
-                                <p:outputLabel value="#{pointsService.points}"/>
+                                <p:outputLabel value="#{reservationController.pointsSum}"/>
 
                                 <h:panelGrid columns="3" cellpadding="5">
                                     <h:outputLabel for="checkbox" value="#{ReservationBundle.AdditionalServices}" />
@@ -86,7 +86,7 @@
                                 <h:panelGrid>
                                     <div>
                                         <p:fieldset legend="#{ReservationBundle.PaymentOptions}">
-                                            <p:outputLabel value="#{ReservationBundle.PointsToPay}#{pointsService.points}"/><br/>
+                                            <p:outputLabel value="#{ReservationBundle.PointsToPay}#{reservationController.pointsSum}"/><br/>
                                             <p:commandButton oncomplete="PF('pointsPaymentDialogWidgetVar').show()"
                                                              update=":pointsPayingForm"
                                                              title="#{ReservationBundle.PayByPoints}"

@@ -25,7 +25,7 @@
                         <p:outputLabel value="#{authenticationBean.loggedAccount.pointsQuantity}"/>
 
                         <p:outputLabel value="#{ReservationBundle.PointsToPay}"/>
-                        <p:outputLabel value="#{pointsService.points}"/>
+                        <p:outputLabel value="#{reservationController.pointsSum}"/>
 
                         <p:commandButton update="pointsPaymentPanelId" 
                                          value="#{ReservationBundle.DoPaymentButtonTitle}"
