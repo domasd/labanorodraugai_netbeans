@@ -102,8 +102,12 @@ public class Account implements Serializable {
     @NotNull
     @Column(name = "PointsQuantity")
     private BigDecimal pointsQuantity;
+    
+    @NotNull
+    @Version
     @Column(name = "OptLockVersion")
     private Integer optLockVersion;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     private List<AdditionalServicesReservation> additionalServicesReservationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")

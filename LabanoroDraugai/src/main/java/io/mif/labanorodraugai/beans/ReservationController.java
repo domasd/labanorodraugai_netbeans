@@ -45,10 +45,10 @@ import org.primefaces.event.FlowEvent;
  * @author SFILON
  */
 
-@ViewScoped
-@Stateful
+
 @Named
-@TransactionManagement(TransactionManagementType.CONTAINER)
+@Stateful
+@ViewScoped
 public class ReservationController implements Serializable{
            
     @Inject
@@ -106,17 +106,14 @@ public class ReservationController implements Serializable{
     }    
        
     private void submitReservation(Date recordDate) {
-
+        
         SummerhouseReservationPK newRecordPK = new SummerhouseReservationPK(sessionBean.getLoggedAccount().getId(),
                 summerhouseController.getSelected().getId(), reservationBeginDate, reservationEndDate);
         SummerhouseReservation newRecord = new SummerhouseReservation(newRecordPK);
 
         newRecord.setPointsAmount(summerhousePoints);
         newRecord.setRecordCreated(recordDate);
-        em.persist(newRecord);
-//        newRecord.setAccount(sessionBean.getLoggedAccount());
-//        newRecord.setSummerhouse(summerhouseController.getSelected());   
-                
+        em.persist(newRecord);       
     }
  
     private void submitAdditionalServices(Date recordDate){

@@ -10,7 +10,7 @@ CREATE TABLE `labanorodraugai_db`.`account` (
   `FB_URL` VARCHAR(100) NULL,
   `ReservationGroup` INT(11) NULL,
   `PointsQuantity` DECIMAL(30,2) ZEROFILL NOT NULL,
-  `OptLockVersion` INT,
+  `OptLockVersion` INT NOT NULL DEFAULT 0,
   CONSTRAINT `ReservationGroupFK`
     FOREIGN KEY (`ReservationGroup`)
     REFERENCES `labanorodraugai_db`.`reservation_groups` (`GroupNumber`)

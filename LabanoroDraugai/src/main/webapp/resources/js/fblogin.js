@@ -39,8 +39,6 @@ function login() {
             });
         } 
     }, {scope: 'email'});
-    
-    
 }
 
 
