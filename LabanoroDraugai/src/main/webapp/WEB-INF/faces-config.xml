@@ -28,5 +28,9 @@
             <base-name>/ReservationBundle</base-name>
             <var>ReservationBundle</var>
         </resource-bundle>
+        <resource-bundle>
+            <base-name>/RegistrationBundle</base-name>
+            <var>RegistrationBundle</var>
+        </resource-bundle>
     </application>
 </faces-config>
