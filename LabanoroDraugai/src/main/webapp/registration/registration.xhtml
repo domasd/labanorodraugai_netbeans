@@ -8,7 +8,8 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <head>
         <title>Registracija</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -17,6 +18,8 @@ and open the template in the editor.
         <ui:composition template="../template/commonLayout.xhtml">
 
             <ui:define name="content">
+                <p:growl globalOnly="true" sticky="true" autoUpdate="true"/>     
+
                 <h:outputScript library="js" name="fblogin.js" />
 
                 <h:form id="registerForm">  
@@ -32,7 +35,12 @@ and open the template in the editor.
                             <h:message for="lastName" style="color:red" />
 
                             <h:outputLabel for="email" value="El. pašto adresas" />
-                            <p:inputText id="email" value="#{registrationController.account.email}" required="true" requiredMessage="Būtinas laukas"/>
+                            <p:inputText id="email"
+                                         value="#{registrationController.account.email}" 
+                                         required="true" 
+                                         requiredMessage="Būtinas laukas">
+                                <f:attribute name="userId" value="#{authenticationBean.loggedAccount.id}" />
+                            </p:inputText>
                             <h:message for="email" style="color:red" />
 
                             <h:outputLabel for="pwd1" value="Slaptažodis" />
@@ -49,7 +57,6 @@ and open the template in the editor.
                         #{CommonBundle.Or}
                         <p:commandButton id="fbLoginClick" onclick="login()" value="#{loginBundle.LoginWithFacebook}" styleClass="fb-button-override-original" icon="fa fa-facebook-square"/>
 
-                        <p:growl globalOnly="true" sticky="true" autoUpdate="true"/>     
                     </p:fieldset>
                 </h:form>   
                 <h:form>
