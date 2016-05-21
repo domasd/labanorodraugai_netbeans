@@ -38,8 +38,9 @@ and open the template in the editor.
                             <p:inputText id="email"
                                          value="#{registrationController.account.email}" 
                                          required="true" 
-                                         requiredMessage="Būtinas laukas">
-                                <f:attribute name="userId" value="#{authenticationBean.loggedAccount.id}" />
+                                         requiredMessage="Būtinas laukas"
+                                         validator="#{emailValidator.validate}">
+                                <f:attribute name="userId" value="#{0}" />
                             </p:inputText>
                             <h:message for="email" style="color:red" />
 
@@ -53,7 +54,12 @@ and open the template in the editor.
                             <h:message for="pwd2" style="color:red" />
 
                         </h:panelGrid>
-                        <p:commandButton update="registrationGrid" value="Registruotis" action="#{registrationController.registerAccount}" />
+
+                        <p:commandButton update="registerForm" 
+                                         value="Registruotis" 
+                                         action="#{registrationController.registerAccount}" 
+                                         ajax="false"
+                                         validateClient="true" />
                         #{CommonBundle.Or}
                         <p:commandButton id="fbLoginClick" onclick="login()" value="#{loginBundle.LoginWithFacebook}" styleClass="fb-button-override-original" icon="fa fa-facebook-square"/>
 

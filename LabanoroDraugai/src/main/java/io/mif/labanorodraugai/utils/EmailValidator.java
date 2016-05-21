@@ -37,7 +37,7 @@ public class EmailValidator implements Validator {
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        int userId = (int) component.getAttributes().get("userId"); 
+        int userId = Integer.parseInt(component.getAttributes().get("userId").toString()); 
         matcher = pattern.matcher(value.toString());
         if (!matcher.matches()) {
             String badInputMsg = String.format("%1$s %2$s",
