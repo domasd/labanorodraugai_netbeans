@@ -5,10 +5,11 @@
  */
 package io.mif.labanorodraugai.entities;
 
-import io.mif.labanorodraugai.entities.Account;
-import io.mif.labanorodraugai.entities.Summerhouse;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -16,6 +17,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,13 +34,24 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SummerhouseReservation.findByAccountID", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.accountID = :accountID"),
     @NamedQuery(name = "SummerhouseReservation.findBySummerhouseID", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.summerhouseID = :summerhouseID"),
     @NamedQuery(name = "SummerhouseReservation.findByBeginDate", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.beginDate = :beginDate"),
-    @NamedQuery(name = "SummerhouseReservation.findByAccountAndSummerhouse", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.accountID = :accountID and s.summerhouseReservationPK.summerhouseID=:summerhouseID"),
-    @NamedQuery(name = "SummerhouseReservation.findByEndDate", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.endDate = :endDate")})
+    @NamedQuery(name = "SummerhouseReservation.findByEndDate", query = "SELECT s FROM SummerhouseReservation s WHERE s.summerhouseReservationPK.endDate = :endDate"),
+    @NamedQuery(name = "SummerhouseReservation.findByRecordCreated", query = "SELECT s FROM SummerhouseReservation s WHERE s.recordCreated = :recordCreated"),
+    @NamedQuery(name = "SummerhouseReservation.findByPointsAmount", query = "SELECT s FROM SummerhouseReservation s WHERE s.pointsAmount = :pointsAmount")})
 public class SummerhouseReservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected SummerhouseReservationPK summerhouseReservationPK;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "RecordCreated")
+    @Temporal(TemporalType.DATE)
+    private Date recordCreated;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PointsAmount")
+    private BigDecimal pointsAmount;
     @JoinColumn(name = "AccountID", referencedColumnName = "Id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Account account;
@@ -51,6 +66,12 @@ public class SummerhouseReservation implements Serializable {
         this.summerhouseReservationPK = summerhouseReservationPK;
     }
 
+    public SummerhouseReservation(SummerhouseReservationPK summerhouseReservationPK, Date recordCreated, BigDecimal pointsAmount) {
+        this.summerhouseReservationPK = summerhouseReservationPK;
+        this.recordCreated = recordCreated;
+        this.pointsAmount = pointsAmount;
+    }
+
     public SummerhouseReservation(int accountID, int summerhouseID, Date beginDate, Date endDate) {
         this.summerhouseReservationPK = new SummerhouseReservationPK(accountID, summerhouseID, beginDate, endDate);
     }
@@ -61,6 +82,22 @@ public class SummerhouseReservation implements Serializable {
 
     public void setSummerhouseReservationPK(SummerhouseReservationPK summerhouseReservationPK) {
         this.summerhouseReservationPK = summerhouseReservationPK;
+    }
+
+    public Date getRecordCreated() {
+        return recordCreated;
+    }
+
+    public void setRecordCreated(Date recordCreated) {
+        this.recordCreated = recordCreated;
+    }
+
+    public BigDecimal getPointsAmount() {
+        return pointsAmount;
+    }
+
+    public void setPointsAmount(BigDecimal pointsAmount) {
+        this.pointsAmount = pointsAmount;
     }
 
     public Account getAccount() {
@@ -101,7 +138,7 @@ public class SummerhouseReservation implements Serializable {
 
     @Override
     public String toString() {
-        return "io.mif.labanorodraugai.beans.SummerhouseReservation[ summerhouseReservationPK=" + summerhouseReservationPK + " ]";
+        return "io.mif.labanorodraugai.entities.SummerhouseReservation[ summerhouseReservationPK=" + summerhouseReservationPK + " ]";
     }
     
 }

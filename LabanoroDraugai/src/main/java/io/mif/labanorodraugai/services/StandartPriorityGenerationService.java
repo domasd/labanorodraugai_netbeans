@@ -30,7 +30,7 @@ import javax.inject.Named;
 public class StandartPriorityGenerationService extends AbstractPriorityGenerationService{
 
     @Override
-    List<ReservationGroups> createReservationGroups(int numberOfGroups, Date reservationStartDate) {
+    protected List<ReservationGroups> createReservationGroups(int numberOfGroups, Date reservationStartDate) {
         
         List<ReservationGroups> reservationGroups = new ArrayList<>();
         
@@ -44,7 +44,7 @@ public class StandartPriorityGenerationService extends AbstractPriorityGeneratio
     }
 
     @Override
-    Map<String, Integer> setReservationGroupsToAccounts(List<Account> allAccounts, int numberOfUsersInOneGroup) {
+    protected Map<String, Integer> setReservationGroupsToAccounts(List<Account> allAccounts, int numberOfUsersInOneGroup) {
         Map<String,Integer> accAndHolidays = new HashMap<>();
         List<Integer> holidays = new ArrayList<>(); 
         int currentYear = LocalDateTime.now().getYear();       
@@ -82,5 +82,6 @@ public class StandartPriorityGenerationService extends AbstractPriorityGeneratio
         return accountAndReservationGroups;
     }
     
+
     
 }

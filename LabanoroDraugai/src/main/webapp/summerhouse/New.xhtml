@@ -60,6 +60,14 @@
                                      required="true" 
                                      requiredMessage="#{CommonBundle.RequiredField} #{SummerhouseBundle.Title_description}"/>
                         
+                        <p:outputLabel value="#{SummerhouseBundle.Label_pointsPerDay}" 
+                                       for="points" />        
+                        <p:inputText id="points" 
+                                     value="#{summerhouseController.selected.pointsPerDay}" 
+                                     title="#{SummerhouseBundle.Title_pointsPerDay}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{SummerhouseBundle.Title_pointsPerDay}"/>
+                        
                     </p:panelGrid>
 
                     <p:commandButton update="createPanelId,:SummerhouseListForm:datalist,:growl" 

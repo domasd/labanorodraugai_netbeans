@@ -6,6 +6,7 @@
 package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.entities.Account;
+import io.mif.labanorodraugai.entities.ReservationGroups;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import io.mif.labanorodraugai.services.PasswordHashService;
 import io.mif.labanorodraugai.utils.ConstantsBean;
@@ -80,10 +81,6 @@ public class AuthenticationBean implements Serializable {
     
     public boolean isAuthorizedAndCandidate() {
         return loggedAccount != null && loggedAccount.getStatus() == AccountStatus.Candidate;
-    }
-    
-    public String logint2(){
-        return null;
     }
     
     public String login() throws NoSuchAlgorithmException {

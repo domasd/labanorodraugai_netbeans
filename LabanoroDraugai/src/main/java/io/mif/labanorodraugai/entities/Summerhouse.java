@@ -6,9 +6,8 @@
 package io.mif.labanorodraugai.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,12 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,44 +31,51 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Summerhouse.findAll", query = "SELECT s FROM Summerhouse s"),
     @NamedQuery(name = "Summerhouse.findById", query = "SELECT s FROM Summerhouse s WHERE s.id = :id"),
-    @NamedQuery(name = "Summerhouse.findByNumber", query = "SELECT s FROM Summerhouse s WHERE s.number = :number"),
     @NamedQuery(name = "Summerhouse.findByName", query = "SELECT s FROM Summerhouse s WHERE s.name = :name"),
+    @NamedQuery(name = "Summerhouse.findByNumber", query = "SELECT s FROM Summerhouse s WHERE s.number = :number"),
+    @NamedQuery(name = "Summerhouse.findByCapacity", query = "SELECT s FROM Summerhouse s WHERE s.capacity = :capacity"),
     @NamedQuery(name = "Summerhouse.findByDescription", query = "SELECT s FROM Summerhouse s WHERE s.description = :description"),
-    @NamedQuery(name = "Summerhouse.findByCapacity", query = "SELECT s FROM Summerhouse s WHERE s.capacity = :capacity")})
+    @NamedQuery(name = "Summerhouse.findByPointsPerDay", query = "SELECT s FROM Summerhouse s WHERE s.pointsPerDay = :pointsPerDay")})
 public class Summerhouse implements Serializable {
 
-    @Lob
-    @Column(name = "Image")
-    private byte[] image;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "PointsPerDay")
-    private int pointsPerDay;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouse")
-    private List<SummerhouseReservation> summerhouseReservationList;
-   
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Number")
-    private Integer number;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "Name")
     private String name;
-    @Size(max = 45)
-    @Column(name = "Description")
-    private String description;
+    @Column(name = "Number")
+    private Integer number;
     @Column(name = "Capacity")
     private Integer capacity;
-    
+    @Size(max = 256)
+    @Column(name = "Description")
+    private String description;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PointsPerDay")
+    private BigDecimal pointsPerDay;
+    @Lob
+    @Column(name = "Image")
+    private byte[] image;
+
     public Summerhouse() {
     }
 
     public Summerhouse(Integer id) {
         this.id = id;
+    }
+
+    public Summerhouse(Integer id, String name, BigDecimal pointsPerDay) {
+        this.id = id;
+        this.name = name;
+        this.pointsPerDay = pointsPerDay;
     }
 
     public Integer getId() {
@@ -82,14 +86,6 @@ public class Summerhouse implements Serializable {
         this.id = id;
     }
 
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     public String getName() {
         return name;
     }
@@ -98,12 +94,12 @@ public class Summerhouse implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public Integer getNumber() {
+        return number;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public Integer getCapacity() {
@@ -114,14 +110,28 @@ public class Summerhouse implements Serializable {
         this.capacity = capacity;
     }
 
-
-    @XmlTransient
-    public List<SummerhouseReservation> getSummerhouseReservationList() {
-        return summerhouseReservationList;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSummerhouseReservationList(List<SummerhouseReservation> summerhouseReservationList) {
-        this.summerhouseReservationList = summerhouseReservationList;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPointsPerDay() {
+        return pointsPerDay;
+    }
+
+    public void setPointsPerDay(BigDecimal pointsPerDay) {
+        this.pointsPerDay = pointsPerDay;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     @Override
@@ -148,22 +158,5 @@ public class Summerhouse implements Serializable {
     public String toString() {
         return "io.mif.labanorodraugai.entities.Summerhouse[ id=" + id + " ]";
     }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public int getPointsPerDay() {
-        return pointsPerDay;
-    }
-
-    public void setPointsPerDay(int pointsPerDay) {
-        this.pointsPerDay = pointsPerDay;
-    }
-
     
 }
