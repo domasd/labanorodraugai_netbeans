@@ -6,6 +6,7 @@
 package io.mif.labanorodraugai.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,6 +28,31 @@ import javax.validation.constraints.Size;
 @Table(name = "config")
 @NamedQueries({@NamedQuery(name = "Config.getConfig", query = "SELECT c FROM Config c")})
 public class Config implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FirstDateAbleToReserve")
+    @Temporal(TemporalType.DATE)
+    private Date firstDateAbleToReserve;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "LastDateAbleToReserve")
+    @Temporal(TemporalType.DATE)
+    private Date lastDateAbleToReserve;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ReservationProcessBeginDate")
+    @Temporal(TemporalType.DATE)
+    private Date reservationProcessBeginDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MaxNumberOfAccountsInOneGroup")
+    private int maxNumberOfAccountsInOneGroup;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MaxReservationDaysLength")
+    private int maxReservationDaysLength;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -103,6 +131,46 @@ public class Config implements Serializable {
     @Override
     public String toString() {
         return "io.mif.labanorodraugai.entities.Config[ id=" + id + " ]";
+    }
+
+    public Date getReservationProcessBeginDate() {
+        return reservationProcessBeginDate;
+    }
+
+    public void setReservationProcessBeginDate(Date reservationProcessBeginDate) {
+        this.reservationProcessBeginDate = reservationProcessBeginDate;
+    }
+
+    public int getMaxNumberOfAccountsInOneGroup() {
+        return maxNumberOfAccountsInOneGroup;
+    }
+
+    public void setMaxNumberOfAccountsInOneGroup(int maxNumberOfAccountsInOneGroup) {
+        this.maxNumberOfAccountsInOneGroup = maxNumberOfAccountsInOneGroup;
+    }
+
+    public int getMaxReservationDaysLength() {
+        return maxReservationDaysLength;
+    }
+
+    public void setMaxReservationDaysLength(int maxReservationDaysLength) {
+        this.maxReservationDaysLength = maxReservationDaysLength;
+    }
+
+    public Date getFirstDateAbleToReserve() {
+        return firstDateAbleToReserve;
+    }
+
+    public void setFirstDateAbleToReserve(Date firstDateAbleToReserve) {
+        this.firstDateAbleToReserve = firstDateAbleToReserve;
+    }
+
+    public Date getLastDateAbleToReserve() {
+        return lastDateAbleToReserve;
+    }
+
+    public void setLastDateAbleToReserve(Date lastDateAbleToReserve) {
+        this.lastDateAbleToReserve = lastDateAbleToReserve;
     }
     
 }

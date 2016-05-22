@@ -1,9 +1,14 @@
 CREATE TABLE `labanorodraugai_db`.`config` (
     `Id` INT(10) UNSIGNED PRIMARY KEY DEFAULT 1,
     `MinApprovalsRequired` INT(10) UNSIGNED NOT NULL DEFAULT 2,
-    `CustomRegistrationFields` TEXT NOT NULL
+    `CustomRegistrationFields` TEXT NOT NULL,
+    `ReservationProcessBeginDate` DATE NOT NULL,
+    `MaxNumberOfAccountsInOneGroup` INT NOT NULL,
+    `MaxReservationDaysLength` INT NOT NULL,
+    `FirstDateAbleToReserve` DATE NOT NULL,
+    `LastDateAbleToReserve` DATE NOT NULL
 );
 
 -- Default configuration
-INSERT INTO `labanorodraugai_db`.`config` VALUES(1,5, '["Education","Address"]');
-	
+INSERT INTO `labanorodraugai_db`.`config` VALUES(1,5, '["Education","Address"]','2016-04-01',2,4,'2016-06-01','2016-08-31');
+

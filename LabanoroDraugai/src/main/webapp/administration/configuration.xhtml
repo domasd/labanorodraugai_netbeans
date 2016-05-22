@@ -28,7 +28,57 @@
                                      required="true" 
                                      requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.MinApprovalsRequired}"
                                      styleClass="full-width"/>
+                        
+                        <p:outputLabel value="#{AdministrationBundle.ReservationProcessBeginDate}" 
+                                       for="reservationProcessBeginDate" />
+                        <p:calendar id="reservationProcessBeginDate" 
+                                    value="#{administrationController.config.reservationProcessBeginDate}"
+                                    title="#{AdministrationBundle.ReservationProcessBeginDate}"
+                                    required="true"
+                                    requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.ReservationProcessBeginDate}"
+                                    styleClass="full-width"/>
+             
+                        <p:outputLabel value="#{AdministrationBundle.MaxNumberOfAccountsInOneGroup}" 
+                                       for="maxNumberOfAccountsInOneGroup" />
+                        <p:inputText id="maxNumberOfAccountsInOneGroup" 
+                                     value="#{administrationController.config.maxNumberOfAccountsInOneGroup}" 
+                                     title="#{AdministrationBundle.MaxNumberOfAccountsInOneGroup}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.MaxNumberOfAccountsInOneGroup}
+                                     styleClass="full-width"/>
+                        
+                        <p:outputLabel value="#{AdministrationBundle.MaxReservationDaysLength}" 
+                                       for="maxReservationDaysLength" />
+                        <p:inputText id="maxReservationDaysLength" 
+                                     value="#{administrationController.config.maxReservationDaysLength}" 
+                                     title="#{AdministrationBundle.MaxReservationDaysLength}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.MaxReservationDaysLength}"
+                                     styleClass="full-width"/>
+                        
+                        <p:outputLabel value="#{AdministrationBundle.FirstDateAbleToReserve}" 
+                                       for="firstDateAbleToReserve" />
+                        <p:inputText id="firstDateAbleToReserve" 
+                                     value="#{administrationController.config.firstDateAbleToReserve}" 
+                                     title="#{AdministrationBundle.FirstDateAbleToReserve}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.FirstDateAbleToReserve}"
+                                     styleClass="full-width"/>
+                        
+                        <p:outputLabel value="#{AdministrationBundle.LastDateAbleToReserve}" 
+                                       for="lastDateAbleToReserve" />
+                        <p:inputText id="lastDateAbleToReserve" 
+                                     value="#{administrationController.config.lastDateAbleToReserve}" 
+                                     title="#{AdministrationBundle.LastDateAbleToReserve}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.LastDateAbleToReserve}"
+                                     styleClass="full-width"/>
+                        
                     </h:panelGrid>
+                    
+                    
+                    
+                    
                     <p:commandButton update=":editPanelId" 
                                      value="#{CommonBundle.Save}" 
                                      action="#{administrationController.update}"

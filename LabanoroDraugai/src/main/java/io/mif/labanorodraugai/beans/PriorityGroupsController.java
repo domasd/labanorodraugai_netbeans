@@ -7,6 +7,7 @@ package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.services.StandartPriorityGenerationService;
 import io.mif.labanorodraugai.utils.CalendarUtils;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import javax.ejb.Schedule;
@@ -26,7 +27,10 @@ import javax.inject.Named;
 public class PriorityGroupsController {
     
     @Inject
-    StandartPriorityGenerationService reservationController; 
+    StandartPriorityGenerationService priorityGenerationController; 
+    
+    @Inject
+    AdministrationController administrationController;
     
     private Date startOfRegistration;
     
@@ -34,12 +38,17 @@ public class PriorityGroupsController {
         
     @Schedule(year="*", month="1", dayOfMonth = "1", hour = "0",minute = "0", second = "2", persistent = false)
     public void regeneratePriorityGroups(){
-        System.out.println("SOMETHING VERY BAD IS HAPPENING!");
-        //for testing
-        this.startOfRegistration = CalendarUtils.getDate(LocalDateTime.now().getYear(), 3, 1);
-        this.numberOfUsersInOneGroup=2;
+        SimpleDateFormat monthFormat=new SimpleDateFormat("mm");
+        SimpleDateFormat daysFormat =new SimpleDateFormat("dd");
+        
+        Date registrationDateSettings = administrationController.getConfig().getReservationProcessBeginDate();
+        this.startOfRegistration = CalendarUtils.getDate(LocalDateTime.now().getYear(),
+                Integer.parseInt(monthFormat.format(registrationDateSettings)),
+                Integer.parseInt(daysFormat.format(registrationDateSettings)));
+
+        this.numberOfUsersInOneGroup=administrationController.getConfig().getMaxNumberOfAccountsInOneGroup();
             
-        reservationController.generateReservationPriority(numberOfUsersInOneGroup, this.startOfRegistration);        
+        priorityGenerationController.generateReservationPriority(numberOfUsersInOneGroup, this.startOfRegistration);        
     }   
 
 }

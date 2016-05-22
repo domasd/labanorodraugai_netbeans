@@ -45,15 +45,15 @@
                                     <p:outputLabel value="#{ReservationBundle.ReserveBeginDate}"/>
                                     <p:calendar value="#{reservationController.reservationBeginDate}"
                                                 beforeShowDay="afterLoad" 
-                                                mindate="#{reservationController.startOfReservationProcess}" 
-                                                maxdate="#{reservationController.endOfReservationProcess}"
+                                                mindate="#{administrationController.config.firstDateAbleToReserve}" 
+                                                maxdate="#{administrationController.config.lastDateAbleToReserve}"
                                                 required="true" requiredMessage="#{ReservationBundle.BeginDateNotSelectedError}"/>
 
                                     <p:outputLabel value="#{ReservationBundle.ReserveEndDate}"/>
                                     <p:calendar value="#{reservationController.reservationEndDate}"
                                                 beforeShowDay="afterLoad" 
-                                                mindate="#{reservationController.startOfReservationProcess}" 
-                                                maxdate="#{reservationController.endOfReservationProcess}"
+                                                mindate="#{administrationController.config.firstDateAbleToReserve}" 
+                                                maxdate="#{administrationController.config.lastDateAbleToReserve}"
                                                 required="true" requiredMessage="#{ReservationBundle.EndDateNotSelected}"/>                             
                                 </h:panelGrid>
                             </p:panel>

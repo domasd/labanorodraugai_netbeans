@@ -63,16 +63,15 @@ public class ReservationController implements Serializable{
     @Inject
     private AuthenticationBean sessionBean;
     
+    @Inject
+    private AdministrationController administrationController;
+    
     @PersistenceContext
     private EntityManager em;
     
     private Date reservationBeginDate;
     
     private Date reservationEndDate;
-    
-    private Date startOfReservationProcess;
-    
-    private Date endOfReservationProcess;
     
     private BigDecimal pointsSum;
     
@@ -202,7 +201,7 @@ public class ReservationController implements Serializable{
         
         errorList = new ArrayList<>();
         
-        if (CalendarUtils.countDaysBetweenDatesBySpecificYear(startDate, endDate, LocalDateTime.now().getYear())>4){
+        if (CalendarUtils.countDaysBetweenDatesBySpecificYear(startDate, endDate, LocalDateTime.now().getYear())>administrationController.getConfig().getMaxReservationDaysLength()){
             errorList.add(ResourceBundle.getBundle("/ReservationBundle").getString("BadReservationLength"));
             return false;
         }
@@ -315,36 +314,6 @@ public class ReservationController implements Serializable{
     public void setReservationEndDate(Date reservationEndDate) {
         this.reservationEndDate = reservationEndDate;
     }
-
-    /**
-     * @return the startOfReservationProcess
-     */
-    public Date getStartOfReservationProcess() {
-        return CalendarUtils.getDate(2016,5,1);
-    }
-
-    /**
-     * @param startOfReservationProcess the startOfReservationProcess to set
-     */
-    public void setStartOfReservationProcess(Date startOfReservationProcess) {
-        this.startOfReservationProcess = startOfReservationProcess;
-    }
-
-    /**
-     * @return the endOfReservationProcess
-     */
-    public Date getEndOfReservationProcess() {
-        return CalendarUtils.getDate(2016, 7, 31);
-    }
-
-    /**
-     * @param endOfReservationProcess the endOfReservationProcess to set
-     */
-    public void setEndOfReservationProcess(Date endOfReservationProcess) {
-        this.endOfReservationProcess = endOfReservationProcess;
-    }
-
-
 
     /**
      * @return the summerhousePoints
