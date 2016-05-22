@@ -5,7 +5,6 @@
  */
 package io.mif.labanorodraugai.beans;
 
-import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.services.StandartPriorityGenerationService;
 import io.mif.labanorodraugai.utils.CalendarUtils;
 import java.time.LocalDateTime;

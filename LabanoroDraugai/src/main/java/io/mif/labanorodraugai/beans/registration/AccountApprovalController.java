@@ -5,6 +5,7 @@
  */
 package io.mif.labanorodraugai.beans.registration;
 
+import io.mif.labanorodraugai.beans.AdministrationController;
 import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.entities.AccountApproval;
 import io.mif.labanorodraugai.entities.Account;
@@ -45,6 +46,9 @@ public class AccountApprovalController implements Serializable {
 
     @Inject
     private AuthenticationBean authenticationBean;
+    
+    @Inject
+    private AdministrationController administrationController;
         
     @PostConstruct
     public void init() {
@@ -92,7 +96,7 @@ public class AccountApprovalController implements Serializable {
                     .setParameter("candidateId", approval.getAccountApprovalPK().getCandidateId())
                     .getResultList();
 
-        if (approvals.size() >= 5) {
+        if (approvals.size() >= administrationController.getConfig().getMinApprovalsRequired()) {
             this.approval.getCandidate().setStatus(AccountStatus.Member);
             this.approval = em.merge(this.approval);
         }
