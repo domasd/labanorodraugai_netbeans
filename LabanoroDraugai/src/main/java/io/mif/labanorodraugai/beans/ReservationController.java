@@ -7,6 +7,7 @@ import io.mif.labanorodraugai.entities.AdditionalServicesReservation;
 import io.mif.labanorodraugai.entities.AdditionalServicesReservationPK;
 import io.mif.labanorodraugai.entities.SummerhouseReservation;
 import io.mif.labanorodraugai.entities.SummerhouseReservationPK;
+import io.mif.labanorodraugai.services.IPointsService;
 import io.mif.labanorodraugai.services.PointsService;
 import io.mif.labanorodraugai.services.StandartPriorityGenerationService;
 import io.mif.labanorodraugai.utils.CalendarUtils;
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.util.converter.LocalDateTimeStringConverter;
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -27,12 +29,15 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Default;
 import javax.faces.application.FacesMessage;
 
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Qualifier;
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
@@ -49,10 +54,11 @@ import org.primefaces.event.FlowEvent;
 @Named
 @Stateful
 @ViewScoped
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class ReservationController implements Serializable{
            
-    @Inject
-    private PointsService pointsService;
+    @EJB
+    private IPointsService pointsService;
     
     @Inject
     private AdditionalServicesController additionalServicesController;

@@ -5,6 +5,7 @@
  */
 package io.mif.labanorodraugai.services;
 
+import io.mif.labanorodraugai.interceptors.Log;
 import io.mif.labanorodraugai.beans.AdditionalServicesController;
 import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.beans.SummerhouseController;
@@ -14,10 +15,12 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
 import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.enterprise.context.Dependent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,11 +33,7 @@ import javax.persistence.PersistenceContext;
  * @author SFILON
  */
 @Stateful
-@Named
-@ViewScoped
-@TransactionManagement(TransactionManagementType.CONTAINER)
-
-public class PointsService {
+public class PointsService implements IPointsService {
         
     @PersistenceContext
     private EntityManager em;
@@ -47,23 +46,14 @@ public class PointsService {
     
     @Inject
     private AdditionalServicesController additionalServicesController;
-    
-    private BigDecimal Points;
-    
-    private BigDecimal summerhousePoints;
-    
-    private BigDecimal additionalServicesPoints;
-    
-    public void calculateAllPoints(int numberOfDays){
-        summerhousePoints = calculateSummerhousePoints(numberOfDays);
-        additionalServicesPoints = calculateAdditionalServicesPoints(numberOfDays);
-        Points=summerhousePoints.add(additionalServicesPoints);
-    }
-    
+        
+    @Override
     public BigDecimal calculateSummerhousePoints(int numberOfDays){
         return summerhouseController.getSelected().getPointsPerDay().multiply(new BigDecimal(numberOfDays));
     }
     
+    
+    @Override
     public BigDecimal calculateAdditionalServicesPoints(int numberOfDays){
         
         List<AdditionalServices> records = additionalServicesController.getItems();
@@ -85,6 +75,8 @@ public class PointsService {
         return sum;
     }
 
+    @Log
+    @Override
     public boolean makeTransaction(BigDecimal pointAmount){
         Account acc = (Account) em.createNamedQuery("Account.findById").setParameter("id", authenticationBean.getLoggedAccount().getId()).getSingleResult();
         
@@ -105,47 +97,5 @@ public class PointsService {
             }
 
         }
-    }
-
-    /**
-     * @return the Points
-     */
-    public BigDecimal getPoints() {
-        return Points;
-    }
-
-    /**
-     * @param Points the Points to set
-     */
-    public void setPoints(BigDecimal Points) {
-        this.Points = Points;
-    }
-
-    /**
-     * @return the summerhousePoints
-     */
-    public BigDecimal getSummerhousePoints() {
-        return summerhousePoints;
-    }
-
-    /**
-     * @param summerhousePoints the summerhousePoints to set
-     */
-    public void setSummerhousePoints(BigDecimal summerhousePoints) {
-        this.summerhousePoints = summerhousePoints;
-    }
-
-    /**
-     * @return the additionalServicesPoints
-     */
-    public BigDecimal getAdditionalServicesPoints() {
-        return additionalServicesPoints;
-    }
-
-    /**
-     * @param additionalServicesPoints the additionalServicesPoints to set
-     */
-    public void setAdditionalServicesPoints(BigDecimal additionalServicesPoints) {
-        this.additionalServicesPoints = additionalServicesPoints;
     }
 }

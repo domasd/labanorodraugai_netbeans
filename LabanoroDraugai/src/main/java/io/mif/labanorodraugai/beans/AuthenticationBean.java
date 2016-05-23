@@ -7,7 +7,7 @@ package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
-import io.mif.labanorodraugai.services.PasswordHashService;
+import io.mif.labanorodraugai.services.IPasswordHashService;
 import io.mif.labanorodraugai.utils.ConstantsBean;
 import java.io.IOException;
 import java.io.Serializable;
@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 public class AuthenticationBean implements Serializable {
 
     @Inject
-    PasswordHashService passwordHashService;
+    IPasswordHashService passwordHashService;
 
     @PersistenceContext
     private EntityManager em;

@@ -6,7 +6,7 @@ import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.inject.Inject;
-import io.mif.labanorodraugai.services.PasswordHashService;
+import io.mif.labanorodraugai.services.IPasswordHashService;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +35,7 @@ public class ProfileController {
     private AuthenticationBean authenticationBean;
 
     @Inject
-    private PasswordHashService passwordHashService;
+    private IPasswordHashService passwordHashService;
 
     private String password1;
     private String password2;

@@ -4,7 +4,7 @@ import io.mif.labanorodraugai.beans.AccountFacade;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
-import io.mif.labanorodraugai.services.PasswordHashService;
+import io.mif.labanorodraugai.services.IPasswordHashService;
 import io.mif.labanorodraugai.services.StandartPriorityGenerationService;
 import java.math.BigDecimal;
 import java.util.ResourceBundle;
@@ -31,7 +31,7 @@ public class RegistrationController {
     private EntityManager em;
 
     @Inject
-    private PasswordHashService paswordHashService;
+    private IPasswordHashService paswordHashService;
 
     @Inject
     private AccountFacade accountFacade;

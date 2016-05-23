@@ -10,26 +10,28 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Alternative;
 
 /**
  *
  * @author Vytautas
  */
 @Stateless
-public class PasswordHashService {
+public @Alternative class PasswordHashSHAService implements IPasswordHashService{
 
+    @Override
     public String HashPassword(String password) {
         MessageDigest md;
         StringBuilder sb = new StringBuilder();
         try {
-            md = MessageDigest.getInstance("MD5");
+            md = MessageDigest.getInstance("SHA");
             md.update(password.getBytes());
             byte[] b = md.digest();
             for (byte b1 : b) {
                 sb.append(Integer.toHexString(b1 & 0xff));
             }
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(PasswordHashService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PasswordHashMD5Service.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sb.toString();
     }

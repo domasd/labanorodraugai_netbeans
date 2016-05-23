@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
+       bean-discovery-mode="annotated">
+    <decorators>
+        <class>io.mif.labanorodraugai.services.SpecialHolidayDiscountDecorator</class>
+        <class>io.mif.labanorodraugai.services.LuxuriousSummerhouseDiscountService</class>
+    </decorators>
+    <interceptors>
+        <class>io.mif.labanorodraugai.interceptors.LoggingInterceptor</class>
+    </interceptors>
+    <alternatives>
+        <class>io.mif.labanorodraugai.services.PasswordHashMD5Service</class>
+    </alternatives>
+</beans>
