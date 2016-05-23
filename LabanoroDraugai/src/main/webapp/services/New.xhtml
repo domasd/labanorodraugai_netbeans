@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+
+        
+        <p:dialog header="#{AdditionalServicesBundle.CreateAdditionalServicesTitle}" 
+                  id="additionalServicesCreateDialogId" 
+                  widgetVar="additionalServicesCreateDialogWidgetVar" 
+                  modal="true" 
+                  showEffect="fade" 
+                  hideEffect="fade" 
+                  resizable="false" 
+                  appendTo="@(body)"
+                  >
+
+            <h:form id="additionalServicesCreateFormId" enctype="multipart/form-data">
+
+                <h:panelGroup id="additionalServicesCreatePanelId">
+
+                     <p:panelGrid columns="2" rendered="#{additionalServicesController.selected != null}">
+
+                        <p:outputLabel value="#{AdditionalServicesBundle.Label_name}" 
+                                       for="name" />
+                        <p:inputText id="name" 
+                                     value="#{additionalServicesController.selected.name}" 
+                                     title="#{AdditionalServicesBundle.Title_name}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdditionalServicesBundle.Title_name}"/>
+
+                        <p:outputLabel value="#{AdditionalServicesBundle.Label_description}" 
+                                       for="decription" />
+                        <p:inputText id="decription" 
+                                     value="#{additionalServicesController.selected.description}" 
+                                     title="#{AdditionalServicesBundle.Title_description}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdditionalServicesBundle.Title_description}"/>
+
+                        <p:outputLabel value="#{AdditionalServicesBundle.Label_pointsPerDay}" 
+                                       for="points" />        
+                        <p:inputText id="points" 
+                                     value="#{additionalServicesController.selected.pointsPerDay}" 
+                                     title="#{AdditionalServicesBundle.Title_pointsPerDay}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdditionalServicesBundle.Title_pointsPerDay}"/>
+                        
+                    </p:panelGrid>
+
+                    <p:commandButton update="additionalServicesCreatePanelId,:additionalServicesListForm:additionalServicesDatalist,:growl" 
+                                     value="#{CommonBundle.Save}" 
+                                     oncomplete="PF('additionalServicesCreateDialogWidgetVar').hide()"
+                                     actionListener="#{additionalServicesController.create()}"
+                                     ajax="false"
+                                     validateClient="true"/>
+                    <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('additionalServicesCreateDialogWidgetVar').hide()"/>
+                </h:panelGroup>
+
+            </h:form>          
+        </p:dialog>
+    </ui:composition>
+</html>
+
+

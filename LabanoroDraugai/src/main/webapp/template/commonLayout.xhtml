@@ -28,6 +28,7 @@
             <p:layoutUnit position="center" >
                 <h:form>
                     <p:menubar>
+                        <p:menuitem rendered="#{authenticationBean.loggedAccount!=null}" value="Paslaugos" url="/services/List.html"/>
                         <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Registracija" url="/registration/registration.html"/>
                         <p:menuitem rendered="#{authenticationBean.authorizedAndCandidate}" value="Paskyros patvirtinimas" url="/registration/askingForApproval.html"/>
                         

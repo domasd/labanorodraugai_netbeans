@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="../template/commonLayout.xhtml">
+        
+        <ui:define name="metadata">
+            <f:metadata>
+                <f:viewAction action="#{authenticationBean.userIsAuthorized()}" />
+            </f:metadata>
+        </ui:define>
+        
+        <ui:define name="content">
+            <p:growl id="growl" life="2000" />
+            <h:form id="additionalServicesListForm">
+                <p:panel header="#{AdditionalServicesBundle.ListAdditionalServicesTitle}">
+                    
+                   <p:commandButton update=":additionalServicesCreateFormId" 
+                                             oncomplete="PF('additionalServicesCreateDialogWidgetVar').show()" 
+                                             icon="fa fa-plus-square-o" 
+                                             value="#{AdditionalServicesBundle.AddAdditionalService}"
+                                             title="#{AdditionalServicesBundle.AddAdditionalService}"
+                                             actionListener="#{additionalServicesController.prepareCreate()}"
+                                             />
+                    
+                
+                    <p:dataTable id="additionalServicesDatalist" value="#{additionalServicesController.items}" var="item"
+                                 paginator="true"
+                                 rowKey="#{item.serviceID}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 tableStyleClass="ui-table-columntoggle"
+                                 tableStyle="table-layout: auto;"> 
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{AdditionalServicesBundle.Title_name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{AdditionalServicesBundle.Title_description}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.description}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{AdditionalServicesBundle.Title_pointsPerDay}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pointsPerDay}"/>
+                        </p:column>
+                        
+                        <p:column style="width:180px;">  
+
+                            <f:facet name="header">
+                                <h:outputText value="#{SummerhouseBundle.Operations}"/> 
+                            </f:facet>
+
+                            <p:commandButton update=":additionalServicesEditFormId" 
+                                             oncomplete="PF('additionalServicesEditDialogWidgetVar').show()" 
+                                             icon="fa fa-fw fa-edit" 
+                                             title="#{CommonBundle.Change}">
+                                <f:setPropertyActionListener value="#{item}" 
+                                                             target="#{additionalServicesController.selected}" />
+                            </p:commandButton>
+                            
+                            
+                            <p:commandButton action="#{additionalServicesController.destroy}" 
+                                             update=":growl,:additionalServicesListForm:additionalServicesDatalist"
+                                             icon="fa fa-trash-o" 
+                                             title="#{AdditionalServicesBundle.DeleteAdditionalService}">
+                                 <f:setPropertyActionListener value="#{item}" 
+                                                              target="#{additionalServicesController.selected}" />
+                                 <p:confirm header="#{AdditionalServicesBundle.DeleteAdditionalService}" 
+                                           message="#{AdditionalServicesBundle.DeleteConfirmation}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+            </h:form>
+            
+
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="New.xhtml"/>
+            <ui:include src="../common/Confirm.xhtml"/>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>
