@@ -11,6 +11,7 @@ CREATE TABLE `labanorodraugai_db`.`account` (
   `ReservationGroup` INT(11) NULL,
   `PointsQuantity` DECIMAL(30,2) ZEROFILL NOT NULL,
   `OptLockVersion` INT NOT NULL DEFAULT 0,
+  `CustomRegistrationFields` TEXT,
   CONSTRAINT `ReservationGroupFK`
     FOREIGN KEY (`ReservationGroup`)
     REFERENCES `labanorodraugai_db`.`reservation_groups` (`GroupNumber`)

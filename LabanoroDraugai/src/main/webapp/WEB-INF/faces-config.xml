@@ -32,5 +32,9 @@
             <base-name>/RegistrationBundle</base-name>
             <var>RegistrationBundle</var>
         </resource-bundle>
+        <resource-bundle>
+            <base-name>/AdministrationBundle</base-name>
+            <var>AdministrationBundle</var>
+        </resource-bundle>
     </application>
 </faces-config>

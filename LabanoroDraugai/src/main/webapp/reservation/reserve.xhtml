@@ -45,16 +45,18 @@
                                     <p:outputLabel value="#{ReservationBundle.ReserveBeginDate}"/>
                                     <p:calendar value="#{reservationController.reservationBeginDate}"
                                                 beforeShowDay="afterLoad" 
-                                                mindate="#{reservationController.startOfReservationProcess}" 
-                                                maxdate="#{reservationController.endOfReservationProcess}"
-                                                required="true" requiredMessage="#{ReservationBundle.BeginDateNotSelectedError}"/>
+                                                mindate="#{administrationController.config.firstDateAbleToReserve}" 
+                                                maxdate="#{administrationController.config.lastDateAbleToReserve}"
+                                                required="true" requiredMessage="#{ReservationBundle.BeginDateNotSelectedError}"
+                                                pattern="yyyy-MM-dd"/>
 
                                     <p:outputLabel value="#{ReservationBundle.ReserveEndDate}"/>
                                     <p:calendar value="#{reservationController.reservationEndDate}"
                                                 beforeShowDay="afterLoad" 
-                                                mindate="#{reservationController.startOfReservationProcess}" 
-                                                maxdate="#{reservationController.endOfReservationProcess}"
-                                                required="true" requiredMessage="#{ReservationBundle.EndDateNotSelected}"/>                             
+                                                mindate="#{administrationController.config.firstDateAbleToReserve}" 
+                                                maxdate="#{administrationController.config.lastDateAbleToReserve}"
+                                                required="true" requiredMessage="#{ReservationBundle.EndDateNotSelected}"
+                                                pattern="yyyy-MM-dd"/>                             
                                 </h:panelGrid>
                             </p:panel>
                         </p:tab>

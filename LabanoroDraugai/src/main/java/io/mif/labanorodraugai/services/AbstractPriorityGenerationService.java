@@ -5,6 +5,7 @@
  */
 package io.mif.labanorodraugai.services;
 
+import io.mif.labanorodraugai.beans.AdministrationController;
 import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.ReservationGroups;
@@ -31,6 +32,9 @@ public abstract class AbstractPriorityGenerationService {
     
     @Inject
     protected AuthenticationBean authenticationBean;
+    
+    @Inject
+    AdministrationController administrationController;
     
     @PersistenceContext
     protected EntityManager em;
@@ -83,7 +87,7 @@ public abstract class AbstractPriorityGenerationService {
         List<ReservationGroups> allgroups = em.createNamedQuery("ReservationGroups.findAll").getResultList();
         ReservationGroups lastGroup = allgroups.get(allgroups.size()-1);
         
-        if (lastGroup.getAccountList().size()<2){
+        if (lastGroup.getAccountList().size()<administrationController.getConfig().getMaxNumberOfAccountsInOneGroup()){
             account.setReservationGroup(lastGroup);
         }
         else{

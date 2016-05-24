@@ -55,7 +55,10 @@ public class AuthenticationBean implements Serializable {
             HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             stringToRedirect = ".." + req.getRequestURI().substring(req.getContextPath().length()) + "?faces-redirect=true";
 
-            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getApplicationContextPath() + "/login/login.html");
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect(FacesContext.getCurrentInstance()
+                            .getExternalContext()
+                            .getApplicationContextPath() + "/login/login.html");
         }
     }
 
@@ -73,13 +76,27 @@ public class AuthenticationBean implements Serializable {
         
         if (loggedAccount==null){
             fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
-        } else if (loggedAccount.getStatus() == AccountStatus.Member){
+        } else if (loggedAccount.getStatus() != AccountStatus.Candidate){
             fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/index.html");
         }
     }
     
     public boolean isAuthorizedAndCandidate() {
         return loggedAccount != null && loggedAccount.getStatus() == AccountStatus.Candidate;
+    }
+    
+    public void userIsAuthorizedAndAdmin() throws IOException{
+         FacesContext fc = FacesContext.getCurrentInstance();
+        
+        if (loggedAccount==null){
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
+        } else if (loggedAccount.getStatus() != AccountStatus.Admin){
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/index.html");
+        }
+    }
+    
+     public boolean isAuthorizedAndAdmin() {
+        return loggedAccount != null && loggedAccount.getStatus() == AccountStatus.Admin;
     }
     
     public String login() throws NoSuchAlgorithmException {

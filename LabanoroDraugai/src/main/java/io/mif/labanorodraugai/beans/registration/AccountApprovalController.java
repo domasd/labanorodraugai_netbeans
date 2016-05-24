@@ -5,6 +5,8 @@
  */
 package io.mif.labanorodraugai.beans.registration;
 
+import io.mif.labanorodraugai.beans.AdministrationController;
+import io.mif.labanorodraugai.beans.AdministrationFacade;
 import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.entities.AccountApproval;
 import io.mif.labanorodraugai.entities.Account;
@@ -15,6 +17,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -45,6 +48,9 @@ public class AccountApprovalController implements Serializable {
 
     @Inject
     private AuthenticationBean authenticationBean;
+    
+    @EJB
+    private AdministrationFacade administrationFacade;
         
     @PostConstruct
     public void init() {
@@ -92,7 +98,7 @@ public class AccountApprovalController implements Serializable {
                     .setParameter("candidateId", approval.getAccountApprovalPK().getCandidateId())
                     .getResultList();
 
-        if (approvals.size() >= 5) {
+        if (approvals.size() >= administrationFacade.getConfig().getMinApprovalsRequired()) {
             this.approval.getCandidate().setStatus(AccountStatus.Member);
             this.approval = em.merge(this.approval);
         }

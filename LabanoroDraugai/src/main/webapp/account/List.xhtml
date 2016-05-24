@@ -9,7 +9,7 @@
     <ui:composition template="../template/commonLayout.xhtml">
         <ui:define name="metadata">
             <f:metadata>
-                <f:viewAction action="#{authenticationBean.userIsAuthorized()}" />
+                <f:viewAction action="#{authenticationBean.userIsAuthorized}"/> 
             </f:metadata>
         </ui:define>
 
@@ -71,7 +71,8 @@
                             <p:commandButton update=":accountEditFormId" 
                                              oncomplete="PF('accountEditDialogWidgetVar').show()" 
                                              icon="fa fa-edit" 
-                                             title="#{CommonBundle.Change}">
+                                             title="#{CommonBundle.Change}"
+                                             rendered="#{authenticationBean.authorizedAndAdmin}">
                                 <f:setPropertyActionListener value="#{item}" 
                                                              target="#{accountController.selected}" />
                             </p:commandButton>
@@ -79,7 +80,8 @@
                             <p:commandButton update=":accountUploadFormId" 
                                              oncomplete="PF('accountUploadDialogWidgetVar').show()" 
                                              icon="fa fa-file-image-o" 
-                                             title="#{CommonBundle.Upload}">
+                                             title="#{CommonBundle.Upload}"
+                                             rendered="#{authenticationBean.authorizedAndAdmin}">
                                 <f:setPropertyActionListener value="#{item}" 
                                                              target="#{accountController.selected}" />
                             </p:commandButton>
@@ -87,7 +89,8 @@
                             <p:commandButton action="#{accountController.destroy}" 
                                              update=":growl,:AccountListForm:datalist"
                                              icon="fa fa-trash-o" 
-                                             title="#{AccountBundle.DeleteAccount}">
+                                             title="#{AccountBundle.DeleteAccount}"
+                                             rendered="#{authenticationBean.authorizedAndAdmin}">
                                 <f:setPropertyActionListener value="#{item}" 
                                                              target="#{accountController.selected}" />
                                 <p:confirm header="#{AccountBundle.DeleteAccount}" 
@@ -109,9 +112,9 @@
             </h:form>
 
             <ui:include src="View.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="Upload.xhtml"/>
-            <ui:include src="../common/Confirm.xhtml"/>
+            <ui:include src="Edit.xhtml" rendered="#{authenticationBean.authorizedAndAdmin}"/>
+            <ui:include src="Upload.xhtml" rendered="#{authenticationBean.authorizedAndAdmin}"/>
+            <ui:include src="../common/Confirm.xhtml" rendered="#{authenticationBean.authorizedAndAdmin}"/>
         </ui:define>
 
     </ui:composition>

@@ -37,10 +37,12 @@
                         <p:inputText id="maxPoints" value="#{searchController.maxPoints}" />
                         
                         <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseStartReservationDate}" for="beginDate" />
-                        <p:calendar id="beginDate" value="#{searchController.beginDate}"/>
+                        <p:calendar id="beginDate" value="#{searchController.beginDate}"
+                                    pattern="yyyy-MM-dd"/>
                         
                         <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseEndReservationDate}" for="endDate" />
-                        <p:calendar id="endDate" value="#{searchController.endDate}" />
+                        <p:calendar id="endDate" value="#{searchController.endDate}" 
+                                    pattern="yyyy-MM-dd"/>
 
                     </p:panelGrid>
 

@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="../template/commonLayout.xhtml">
+        <ui:define name="metadata">
+            <f:metadata>
+                <f:viewAction action="#{authenticationBean.userIsAuthorizedAndAdmin}" />
+            </f:metadata>
+        </ui:define>
+        <ui:define name="content">
+            <p:growl id="growl" life="2000" />
+            <h:panelGroup id="editPanelId">
+                <p:messages autoUpdate="true"/>
+
+                <h:form id="configurationForm">  
+                    <h3>#{AdministrationBundle.Configuration}</h3> 
+
+                    <h:panelGrid columns="2" cellpadding="5">  
+                        <p:outputLabel value="#{AdministrationBundle.MinApprovalsRequired}" 
+                                       for="minApprovalsRequired" />
+                        <p:inputText id="minApprovalsRequired" 
+                                     value="#{administrationController.config.minApprovalsRequired}" 
+                                     title="#{AdministrationBundle.MinApprovalsRequired}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.MinApprovalsRequired}"/>
+
+                        <p:outputLabel value="#{AdministrationBundle.ReservationProcessBeginDate}" 
+                                       for="reservationProcessBeginDate" />
+                        <p:calendar id="reservationProcessBeginDate" 
+                                    value="#{administrationController.config.reservationProcessBeginDate}"
+                                    title="#{AdministrationBundle.ReservationProcessBeginDate}"
+                                    required="true"
+                                    requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.ReservationProcessBeginDate}"
+                                    pattern="yyyy-MM-dd"/>
+
+                        <p:outputLabel value="#{AdministrationBundle.MaxNumberOfAccountsInOneGroup}" 
+                                       for="maxNumberOfAccountsInOneGroup" />
+                        <p:inputText id="maxNumberOfAccountsInOneGroup" 
+                                     value="#{administrationController.config.maxNumberOfAccountsInOneGroup}" 
+                                     title="#{AdministrationBundle.MaxNumberOfAccountsInOneGroup}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.MaxNumberOfAccountsInOneGroup}" />
+
+                        <p:outputLabel value="#{AdministrationBundle.MaxReservationDaysLength}" 
+                                       for="maxReservationDaysLength" />
+                        <p:inputText id="maxReservationDaysLength" 
+                                     value="#{administrationController.config.maxReservationDaysLength}" 
+                                     title="#{AdministrationBundle.MaxReservationDaysLength}" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.MaxReservationDaysLength}"/>
+
+                        <p:outputLabel value="#{AdministrationBundle.FirstDateAbleToReserve}" 
+                                       for="firstDateAbleToReserve" />
+                        <p:calendar id="firstDateAbleToReserve" 
+                                    value="#{administrationController.config.firstDateAbleToReserve}" 
+                                    title="#{AdministrationBundle.FirstDateAbleToReserve}" 
+                                    required="true" 
+                                    requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.FirstDateAbleToReserve}"
+                                    pattern="yyyy-MM-dd"/>
+
+                        <p:outputLabel value="#{AdministrationBundle.LastDateAbleToReserve}" 
+                                       for="lastDateAbleToReserve" />
+                        <p:calendar id="lastDateAbleToReserve" 
+                                    value="#{administrationController.config.lastDateAbleToReserve}" 
+                                    title="#{AdministrationBundle.LastDateAbleToReserve}" 
+                                    required="true" 
+                                    requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.LastDateAbleToReserve}"
+                                    pattern="yyyy-MM-dd"/>
+                    </h:panelGrid>
+
+                    <p:commandButton update=":editPanelId" 
+                                     value="#{CommonBundle.Save}" 
+                                     action="#{administrationController.update}"
+                                     ajax="false"
+                                     validateClient="true" 
+                                     styleClass="margin-sm"/>
+                </h:form>
+
+                <h:form id="customRegistrationFieldsForm">  
+                    <h3>#{AdministrationBundle.CustomRegistrationFields}</h3> 
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-3"> 
+                            <p:dataTable var="item" value="#{administrationController.customRegistrationFields}">
+                                <p:column headerText="#{CommonBundle.Field}">
+                                    <h:outputText value="#{item}" />
+                                </p:column>
+
+                                <p:column headerText="#{CommonBundle.Operations}">
+                                    <p:commandButton actionListener="#{administrationController.deleteCustomRegistrationField}"
+                                                     update=":growl,:editPanelId" 
+                                                     icon="fa fa-trash-o" 
+                                                     title="#{CommonBundle.Delete}">
+                                        <f:param name="field" value="#{item}" />
+                                        <p:confirm header="#{AdministrationBundle.DeleteCustomRegistrationField}" 
+                                                   message="#{AdministrationBundle.ConfirmDeleteCustomRegistrationField}" 
+                                                   icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:inputText id="newCustomRegistrationField" 
+                                         value="#{administrationController.newCustomRegistrationField}" 
+                                         title="#{CommonBundle.New}" 
+                                         style="width:60%;"/>
+                            <p:commandButton update=":editPanelId" 
+                                             value="#{CommonBundle.New}" 
+                                             action="#{administrationController.addCustomRegistrationField}"
+                                             ajax="false"
+                                             styleClass="margin-sm"
+                                             icon="fa fa-plus"
+                                             style="width:30%;"/>
+                        </div>
+                    </div>
+                </h:form>
+            </h:panelGroup>
+
+            <ui:include src="../common/Confirm.xhtml" rendered="#{authenticationBean.authorizedAndAdmin}"/>
+
+        </ui:define>
+
+    </ui:composition>
+</html>
+

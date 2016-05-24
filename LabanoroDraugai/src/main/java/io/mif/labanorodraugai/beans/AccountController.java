@@ -1,17 +1,20 @@
 package io.mif.labanorodraugai.beans;
 
+import com.google.gson.Gson;
 import static com.sun.javafx.logging.PulseLogger.addMessage;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.beans.util.JsfUtil.PersistAction;
 import io.mif.labanorodraugai.entities.SummerhouseReservation;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
+import io.mif.labanorodraugai.utils.CustomRegistrationField;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -46,11 +49,19 @@ public class AccountController implements Serializable {
     private List<Account> items = null;
     private Account selected;
     private UploadedFile uploadedFile; // move to seperate service
+    private Gson gson;
 
     public AccountController() {
+        gson = new Gson();
     }
 
-    
+    public List<CustomRegistrationField> getCustomRegistrationFields() {
+        if (selected != null) {
+            return gson.fromJson(selected.getCustomRegistrationFields(), List.class);
+        }
+        return null;
+    }
+
     public UploadedFile getUploadedFile() {
         return uploadedFile;
     }
@@ -70,7 +81,6 @@ public class AccountController implements Serializable {
     public List<SummerhouseReservation> getAllAccountReservations(){
         return reservationController.getAccountAllReservations(selected);
     }
-
     public Account getSelected() {
         return selected;
     }
@@ -192,8 +202,6 @@ public class AccountController implements Serializable {
 
         return selectItems;
     }
-    
-    
 
     @FacesConverter(forClass = Account.class)
     public static class AccountControllerConverter implements Converter {
