@@ -45,7 +45,7 @@ public class RegistrationController {
         this.account.setPointsQuantity(BigDecimal.ZERO);
         this.account.setStatus(AccountStatus.Candidate);
     }
-
+    
     public String registerAccount() {
 
         Account retrievedFromDb = accountFacade.getAccountByEmail(this.account.getEmail());

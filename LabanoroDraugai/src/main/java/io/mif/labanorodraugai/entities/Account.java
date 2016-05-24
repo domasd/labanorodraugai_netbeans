@@ -108,6 +108,12 @@ public class Account implements Serializable {
     @Column(name = "OptLockVersion")
     private Integer optLockVersion;
     
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "CustomRegistrationFields")    
+    @NotNull
+    private String customRegistrationFields;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     private List<AdditionalServicesReservation> additionalServicesReservationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
@@ -131,7 +137,15 @@ public class Account implements Serializable {
         this.email = email;
         this.pointsQuantity = pointsQuantity;
     }
+    
+    public String getCustomRegistrationFields() {
+        return customRegistrationFields;
+    }
 
+    public void setCustomRegistrationFields(String customRegistrationFields) {
+        this.customRegistrationFields = customRegistrationFields;
+    }
+    
     public Integer getId() {
         return id;
     }
