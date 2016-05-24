@@ -48,7 +48,8 @@ and open the template in the editor.
                         <h:outputLabel value="Taškai atlikus pirkimą: " />
                         <h:outputText id="totalPoints" value="#{paypalBuyPointsController.totalPoints}"/>                            
     
-                        <p:commandButton value="Pirkti" actionListener="#{paypalBuyPointsController.buyPoints}" />
+                        <p:commandButton value="Pirkti" actionListener="#{paypalBuyPointsController.buyPoints}" 
+                                         onclick="this.disabled=true"/>
                     </h:panelGrid>
 
                     <p:growl globalOnly="true" sticky="true" autoUpdate="true"/>     
