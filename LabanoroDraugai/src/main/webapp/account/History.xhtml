@@ -16,7 +16,7 @@
 
 
         <ui:define name="content">
-            <p:dataTable id="reservatioHistoryList" value="#{accountController.getAllAccountReservations()}" var="item"
+            <p:dataTable id="accountReservationHistoryList" value="#{accountController.getAllAccountReservations()}" var="item"
                          paginator="true"
                          rowKey="#{item.recordCreated}"
                          rows="10"
