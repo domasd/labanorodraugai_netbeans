@@ -47,14 +47,16 @@
                                                 beforeShowDay="afterLoad" 
                                                 mindate="#{administrationController.config.firstDateAbleToReserve}" 
                                                 maxdate="#{administrationController.config.lastDateAbleToReserve}"
-                                                required="true" requiredMessage="#{ReservationBundle.BeginDateNotSelectedError}"/>
+                                                required="true" requiredMessage="#{ReservationBundle.BeginDateNotSelectedError}"
+                                                pattern="yyyy-MM-dd"/>
 
                                     <p:outputLabel value="#{ReservationBundle.ReserveEndDate}"/>
                                     <p:calendar value="#{reservationController.reservationEndDate}"
                                                 beforeShowDay="afterLoad" 
                                                 mindate="#{administrationController.config.firstDateAbleToReserve}" 
                                                 maxdate="#{administrationController.config.lastDateAbleToReserve}"
-                                                required="true" requiredMessage="#{ReservationBundle.EndDateNotSelected}"/>                             
+                                                required="true" requiredMessage="#{ReservationBundle.EndDateNotSelected}"
+                                                pattern="yyyy-MM-dd"/>                             
                                 </h:panelGrid>
                             </p:panel>
                         </p:tab>
