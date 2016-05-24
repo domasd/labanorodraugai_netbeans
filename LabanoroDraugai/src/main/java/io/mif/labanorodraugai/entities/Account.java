@@ -111,7 +111,6 @@ public class Account implements Serializable {
     @Lob
     @Size(max = 65535)
     @Column(name = "CustomRegistrationFields")    
-    @NotNull
     private String customRegistrationFields;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
