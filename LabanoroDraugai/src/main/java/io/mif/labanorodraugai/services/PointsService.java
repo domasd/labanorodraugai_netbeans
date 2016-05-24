@@ -78,24 +78,21 @@ public class PointsService implements IPointsService {
     @Log
     @Override
     public boolean makeTransaction(BigDecimal pointAmount){
-        Account acc = (Account) em.createNamedQuery("Account.findById").setParameter("id", authenticationBean.getLoggedAccount().getId()).getSingleResult();
         
-        if (pointAmount.compareTo(acc.getPointsQuantity())>0){
-            return false;
-        }
-        else{
-            try{
-                acc.setPointsQuantity(authenticationBean.getLoggedAccount().getPointsQuantity().subtract(pointAmount));
-                
-                return true;
-            }
-            catch(OptimisticLockException e){
+        try{
+            Account acc = (Account) authenticationBean.getLoggedAccount();//em.createNamedQuery("Account.findById").setParameter("id", authenticationBean.getLoggedAccount().getId()).getSingleResult();
+
+            if (pointAmount.compareTo(acc.getPointsQuantity())>0){
                 return false;
             }
-            finally{
-                
+            else{
+                acc.setPointsQuantity(acc.getPointsQuantity().subtract(pointAmount));
+                em.merge(acc);
+                return true;
             }
-
+        }
+        catch(OptimisticLockException e){
+            return false;
         }
     }
 }
