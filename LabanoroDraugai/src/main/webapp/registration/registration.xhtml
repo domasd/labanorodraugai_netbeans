@@ -55,11 +55,11 @@ and open the template in the editor.
                             <h:message for="pwd2" style="color:red" />
 
                             <c:forEach var="item" items="#{administrationController.customRegistrationFields}">
-                                <h:outputLabel for="#{item}LabelId" value="#{item}" />
-                                <p:inputText id="#{item}Id">
+                                <h:outputLabel value="#{item}" />
+                                <p:inputText>
                                     <f:passThroughAttribute name="accessor" value="#{item}" />
                                 </p:inputText>
-                                <h:message for="#{item}Id" style="color:red" />
+                                <div></div>
                             </c:forEach>   
 
                         </h:panelGrid>
