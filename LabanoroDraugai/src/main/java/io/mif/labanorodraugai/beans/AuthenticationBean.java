@@ -109,6 +109,10 @@ public class AuthenticationBean implements Serializable {
         return loggedAccount != null && loggedAccount.getStatus() == AccountStatus.Admin;
     }
     
+    public boolean isAuthorizedAndNotCandidate() {
+        return loggedAccount != null && loggedAccount.getStatus() != AccountStatus.Candidate;
+    }
+    
     public String login() throws NoSuchAlgorithmException {
 
         String hashedPassword = passwordHashService.HashPassword(password);

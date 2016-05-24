@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <head>
+        <title>Taškų pirkimas</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition template="../template/commonLayout.xhtml">
+            <ui:define name="metadata">
+                <f:metadata>
+                    <f:viewAction action="#{authenticationBean.userIsAuthorizedAndNotCandidate}" />
+                </f:metadata>
+            </ui:define>
+            
+            <ui:define name="content">
+                <h3 style="text-align:center">
+                    "Labanoro draugai" taškų pirkimas su <i class="fa fa-cc-paypal fa-2x" aria-hidden="true"></i>
+                </h3>
+                <h:form>
+
+                    <h:panelGrid columns="2" cellpadding="5" style="margin-left:auto;margin-right:auto">
+                        <h:outputLabel value="Turimi taškai: " />
+                        <h:outputText value="#{authenticationBean.loggedAccount.pointsQuantity}"/>
+
+                        <h:outputLabel value="Vieno taško kaina: " />
+                        <h:outputText value="#{paypalBuyPointsController.pointPrice} EUR"/>
+
+
+                        <h:outputLabel value="Pasirinkite kiekį: " />
+                        <p:spinner id="pointsSpinner" value="#{paypalBuyPointsController.pointCount}" min="1" max="1000" size="5"> 
+                            <p:ajax update="totalPrice totalPoints" process="@this" />
+                        </p:spinner>
+
+                        <h:outputLabel value="Viso mokėti: " />
+                        <h:outputText id="totalPrice" value="#{paypalBuyPointsController.totalPrice} EUR"/>
+                        
+                        <h:outputLabel value="Taškai atlikus pirkimą: " />
+                        <h:outputText id="totalPoints" value="#{paypalBuyPointsController.totalPoints}"/>                            
+    
+                        <p:commandButton value="Pirkti" actionListener="#{paypalBuyPointsController.buyPoints}" />
+                    </h:panelGrid>
+
+                    <p:growl globalOnly="true" sticky="true" autoUpdate="true"/>     
+                </h:form>
+
+            </ui:define>
+            
+        </ui:composition>
+
+    </body>
+</html>
