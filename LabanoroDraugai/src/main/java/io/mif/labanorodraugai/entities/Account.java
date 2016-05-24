@@ -121,6 +121,9 @@ public class Account implements Serializable {
     @JoinColumn(name = "ReservationGroup", referencedColumnName = "GroupNumber")
     @ManyToOne
     private ReservationGroups reservationGroup;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
+    private List<PaypalPointsPayment> paypalPointsPaymentList;
+
 
     public Account() {
     }
@@ -301,6 +304,20 @@ public class Account implements Serializable {
 
     public void setCandidatesList(List<AccountApproval> candidatesList) {
         this.candidatesList = candidatesList;
+    }
+
+    /**
+     * @return the paypalPointsPaymentList
+     */
+    public List<PaypalPointsPayment> getPaypalPointsPaymentList() {
+        return paypalPointsPaymentList;
+    }
+
+    /**
+     * @param paypalPointsPaymentList the paypalPointsPaymentList to set
+     */
+    public void setPaypalPointsPaymentList(List<PaypalPointsPayment> paypalPointsPaymentList) {
+        this.paypalPointsPaymentList = paypalPointsPaymentList;
     }
 
 

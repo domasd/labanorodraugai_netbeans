@@ -81,6 +81,16 @@ public class AuthenticationBean implements Serializable {
         }
     }
     
+    public void userIsAuthorizedAndNotCandidate() throws IOException{
+        FacesContext fc = FacesContext.getCurrentInstance();
+        
+        if (loggedAccount==null){
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/login/login.html");
+        } else if (loggedAccount.getStatus() == AccountStatus.Candidate){
+            fc.getExternalContext().redirect(fc.getExternalContext().getApplicationContextPath()+"/index.html");
+        }
+    }
+    
     public boolean isAuthorizedAndCandidate() {
         return loggedAccount != null && loggedAccount.getStatus() == AccountStatus.Candidate;
     }

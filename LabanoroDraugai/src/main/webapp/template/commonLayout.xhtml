@@ -41,6 +41,8 @@
                         <p:submenu label="#{AccountBundle.Title_MyProfile}" rendered="#{authenticationBean.loggedAccount!=null}" icon="fa fa-fw fa-user">
                             <p:menuitem value="#{AccountBundle.Title_ProfileInformation}" url="/profile/MyProfile.html"/>
                             <p:menuitem value="#{AccountBundle.Title_ReservationHistory}" url="/profile/History.html"/>
+                            <p:menuitem value="Pirkti taškų" action="#{paypalPointsBuyController.buyPoints}" rendered="#{!authenticationBean.authorizedAndCandidate}" />
+                            
                         </p:submenu>
 
                         <p:submenu rendered="#{authenticationBean.loggedAccount!=null}" label="Klubo nariai" icon="fa fa-fw fa-users" >
