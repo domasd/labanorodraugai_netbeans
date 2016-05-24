@@ -4,6 +4,7 @@ import static com.sun.javafx.logging.PulseLogger.addMessage;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.beans.util.JsfUtil.PersistAction;
+import io.mif.labanorodraugai.entities.SummerhouseReservation;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.PhaseId;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -38,6 +40,9 @@ public class AccountController implements Serializable {
     @EJB
     private io.mif.labanorodraugai.beans.AccountFacade ejbFacade;
 
+    @Inject
+    private ReservationController reservationController;
+    
     private List<Account> items = null;
     private Account selected;
     private UploadedFile uploadedFile; // move to seperate service
@@ -62,6 +67,9 @@ public class AccountController implements Serializable {
         this.update();
     }
 
+    public List<SummerhouseReservation> getAllAccountReservations(){
+        return reservationController.getAccountAllReservations(selected);
+    }
 
     public Account getSelected() {
         return selected;

@@ -94,6 +94,13 @@
                                            message="#{AccountBundle.DeleteConfirmation}" 
                                            icon="ui-icon-alert"/>
                             </p:commandButton>
+                            
+                            <p:commandButton icon="fa fa-history" 
+                                             title="#{AccountBundle.Title_ReservationHistory}"
+                                             action="History?faces-redirect=true">
+                                <f:setPropertyActionListener value="#{item}" 
+                                                             target="#{accountController.selected}" />
+                            </p:commandButton>
 
                         </p:column>
                     </p:dataTable>
