@@ -6,6 +6,8 @@
 package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.entities.Account;
+import io.mif.labanorodraugai.services.AbstractPriorityGenerationService;
+import io.mif.labanorodraugai.services.RichAccountPriorityGenerationService;
 import io.mif.labanorodraugai.services.StandartPriorityGenerationService;
 import io.mif.labanorodraugai.utils.CalendarUtils;
 import java.time.LocalDateTime;
@@ -27,15 +29,15 @@ import javax.inject.Named;
 public class PriorityGroupsController {
     
     @Inject
-    StandartPriorityGenerationService reservationController; 
+    AbstractPriorityGenerationService reservationController; 
     
     private Date startOfRegistration;
     
     private int numberOfUsersInOneGroup;
         
-    @Schedule(year="*", month="1", dayOfMonth = "1", hour = "0",minute = "0", second = "2", persistent = false)
+    @Schedule(year="*", month="5", dayOfMonth = "24", hour = "21",minute = "50", second = "2", persistent = false)
     public void regeneratePriorityGroups(){
-        System.out.println("SOMETHING VERY BAD IS HAPPENING!");
+        System.out.println("Regeneration of priority groups has begun!");
         //for testing
         this.startOfRegistration = CalendarUtils.getDate(LocalDateTime.now().getYear(), 3, 1);
         this.numberOfUsersInOneGroup=2;

@@ -17,21 +17,20 @@ import javax.enterprise.inject.Alternative;
  * @author Vytautas
  */
 @Stateless
-public @Alternative class PasswordHashSHAService implements IPasswordHashService{
+public class PasswordHashService{
 
-    @Override
     public String HashPassword(String password) {
         MessageDigest md;
         StringBuilder sb = new StringBuilder();
         try {
-            md = MessageDigest.getInstance("SHA");
+            md = MessageDigest.getInstance("MD5");
             md.update(password.getBytes());
             byte[] b = md.digest();
             for (byte b1 : b) {
                 sb.append(Integer.toHexString(b1 & 0xff));
             }
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(PasswordHashMD5Service.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PasswordHashService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sb.toString();
     }

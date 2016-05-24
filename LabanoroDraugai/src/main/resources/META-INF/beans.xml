@@ -10,7 +10,7 @@
     <interceptors>
         <class>io.mif.labanorodraugai.interceptors.LoggingInterceptor</class>
     </interceptors>
-    <alternatives>
-        <class>io.mif.labanorodraugai.services.PasswordHashMD5Service</class>
-    </alternatives>
+<!--    <alternatives>
+        <class>io.mif.labanorodraugai.services.RichAccountPriorityGenerationService</class>
+    </alternatives>-->
 </beans>

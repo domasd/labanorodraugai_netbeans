@@ -9,6 +9,7 @@ import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.ReservationGroups;
 import io.mif.labanorodraugai.entities.SummerhouseReservation;
 import io.mif.labanorodraugai.utils.CalendarUtils;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,19 +17,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.Stateful;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
+import javax.enterprise.inject.Alternative;
 
 /**
  *
  * @author SFILON
  */
-@RequestScoped
-@Stateful
-@Named
-public class StandartPriorityGenerationService extends AbstractPriorityGenerationService{
-
+public @Alternative class RichAccountPriorityGenerationService extends AbstractPriorityGenerationService {
+    
     @Override
     protected List<ReservationGroups> createReservationGroups(int numberOfGroups, Date reservationStartDate) {
         
@@ -42,47 +38,40 @@ public class StandartPriorityGenerationService extends AbstractPriorityGeneratio
 
         return reservationGroups;
     }
-
+    
     @Override
     protected Map<String, Integer> setReservationGroupsToAccounts(List<Account> allAccounts, int numberOfUsersInOneGroup) {
+        System.out.println("Using rich user prioritisation algorithm!");
         
-        System.out.println("Using standard prioritisation algorithm!");
-        
-        Map<String,Integer> accAndHolidays = new HashMap<>();
-        List<Integer> holidays = new ArrayList<>(); 
-        int currentYear = LocalDateTime.now().getYear();       
+        Map<String,BigDecimal> accAndPoints = new HashMap<>();
+        List<BigDecimal> points = new ArrayList<>();     
         
         for(Account account:allAccounts){
         
-            int numberOfHolidays=0;
+            BigDecimal spendMoney =BigDecimal.ZERO;
             
             List<SummerhouseReservation> listOfReservations = account.getSummerhouseReservationList();
             
-            for(SummerhouseReservation record:listOfReservations){
-                                
-                Date beginDate = record.getSummerhouseReservationPK().getBeginDate();
-                Date endDate = record.getSummerhouseReservationPK().getEndDate();
-                
-                numberOfHolidays+=CalendarUtils.countDaysBetweenDatesBySpecificYear(beginDate, endDate, currentYear-1);
+            for(SummerhouseReservation record:listOfReservations){               
+                spendMoney.add(record.getPointsAmount());
             }
             
-            accAndHolidays.put(account.getEmail(),numberOfHolidays);
-            holidays.add(numberOfHolidays);
+            accAndPoints.put(account.getEmail(),spendMoney);
+            points.add(spendMoney);
         }
         
-        Collections.sort(holidays);
+        Collections.sort(points);
            
         Map<String, Integer> accountAndReservationGroups = new HashMap<>();
         
-        for(String key:accAndHolidays.keySet()){
+        for(String key:accAndPoints.keySet()){
             
-            int index = holidays.indexOf(accAndHolidays.get(key));
+            int index = points.indexOf(accAndPoints.get(key));
             int group = new Double(Math.ceil((double)(index/numberOfUsersInOneGroup))).intValue();
             accountAndReservationGroups.put(key, group);
-            holidays.set(index,-1);
+            points.set(index,BigDecimal.valueOf((double)-1));
         }
                      
         return accountAndReservationGroups;
     }
-        
 }

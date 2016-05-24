@@ -11,5 +11,6 @@ package io.mif.labanorodraugai.entities.enums;
  */
 public enum AccountStatus {
     Member,
-    Candidate
+    Candidate,
+    Admin
 }

@@ -8,6 +8,7 @@ package io.mif.labanorodraugai.interceptors;
 import io.mif.labanorodraugai.interceptors.Log;
 import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.beans.SummerhouseController;
+import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,16 +40,32 @@ public class LoggingInterceptor implements Serializable {
    public Object logMethodEntry(InvocationContext ctx) throws Exception{
       
        String methodName = ctx.getMethod().getName();
+       String className = ctx.getClass().getName();
        
        switch(methodName){
            case "makeTransaction":
                 Date current = new Date();
                 SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
                 String accountEmail = authenticationBean.getLoggedAccount().getEmail();
+                
+                AccountStatus status = authenticationBean.getLoggedAccount().getStatus();
+                String statusString="";
+                switch(status){
+                    case Member:
+                        statusString="Member";
+                        break;
+                    case Admin:
+                        statusString="Administrator";
+                        break;
+                    default:
+                        statusString="Unknown";
+                        break;
+                }
+                
                 int summerhouseNumber = summerhouseController.getSelected().getNumber();
                 Object[] params = ctx.getParameters();
                 BigDecimal amount= (BigDecimal) params[0];
-                String stringToLog = "Transaction "+dateFormat.format(current)+"- User:"+accountEmail+" Summerhouse:"+summerhouseNumber+" Points:"+amount.doubleValue(); 
+                String stringToLog = "Date: "+dateFormat.format(current)+"Class: "+className+" Method: "+methodName+" - User: "+accountEmail+" Role: "+ statusString +" Summerhouse:"+summerhouseNumber+" Points:"+amount.doubleValue(); 
                 
                 try(FileWriter fw = new FileWriter("C:\\LabanoroLogs\\log.txt", true);
                 BufferedWriter bw = new BufferedWriter(fw);
