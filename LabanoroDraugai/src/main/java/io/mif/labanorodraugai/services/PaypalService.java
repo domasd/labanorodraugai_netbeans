@@ -35,22 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vytautas
  */
 @Stateless
-@Named
 public class PaypalService {
-    
-    public void pay() throws PayPalRESTException {
-//        OAuthTokenCredential tokenCredential = Payment.initConfig(new File("../sdk_config.properties"));
-        
-        ResourceBundle paypalBundle = ResourceBundle.getBundle("/sdk_config");
-        
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("mode", "sandbox");
-        String accessToken = new OAuthTokenCredential(paypalBundle.getString("clientId"), paypalBundle.getString("clientSecret"), map).getAccessToken();
-
-        
-        String port = ResourceBundle.getBundle("/sdk_config").getString("http.ProxyPort");
-    }
-    
     
     public Payment createPayment(String paymentId, String approvalPage, List<Item> items, String description) throws PayPalRESTException {
         Map<String, String> map = new HashMap<String, String>();
@@ -208,7 +193,7 @@ public class PaypalService {
         for (Item item : items) {
             total = total.add(new BigDecimal(item.getPrice()).multiply(new BigDecimal(item.getQuantity())));
         }
-        return total.toString();
+        return total.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
     }
     
     private Properties convertResourceBundleToProperties(ResourceBundle resource) {
