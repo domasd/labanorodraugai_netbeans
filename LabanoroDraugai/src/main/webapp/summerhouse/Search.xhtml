@@ -47,8 +47,7 @@
 
                     <p:commandButton update="searchPanelId, result" 
                                      value="#{CommonBundle.SearchActionTitle}"
-                                     actionListener="#{searchController.filter()}"
-                                     
+                                     actionListener="#{searchController.filter}"
                                      />
                     <p:commandButton value="#{CommonBundle.Cancel}" onclick="PF('summerhouseSearchDialogWidgetVar').hide()"/>
 

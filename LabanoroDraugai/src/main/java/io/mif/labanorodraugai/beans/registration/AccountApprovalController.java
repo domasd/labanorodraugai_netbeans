@@ -10,18 +10,22 @@ import io.mif.labanorodraugai.beans.AdministrationFacade;
 import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.entities.AccountApproval;
 import io.mif.labanorodraugai.entities.Account;
+import io.mif.labanorodraugai.entities.Config;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -33,49 +37,49 @@ import org.primefaces.model.StreamedContent;
  *
  * @author Vytautas
  */
-
-@ViewScoped
-@Stateful
 @Named
+@Stateful
+@SessionScoped
 public class AccountApprovalController implements Serializable {
-    
+
     private Account currentUser;
-        
+
     private AccountApproval approval;
-    
+
     @PersistenceContext
     private EntityManager em;
 
     @Inject
     private AuthenticationBean authenticationBean;
-    
-    @EJB
-    private AdministrationFacade administrationFacade;
-        
+
+    Config config;
+
     @PostConstruct
     public void init() {
         this.currentUser = authenticationBean.getLoggedAccount();
-        
+
         String generatedId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("gen");
 
         if (generatedId == null) {
             this.approval = null;
             return;
         }
-        
+
         List<AccountApproval> approvals = em.createNamedQuery("AccountApproval.findByGeneratedId")
-                            .setParameter("generatedId", generatedId)
-                            .getResultList();
-        
+                .setParameter("generatedId", generatedId)
+                .getResultList();
+
         if (approvals.isEmpty() || approvals.get(0).getAccountApprovalPK().getApproverId() != this.currentUser.getId()) {
             this.approval = null;
             return;
         }
-        
+
         this.approval = approvals.get(0);
+        
+        config = em.createNamedQuery("Config.getConfig", Config.class)
+                .getSingleResult();
     }
-    
-    
+
     // TODO move to another class - proabably another table and write service
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -89,21 +93,24 @@ public class AccountApprovalController implements Serializable {
             return new DefaultStreamedContent(new ByteArrayInputStream(imageBytes));
         }
     }
-    
+
     public void approve() {
         this.approval.setApprovalDate(new Date());
         this.approval = em.merge(this.approval);
-                
-        List<AccountApproval> approvals = em.createNamedQuery("AccountApproval.findAllApprovedByCandidateId")
-                    .setParameter("candidateId", approval.getAccountApprovalPK().getCandidateId())
-                    .getResultList();
 
-        if (approvals.size() >= administrationFacade.getConfig().getMinApprovalsRequired()) {
+        List<AccountApproval> approvals = em.createNamedQuery("AccountApproval.findAllApprovedByCandidateId")
+                .setParameter("candidateId", approval.getAccountApprovalPK().getCandidateId())
+                .getResultList();
+
+        config = em.createNamedQuery("Config.getConfig", Config.class)
+                .getSingleResult();
+        if (approvals.size() >= config.getMinApprovalsRequired()) {
             this.approval.getCandidate().setStatus(AccountStatus.Member);
             this.approval = em.merge(this.approval);
+            //     em.persist(this.approval);
         }
     }
-        
+
     /**
      * @return the currentUser
      */

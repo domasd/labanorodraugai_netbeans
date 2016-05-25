@@ -25,7 +25,7 @@ and open the template in the editor.
 
             <ui:define name="content">
                 <h:form>  
-                    <p:outputPanel id="approvalOutputPanelId" rendered="#{not empty accountApprovalController.approval.candidate}" styleClass="approval-output-panel">
+                    <p:outputPanel id="approvalOutputPanelId" rendered="#{not empty accountApprovalController.approval and not empty accountApprovalController.approval.candidate}" styleClass="approval-output-panel">
 
                         <p:panelGrid  columns="2" columnClasses="label,value">
                             <f:facet name="header">
