@@ -78,7 +78,13 @@ public class AccountController implements Serializable {
     }
 
     public List<SummerhouseReservation> getAllAccountReservations(){
-        return reservationController.getAccountAllReservations(selected);
+        if (selected!=null) {
+           return reservationController.getAccountAllReservations(selected);
+        }
+        else{
+            return new ArrayList<>();
+        }
+
     }
     public Account getSelected() {
         return selected;

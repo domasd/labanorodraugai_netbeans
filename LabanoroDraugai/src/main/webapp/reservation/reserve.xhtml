@@ -75,7 +75,7 @@
                                 <p:messages />
 
                                 <p:outputLabel value="#{ReservationBundle.PointsToPay}"/>
-                                <p:outputLabel value="#{reservationController.pointsSum}"/>
+                                <p:outputLabel value="#{reservationController.pointsSum.doubleValue()}"/>
 
                                 <p:dataTable id="checkboxDT" 
                                              var="item" 
@@ -104,7 +104,7 @@
                                 <h:panelGrid>
                                     <div>
                                         <p:fieldset legend="#{ReservationBundle.PaymentOptions}">
-                                            <p:outputLabel value="#{ReservationBundle.PointsToPay}#{reservationController.pointsSum}"/><br/>
+                                            <p:outputLabel value="#{ReservationBundle.PointsToPay}#{reservationController.pointsSum.doubleValue()}"/><br/>
                                             <p:commandButton oncomplete="PF('pointsPaymentDialogWidgetVar').show()"
                                                              update=":pointsPayingForm"
                                                              title="#{ReservationBundle.PayByPoints}"

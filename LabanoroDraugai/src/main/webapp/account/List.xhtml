@@ -44,6 +44,13 @@
                             </f:facet>
                             <h:outputText value="#{AccountBundle['Enum.AccountStatus.' += item.status]}"/>
                         </p:column>
+                        
+                        <p:column rendered="#{authenticationBean.authorizedAndAdmin}">
+                            <f:facet name="header">
+                                <h:outputText value="#{AccountBundle.Label_reservationGroup}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.reservationGroup.groupNumber}"/>
+                        </p:column>
 
                         <p:column> 
                             <f:facet name="header">
@@ -100,7 +107,9 @@
                             
                             <p:commandButton icon="fa fa-history" 
                                              title="#{AccountBundle.Title_SummerhouseReservationHistory}"
-                                             action="History?faces-redirect=true">
+                                             oncomplete="PF('usersSummerhouseReservationHistoryDialogWidgetVar').show()"
+                                             update=":usersSummerhouseReservationHistoryForm:accountReservationHistoryList"
+                                             >
                                 <f:setPropertyActionListener value="#{item}" 
                                                              target="#{accountController.selected}" />
                             </p:commandButton>
@@ -111,6 +120,7 @@
 
             </h:form>
 
+            <ui:include src="History.xhtml"/>
             <ui:include src="View.xhtml"/>
             <ui:include src="Edit.xhtml" rendered="#{authenticationBean.authorizedAndAdmin}"/>
             <ui:include src="Upload.xhtml" rendered="#{authenticationBean.authorizedAndAdmin}"/>
