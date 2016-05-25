@@ -13,6 +13,7 @@ import com.paypal.base.rest.PayPalRESTException;
 import com.paypal.base.rest.PayPalResource;
 import io.mif.labanorodraugai.beans.PaypalPointsExecutionController;
 import io.mif.labanorodraugai.entities.PaypalPointsPayment;
+import io.mif.labanorodraugai.interceptors.Log;
 import io.mif.labanorodraugai.utils.GenerateAccessToken;
 import java.io.File;
 import java.math.BigDecimal;
@@ -181,6 +182,7 @@ public class PaypalService {
         return createdPayment;
     }
     
+    @Log
     public void CompletePayment(PaypalPointsPayment payment) {
         payment.setTransferDateTime(new Date());
         BigDecimal newPointsQuantity = payment.getAccount().getPointsQuantity().add(BigDecimal.valueOf(payment.getPointsAmount()));
