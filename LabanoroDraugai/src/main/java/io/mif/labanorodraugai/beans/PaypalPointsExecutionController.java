@@ -77,9 +77,7 @@ public class PaypalPointsExecutionController {
         try {
             paypalService.executePayment(payerID, paymentId);
             this.payment = payments.get(0);
-            this.payment.setTransferDateTime(new Date());
-            BigDecimal newPointsQuantity = this.payment.getAccount().getPointsQuantity().add(BigDecimal.valueOf(this.payment.getPointsAmount()));
-            this.payment.getAccount().setPointsQuantity(newPointsQuantity);
+            paypalService.CompletePayment(this.payment);
             this.payment = em.merge(this.payment);
         } catch (PayPalRESTException ex) {
             Logger.getLogger(PaypalPointsExecutionController.class.getName()).log(Level.SEVERE, null, ex);

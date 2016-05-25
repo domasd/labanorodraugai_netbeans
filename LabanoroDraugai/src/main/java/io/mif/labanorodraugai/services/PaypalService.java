@@ -11,11 +11,14 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.OAuthTokenCredential;
 import com.paypal.base.rest.PayPalRESTException;
 import com.paypal.base.rest.PayPalResource;
+import io.mif.labanorodraugai.beans.PaypalPointsExecutionController;
+import io.mif.labanorodraugai.entities.PaypalPointsPayment;
 import io.mif.labanorodraugai.utils.GenerateAccessToken;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,6 +27,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -121,7 +126,7 @@ public class PaypalService {
 
         // ###Redirect URLs
         RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("http://localhost:8080/LabanoroDraugai/" + approvalPage + "?guid=" + paymentId);
+        redirectUrls.setCancelUrl("http://localhost:8080/LabanoroDraugai/payment/paypalBuyPoints.html");
         redirectUrls.setReturnUrl("http://localhost:8080/LabanoroDraugai/" + approvalPage + "?guid=" + paymentId);
 
         payment.setRedirectUrls(redirectUrls);
@@ -174,6 +179,12 @@ public class PaypalService {
         createdPayment = payment.execute(apiContext, paymentExecution);
 
         return createdPayment;
+    }
+    
+    public void CompletePayment(PaypalPointsPayment payment) {
+        payment.setTransferDateTime(new Date());
+        BigDecimal newPointsQuantity = payment.getAccount().getPointsQuantity().add(BigDecimal.valueOf(payment.getPointsAmount()));
+        payment.getAccount().setPointsQuantity(newPointsQuantity);          
     }
 
     public String getPaymentApprovalUrl(Payment payment) {
