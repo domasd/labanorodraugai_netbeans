@@ -31,7 +31,7 @@ public class AdditionalServicesController implements Serializable  {
     
     private List<AdditionalServices> items;
     
-    private List<AdditionalServices> selectedItems;   
+    private AdditionalServices[] selectedItems;   
 
     private AdditionalServices selected;
     
@@ -122,14 +122,14 @@ public class AdditionalServicesController implements Serializable  {
     /**
      * @return the selectedItems
      */
-    public List<AdditionalServices> getSelectedItems() {
+    public AdditionalServices[] getSelectedItems() {
         return selectedItems;
     }
 
     /**
      * @param selectedItems the selectedItems to set
      */
-    public void setSelectedItems(List<AdditionalServices> selectedItems) {
+    public void setSelectedItems(AdditionalServices[] selectedItems) {
         this.selectedItems = selectedItems;
     }
 

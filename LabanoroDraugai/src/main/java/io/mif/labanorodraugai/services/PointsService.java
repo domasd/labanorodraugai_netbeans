@@ -13,6 +13,7 @@ import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.AdditionalServices;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.Arrays;
 import java.util.List;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
@@ -34,64 +35,63 @@ import javax.persistence.PersistenceContext;
  */
 @Stateful
 public class PointsService implements IPointsService {
-        
+
     @PersistenceContext
     private EntityManager em;
-    
+
     @Inject
     private AuthenticationBean authenticationBean;
-    
+
     @Inject
     private SummerhouseController summerhouseController;
-    
+
     @Inject
     private AdditionalServicesController additionalServicesController;
-        
+
     @Override
-    public BigDecimal calculateSummerhousePoints(int numberOfDays){
+    public BigDecimal calculateSummerhousePoints(int numberOfDays) {
         return summerhouseController.getSelected().getPointsPerDay().multiply(new BigDecimal(numberOfDays));
     }
-    
-    
+
     @Override
-    public BigDecimal calculateAdditionalServicesPoints(int numberOfDays){
-        
+    public BigDecimal calculateAdditionalServicesPoints(int numberOfDays) {
+
         List<AdditionalServices> records = additionalServicesController.getItems();
-        
-        List<AdditionalServices> records2 = additionalServicesController.getSelectedItems();
-        
+        List<AdditionalServices> records2;
         BigDecimal sum = BigDecimal.ZERO;
-        
-        if (records2==null) return sum;
-        
-        for(AdditionalServices service: additionalServicesController.getItems()){
-            
-            if (records2.contains(service)){
+
+        if (additionalServicesController.getSelectedItems() != null) {
+            records2 = Arrays.asList(additionalServicesController.getSelectedItems());
+        } else {
+            return sum;
+        }
+
+        for (AdditionalServices service : additionalServicesController.getItems()) {
+
+            if (records2.contains(service)) {
                 BigDecimal servicePoints = service.getPointsPerDay().multiply(new BigDecimal(String.valueOf(numberOfDays)));
-                sum=sum.add(servicePoints);
+                sum = sum.add(servicePoints);
             }
         }
-        
+
         return sum;
     }
 
     @Log
     @Override
-    public boolean makeTransaction(BigDecimal pointAmount){
-        
-        try{
+    public boolean makeTransaction(BigDecimal pointAmount) {
+
+        try {
             Account acc = (Account) authenticationBean.getLoggedAccount();//em.createNamedQuery("Account.findById").setParameter("id", authenticationBean.getLoggedAccount().getId()).getSingleResult();
 
-            if (pointAmount.compareTo(acc.getPointsQuantity())>0){
+            if (pointAmount.compareTo(acc.getPointsQuantity()) > 0) {
                 return false;
-            }
-            else{
+            } else {
                 acc.setPointsQuantity(acc.getPointsQuantity().subtract(pointAmount));
                 em.merge(acc);
                 return true;
             }
-        }
-        catch(OptimisticLockException e){
+        } catch (OptimisticLockException e) {
             return false;
         }
     }

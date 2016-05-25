@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -42,6 +43,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.swing.text.html.HTML;
+import static org.eclipse.persistence.config.ResultType.Array;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 
@@ -124,7 +126,7 @@ public class ReservationController implements Serializable{
     private void submitAdditionalServices(Date recordDate){
         
         List<AdditionalServices> allItems = additionalServicesController.getItems();
-        List<AdditionalServices> selectedItems = additionalServicesController.getSelectedItems();
+        List<AdditionalServices> selectedItems = Arrays.asList(additionalServicesController.getSelectedItems());
        
         if (selectedItems==null) return;
         
@@ -173,7 +175,7 @@ public class ReservationController implements Serializable{
                 if (!event.getNewStep().equals("payment"))
                     return event.getNewStep();
                                 
-                areDatesCorrect = validateAdditionalServicesValidationDates(reservationBeginDate, reservationEndDate,additionalServicesController.getItems(), additionalServicesController.getSelectedItems());
+                areDatesCorrect = validateAdditionalServicesValidationDates(reservationBeginDate, reservationEndDate,additionalServicesController.getItems(), Arrays.asList(additionalServicesController.getSelectedItems()));
                 
                 if (areDatesCorrect){
                     summerhousePoints=pointsService.calculateSummerhousePoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
