@@ -124,13 +124,13 @@ public class ReservationController implements Serializable{
     private void submitAdditionalServices(Date recordDate){
         
         List<AdditionalServices> allItems = additionalServicesController.getItems();
-        List<String> selectedItems = additionalServicesController.getSelectedItems();
+        List<AdditionalServices> selectedItems = additionalServicesController.getSelectedItems();
        
         if (selectedItems==null) return;
         
         for(AdditionalServices service:allItems){
        
-            if (selectedItems.contains(service.getName())){
+            if (selectedItems.contains(service)){
                 AdditionalServicesReservationPK newADRecordPK = new AdditionalServicesReservationPK(sessionBean.getLoggedAccount().getId(),
                 service.getServiceID(), reservationBeginDate, reservationEndDate);
        
@@ -265,7 +265,7 @@ public class ReservationController implements Serializable{
         return true;
     }
     
-    public boolean validateAdditionalServicesValidationDates(Date startDate, Date endDate, List<AdditionalServices> allItems, List<String> selectedItems){
+    public boolean validateAdditionalServicesValidationDates(Date startDate, Date endDate, List<AdditionalServices> allItems, List<AdditionalServices> selectedItems){
         
         errorList = new ArrayList<>();
         
@@ -273,7 +273,7 @@ public class ReservationController implements Serializable{
         
         for(AdditionalServices service:allItems){
             
-            if (selectedItems.contains(service.getName())){
+            if (selectedItems.contains(service)){
             
                 if (!validateAdditionalServiceReservationDate(service.getServiceID(), selectedDates)){
                     errorList.add(service.getName());
@@ -286,7 +286,7 @@ public class ReservationController implements Serializable{
         return true;
         
     }
-    
+
     public List<SummerhouseReservation> getLoggedAccountAllReservations(){
         return getAccountAllReservations(sessionBean.getLoggedAccount());
     }

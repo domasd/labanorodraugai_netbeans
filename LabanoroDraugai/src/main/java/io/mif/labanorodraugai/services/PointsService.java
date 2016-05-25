@@ -58,15 +58,15 @@ public class PointsService implements IPointsService {
         
         List<AdditionalServices> records = additionalServicesController.getItems();
         
-        List<String> records2 = additionalServicesController.getSelectedItems();
+        List<AdditionalServices> records2 = additionalServicesController.getSelectedItems();
         
         BigDecimal sum = BigDecimal.ZERO;
         
         if (records2==null) return sum;
         
-        for(AdditionalServices service:additionalServicesController.getItems()){
+        for(AdditionalServices service: additionalServicesController.getItems()){
             
-            if (records2.contains(service.getName())){
+            if (records2.contains(service)){
                 BigDecimal servicePoints = service.getPointsPerDay().multiply(new BigDecimal(String.valueOf(numberOfDays)));
                 sum=sum.add(servicePoints);
             }

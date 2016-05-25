@@ -77,7 +77,8 @@
 
                                 <h:panelGrid columns="3" cellpadding="5">
                                     <h:outputLabel for="checkbox" value="#{ReservationBundle.AdditionalServices}" />
-                                    <p:selectCheckboxMenu  id="checkbox" value="#{additionalServicesController.selectedItems}"
+                                    <p:selectCheckboxMenu  id="checkbox" 
+                                                           value="#{additionalServicesController.selectedItems}"
                                                            label="#{ReservationBundle.AdditionalServices}"
                                                            filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
                                         <f:selectItems value="#{additionalServicesController.items}" />
