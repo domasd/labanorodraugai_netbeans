@@ -41,7 +41,7 @@ public class LoggingInterceptor implements Serializable {
    public Object logMethodEntry(InvocationContext ctx) throws Exception{
       
        String methodName = ctx.getMethod().getName();
-       String className = ctx.getClass().getName();
+       String className = ctx.getTarget().getClass().getSimpleName();
        
        Date current = new Date();
        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
@@ -59,7 +59,7 @@ public class LoggingInterceptor implements Serializable {
                BigDecimal totalCost = p.getTotalCost();
                Date actionDate = p.getTransferDateTime();
                               
-               stringToLog = "Date: "+dateFormat.format(actionDate)+"Class: "+className+" Method: "+methodName+" - User: "+accountEmail+" Role: "+ statusString+" Points amount: "+pointAmount+" Total cost: "+totalCost; 
+               stringToLog = "Date: "+dateFormat.format(actionDate)+" Class: "+className+" Method: "+methodName+" - User: "+accountEmail+" Role: "+ statusString+" Points amount: "+pointAmount+" Total cost: "+totalCost; 
 
                break;
            case "makeTransaction":
@@ -67,7 +67,7 @@ public class LoggingInterceptor implements Serializable {
               int summerhouseNumber = summerhouseController.getSelected().getNumber();
               params = ctx.getParameters();
               BigDecimal amount= (BigDecimal) params[0];
-              stringToLog = "Date: "+dateFormat.format(current)+"Class: "+className+" Method: "+methodName+" - User: "+accountEmail+" Role: "+ statusString +" Summerhouse:"+summerhouseNumber+" Points:"+amount.doubleValue(); 
+              stringToLog = "Date: "+dateFormat.format(current)+" Class: "+className+" Method: "+methodName+" - User: "+accountEmail+" Role: "+ statusString +" Summerhouse:"+summerhouseNumber+" Points:"+amount.doubleValue(); 
                                 
               break;
            default:
