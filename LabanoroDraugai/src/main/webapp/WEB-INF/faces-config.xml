@@ -36,5 +36,9 @@
             <base-name>/AdministrationBundle</base-name>
             <var>AdministrationBundle</var>
         </resource-bundle>
+        <resource-bundle>
+            <base-name>/AdditionalServicesBundle</base-name>
+            <var>AdditionalServicesBundle</var>
+        </resource-bundle>
     </application>
 </faces-config>
