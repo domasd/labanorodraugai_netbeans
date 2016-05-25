@@ -47,13 +47,10 @@ public abstract class AbstractPriorityGenerationService {
             
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void generateReservationPriority(int numberOfUsersInOneGroup, Date startOfReservation){
-           
-        List<ReservationGroups> legacyGroups = em.createNamedQuery("ReservationGroups.findAll").getResultList();
+
+        em.createQuery("DELETE FROM ReservationGroups").executeUpdate();
+
         List<Account> allAccounts = em.createNamedQuery("Account.findAll").getResultList();
-        
-        for(ReservationGroups rgroup : legacyGroups){
-            em.remove(em.merge(rgroup));
-        }
                
         int numberOfExistingAccounts = allAccounts.size();          
         int numberOfGroups = (int) Math.ceil((double)numberOfExistingAccounts/numberOfUsersInOneGroup);      
