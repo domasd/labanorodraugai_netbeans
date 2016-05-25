@@ -13,10 +13,10 @@
                 <f:viewAction action="#{authenticationBean.userIsAuthorized()}" />
             </f:metadata>
         </ui:define>
-        
+
         <ui:define name="content">
-            
-            
+
+
             <h:outputScript library="js" id="calendarUpdate"> 
 
                 function afterLoad(date) {    
@@ -44,7 +44,9 @@
             </h:outputScript>
             <div style="width:500px;">
                 <h:form>
-                    <p:wizard flowListener="#{reservationController.onFlowProcess}" backLabel="#{CommonBundle.Back}" nextLabel="#{CommonBundle.Next}">
+                    <p:wizard flowListener="#{reservationController.onFlowProcess}" 
+                              backLabel="#{CommonBundle.Back}" 
+                              nextLabel="#{CommonBundle.Next}">
                         <p:tab id="chooseReservationDate" title="#{ReservationBundle.ReservationTab}" >
                             <p:panel header="#{ReservationBundle.SelectReservationDate}">
                                 <p:messages />
@@ -75,14 +77,22 @@
                                 <p:outputLabel value="#{ReservationBundle.PointsToPay}"/>
                                 <p:outputLabel value="#{reservationController.pointsSum}"/>
 
-                                <h:panelGrid columns="3" cellpadding="5">
-                                    <h:outputLabel for="checkbox" value="#{ReservationBundle.AdditionalServices}" />
-                                    <p:selectCheckboxMenu  id="checkbox" value="#{additionalServicesController.selectedItems}"
-                                                           label="#{ReservationBundle.AdditionalServices}"
-                                                           filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                                        <f:selectItems value="#{additionalServicesController.items}" />
-                                    </p:selectCheckboxMenu>
-                                </h:panelGrid>
+                                <p:dataTable id="checkboxDT" 
+                                             var="item" 
+                                             value="#{additionalServicesController.items}" 
+                                             selection="#{additionalServicesController.selectedItems}" 
+                                             rowKey="#{item.name}" 
+                                             style="margin-bottom:0">
+                                    <f:facet name="header">
+                                       #{ReservationBundle.AdditionalServices}
+                                    </f:facet>
+                                    
+                                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                    <p:column headerText="Pavadinimas">
+                                        <h:outputText value="#{item.name}" />
+                                    </p:column>
+                                </p:dataTable>
+
                             </p:panel>
                         </p:tab>
 
@@ -114,7 +124,7 @@
 
                 </h:form>
             </div>
-            
+
             <ui:include src="points.xhtml"/>
 
         </ui:define>
