@@ -5,33 +5,22 @@
  */
 package io.mif.labanorodraugai.beans.registration;
 
-import io.mif.labanorodraugai.beans.AdministrationController;
-import io.mif.labanorodraugai.beans.AdministrationFacade;
 import io.mif.labanorodraugai.beans.AuthenticationBean;
 import io.mif.labanorodraugai.entities.AccountApproval;
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.Config;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Stateful;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 /**
  *

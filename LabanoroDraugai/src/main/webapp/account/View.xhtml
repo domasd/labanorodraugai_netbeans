@@ -23,10 +23,10 @@
                 <p:panelGrid  columns="2" rendered="#{not empty accountController.selected}" columnClasses="label,value">
 
                     <f:facet name="header">
-                        <p:graphicImage value="#{accountController.image}" 
+                        <p:graphicImage value="#{images.userImage}" 
                                         rendered="#{not empty accountController.selected.image}"
                                         cache="false">
-                            <f:param name="accountId" value="#{accountController.selected.id}"/>
+                            <f:param name="id" value="#{accountController.selected.id}"/>
                         </p:graphicImage>
                         <p:graphicImage library="images" name="EmptyUserImage.jpg" rendered="#{empty accountController.selected.image}"/>
                     </f:facet>

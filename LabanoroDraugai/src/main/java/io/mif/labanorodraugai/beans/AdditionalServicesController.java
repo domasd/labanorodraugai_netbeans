@@ -7,7 +7,6 @@ package io.mif.labanorodraugai.beans;
 
 import io.mif.labanorodraugai.beans.util.JsfUtil;
 import io.mif.labanorodraugai.entities.AdditionalServices;
-import io.mif.labanorodraugai.entities.Summerhouse;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -15,11 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 /**
@@ -27,7 +26,7 @@ import javax.inject.Named;
  * @author SFILON
  */
 @Named
-@SessionScoped
+@ViewScoped
 public class AdditionalServicesController implements Serializable  {
     
     private List<AdditionalServices> items;
