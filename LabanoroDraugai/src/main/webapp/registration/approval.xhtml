@@ -29,12 +29,14 @@ and open the template in the editor.
 
                         <p:panelGrid  columns="2" columnClasses="label,value">
                             <f:facet name="header">
-                                <p:graphicImage value="#{accountApprovalController.image}" 
+                                <p:graphicImage value="#{images.userImage}" 
                                                 rendered="#{not empty accountApprovalController.approval.candidate.image}"
                                                 cache="false">
-                                    <f:param name="accountId" value="#{accountApprovalController.approval.candidate.id}"/>
+                                    <f:param name="id" value="#{accountApprovalController.approval.candidate.id}" />
                                 </p:graphicImage>
-                                <p:graphicImage library="images" name="EmptyUserImage.jpg" rendered="#{empty accountApprovalController.approval.candidate.image}"/>
+                                <p:graphicImage library="images" 
+                                                name="EmptyUserImage.jpg" 
+                                                rendered="#{empty accountApprovalController.approval.candidate.image}"/>
                             </f:facet>
 
                             <h:outputText value="#{AccountBundle.Title_name}"/>

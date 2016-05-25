@@ -23,9 +23,9 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -39,7 +39,7 @@ import org.primefaces.model.StreamedContent;
  */
 @Named
 @Stateful
-@SessionScoped
+@ViewScoped
 public class AccountApprovalController implements Serializable {
 
     private Account currentUser;
@@ -78,20 +78,6 @@ public class AccountApprovalController implements Serializable {
         
         config = em.createNamedQuery("Config.getConfig", Config.class)
                 .getSingleResult();
-    }
-
-    // TODO move to another class - proabably another table and write service
-    public StreamedContent getImage() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-            byte[] imageBytes = this.approval.getCandidate().getImage();
-            return new DefaultStreamedContent(new ByteArrayInputStream(imageBytes));
-        }
     }
 
     public void approve() {

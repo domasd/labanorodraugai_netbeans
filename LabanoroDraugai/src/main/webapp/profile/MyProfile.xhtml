@@ -16,7 +16,7 @@
 
 
         <ui:define name="content">
-            <c:set var="currentAccount" value="#{authenticationBean.loggedAccount}" scope="request" />
+            <c:set var="currentAccount" value="#{profileController.currentAccount}" scope="request" />
             <p:growl id="growl" life="2000" />
             <h:form id="accountEditFormId">
 
@@ -28,11 +28,11 @@
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-3">  
-                                <p:graphicImage value="#{profileController.image}" 
+                                <p:graphicImage value="#{images.userImage}" 
                                                 rendered="#{not empty currentAccount.image}"
                                                 cache="false"
                                                 styleClass="image-autofit">
-                                    <f:param name="accountId" value="#{currentAccount.id}"/>
+                                    <f:param name="id" value="#{currentAccount.id}" />
                                 </p:graphicImage>
                                 <p:graphicImage library="images" 
                                                 name="EmptyUserImage.jpg" 
@@ -98,9 +98,13 @@
                                     <p:outputLabel value="Klubo taškų sk." 
                                                    for="pointsQuantityId" />
                                     <p:outputLabel id="pointsQuantityId" 
-                                                 value="#{currentAccount.pointsQuantity}" 
-                                                 title="Klubo taškų sk." 
-                                                 styleClass="full-width"/>
+                                                   value="#{currentAccount.pointsQuantity}" 
+                                                   title="Klubo taškų sk." 
+                                                   styleClass="full-width"/>
+
+                                    <p:outputLabel value="#{AccountBundle.Title_status}"/> 
+                                    <p:outputLabel value="#{AccountBundle['Enum.AccountStatus.' += currentAccount.status]}" 
+                                                   title="#{AccountBundle.Title_status}"/>
                                 </h:panelGrid>
                                 <h3>#{ProfileBundle.Title_ChangePassword}</h3>
 

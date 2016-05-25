@@ -14,6 +14,9 @@ import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import javax.faces.view.ViewScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -27,6 +30,9 @@ import org.primefaces.model.UploadedFile;
 @Stateful
 @RequestScoped
 public class ProfileController {
+
+    @PersistenceContext
+    EntityManager em;
 
     @Inject
     private AccountController accountController;
@@ -44,9 +50,20 @@ public class ProfileController {
 
     private Account currentAccount;
 
+    public Account getCurrentAccount() {
+        return currentAccount;
+    }
+
+    public void setCurrentAccount(Account currentAccount) {
+        this.currentAccount = currentAccount;
+    }
+
     @PostConstruct
     public void init() {
-        currentAccount = authenticationBean.getLoggedAccount();
+        int accId = authenticationBean.getLoggedAccount().getId();
+        currentAccount = em.createNamedQuery("Account.findById", Account.class)
+                .setParameter("id", accId)
+                .getSingleResult();
     }
 
     public UploadedFile getUploadedFile() {
