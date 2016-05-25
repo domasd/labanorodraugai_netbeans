@@ -1,6 +1,5 @@
 package io.mif.labanorodraugai.beans;
 
-
 import io.mif.labanorodraugai.entities.Account;
 import io.mif.labanorodraugai.entities.AdditionalServices;
 import io.mif.labanorodraugai.entities.AdditionalServicesReservation;
@@ -51,91 +50,87 @@ import org.primefaces.event.FlowEvent;
  *
  * @author SFILON
  */
-
-
 @Named
 @Stateful
 @ViewScoped
-@TransactionManagement(TransactionManagementType.CONTAINER)
-public class ReservationController implements Serializable{
-           
+public class ReservationController implements Serializable {
+
     @EJB
     private IPointsService pointsService;
-    
+
     @Inject
     private AdditionalServicesController additionalServicesController;
 
     @Inject
     private SummerhouseController summerhouseController;
-    
+
     @Inject
     private AuthenticationBean sessionBean;
-    
+
     @Inject
     private AdministrationController administrationController;
-    
+
     @PersistenceContext
     private EntityManager em;
-    
+
     private Date reservationBeginDate;
-    
+
     private Date reservationEndDate;
-    
+
     private BigDecimal pointsSum;
-    
+
     private BigDecimal summerhousePoints;
-    
+
     private BigDecimal additionalServicesPoints;
-    
+
     private List<String> errorList;
 
-        
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public String submitWithPoints(){
-        
-      if (pointsService.makeTransaction(pointsSum)){
+    public String submitWithPoints() {
+
+        if (pointsService.makeTransaction(pointsSum)) {
             Date recordDate = new Date();
             submitReservation(recordDate);
-            submitAdditionalServices(recordDate);             
- 
+            submitAdditionalServices(recordDate);
+
             return "success.html";
-      }
-      else{
-          RequestContext requestContext = RequestContext.getCurrentInstance();  
-          requestContext.execute("PF('pointsPaymentDialogWidgetVar').hide()");
-  
-          FacesContext f = FacesContext.getCurrentInstance();
-          f.addMessage(null,new FacesMessage("Ivyko klaida!"));
-          
-          return null;
-      }
-  
-    }    
-       
+        } else {
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('pointsPaymentDialogWidgetVar').hide()");
+
+            FacesContext f = FacesContext.getCurrentInstance();
+            f.addMessage(null, new FacesMessage("Ivyko klaida!"));
+
+            return null;
+        }
+
+    }
+
     private void submitReservation(Date recordDate) {
-        
+
         SummerhouseReservationPK newRecordPK = new SummerhouseReservationPK(sessionBean.getLoggedAccount().getId(),
                 summerhouseController.getSelected().getId(), reservationBeginDate, reservationEndDate);
         SummerhouseReservation newRecord = new SummerhouseReservation(newRecordPK);
 
         newRecord.setPointsAmount(summerhousePoints);
         newRecord.setRecordCreated(recordDate);
-        em.persist(newRecord);       
+        em.persist(newRecord);
     }
- 
-    private void submitAdditionalServices(Date recordDate){
-        
+
+    private void submitAdditionalServices(Date recordDate) {
+
         List<AdditionalServices> allItems = additionalServicesController.getItems();
         List<AdditionalServices> selectedItems = Arrays.asList(additionalServicesController.getSelectedItems());
-       
-        if (selectedItems==null) return;
-        
-        for(AdditionalServices service:allItems){
-       
-            if (selectedItems.contains(service)){
-                AdditionalServicesReservationPK newADRecordPK = new AdditionalServicesReservationPK(sessionBean.getLoggedAccount().getId(),
-                service.getServiceID(), reservationBeginDate, reservationEndDate);
-       
+
+        if (selectedItems == null) {
+            return;
+        }
+
+        for (AdditionalServices service : allItems) {
+
+            if (selectedItems.contains(service)) {
+                AdditionalServicesReservationPK newADRecordPK = new AdditionalServicesReservationPK(service.getServiceID(),
+                        sessionBean.getLoggedAccount().getId(), reservationBeginDate, reservationEndDate);
+                
                 AdditionalServicesReservation newADRecord = new AdditionalServicesReservation(newADRecordPK);
                 newADRecord.setPointsAmount(additionalServicesPoints);
                 newADRecord.setRecordCreated(recordDate);
@@ -143,161 +138,160 @@ public class ReservationController implements Serializable{
             }
         }
     }
-    
-    public int getRemainingDaysTillReservationBegin(){
-       
-        return CalendarUtils.countDaysBetweenDatesBySpecificYear(new Date(),sessionBean.getLoggedAccount().getReservationGroup().getStartOfReservationDate(),LocalDateTime.now().getYear());
+
+    public int getRemainingDaysTillReservationBegin() {
+
+        return CalendarUtils.countDaysBetweenDatesBySpecificYear(new Date(), sessionBean.getLoggedAccount().getReservationGroup().getStartOfReservationDate(), LocalDateTime.now().getYear());
 
     }
-    
+
     public String onFlowProcess(FlowEvent event) {
 
-        switch(event.getOldStep()){
+        switch (event.getOldStep()) {
             case "chooseReservationDate":
                 boolean areDatesCorrect = validateSummerhouseReservationDates(reservationBeginDate, reservationEndDate, summerhouseController.getSelected().getId());
-                
-                if (areDatesCorrect)
-                {
-                    summerhousePoints=pointsService.calculateSummerhousePoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
-                    additionalServicesPoints = pointsService.calculateAdditionalServicesPoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
-                    pointsSum=summerhousePoints.add(additionalServicesPoints);
+
+                if (areDatesCorrect) {
+                    summerhousePoints = pointsService.calculateSummerhousePoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate, LocalDateTime.now().getYear()));
+                    additionalServicesPoints = pointsService.calculateAdditionalServicesPoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate, LocalDateTime.now().getYear()));
+                    pointsSum = summerhousePoints.add(additionalServicesPoints);
 
                     return event.getNewStep();
-                } else{
+                } else {
                     FacesContext context = FacesContext.getCurrentInstance();
-                    context.addMessage(null, new FacesMessage(ResourceBundle.getBundle("/ReservationBundle").getString("DatesNotCorrectError")));               
+                    context.addMessage(null, new FacesMessage(ResourceBundle.getBundle("/ReservationBundle").getString("DatesNotCorrectError")));
                     return event.getOldStep();
                 }
-                
+
             case "selectAdditionalServices":
-                
-                
-                if (!event.getNewStep().equals("payment"))
+
+                if (!event.getNewStep().equals("payment")) {
                     return event.getNewStep();
-                                
-                areDatesCorrect = validateAdditionalServicesValidationDates(reservationBeginDate, reservationEndDate,additionalServicesController.getItems(), Arrays.asList(additionalServicesController.getSelectedItems()));
-                
-                if (areDatesCorrect){
-                    summerhousePoints=pointsService.calculateSummerhousePoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
-                    additionalServicesPoints = pointsService.calculateAdditionalServicesPoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate,LocalDateTime.now().getYear()));
-                    pointsSum=summerhousePoints.add(additionalServicesPoints);
+                }
+
+                areDatesCorrect = validateAdditionalServicesValidationDates(reservationBeginDate, reservationEndDate, additionalServicesController.getItems(), Arrays.asList(additionalServicesController.getSelectedItems()));
+
+                if (areDatesCorrect) {
+                    summerhousePoints = pointsService.calculateSummerhousePoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate, LocalDateTime.now().getYear()));
+                    additionalServicesPoints = pointsService.calculateAdditionalServicesPoints(CalendarUtils.countDaysBetweenDatesBySpecificYear(reservationBeginDate, reservationEndDate, LocalDateTime.now().getYear()));
+                    pointsSum = summerhousePoints.add(additionalServicesPoints);
                     return event.getNewStep();
-                } else{
-                    
-                    String text="";
-                    for(String item:errorList){
-                        if (item!=null)
-                            text=text+" "+item+" ";
+                } else {
+
+                    String text = "";
+                    for (String item : errorList) {
+                        if (item != null) {
+                            text = text + " " + item + " ";
+                        }
                     }
-                    
+
                     FacesContext context = FacesContext.getCurrentInstance();
-                    context.addMessage(null, new FacesMessage(ResourceBundle.getBundle("/ReservationBundle").getString("CanNotReserveAdditionalServices")+text));               
+                    context.addMessage(null, new FacesMessage(ResourceBundle.getBundle("/ReservationBundle").getString("CanNotReserveAdditionalServices") + text));
                     return event.getOldStep();
                 }
-            
+
             case "payment":
-          
+
             default:
                 break;
         }
-                    
+
         return event.getNewStep();
-        
+
     }
-    
-    public boolean validateSummerhouseReservationDates(Date startDate, Date endDate,int summerhouseID){
-        
+
+    public boolean validateSummerhouseReservationDates(Date startDate, Date endDate, int summerhouseID) {
+
         errorList = new ArrayList<>();
-        
-        if (CalendarUtils.countDaysBetweenDatesBySpecificYear(startDate, endDate, LocalDateTime.now().getYear())>administrationController.getConfig().getMaxReservationDaysLength()){
+
+        if (CalendarUtils.countDaysBetweenDatesBySpecificYear(startDate, endDate, LocalDateTime.now().getYear()) > administrationController.getConfig().getMaxReservationDaysLength()) {
             errorList.add(ResourceBundle.getBundle("/ReservationBundle").getString("BadReservationLength"));
             return false;
         }
-        
-        if (startDate.after(endDate)){
+
+        if (startDate.after(endDate)) {
             errorList.add(ResourceBundle.getBundle("/ReservationBundle").getString("StartDateIsAfterEndError"));
             return false;
         }
-            
-        
-        List<Date> selectedDates= CalendarUtils.getDatesBetweenDates(startDate, endDate);
-        
-        List<SummerhouseReservation> reservationHistory =  em.createNamedQuery("SummerhouseReservation.findBySummerhouseID")
+
+        List<Date> selectedDates = CalendarUtils.getDatesBetweenDates(startDate, endDate);
+
+        List<SummerhouseReservation> reservationHistory = em.createNamedQuery("SummerhouseReservation.findBySummerhouseID")
                 .setParameter("summerhouseID", summerhouseID).getResultList();
-        
+
         List<Date> allSummerhouseDates = new ArrayList<>();
-        
-        for(SummerhouseReservation record:reservationHistory){
+
+        for (SummerhouseReservation record : reservationHistory) {
             Date recordStartDate = record.getSummerhouseReservationPK().getBeginDate();
             Date recordEndDate = record.getSummerhouseReservationPK().getEndDate();
-            
+
             allSummerhouseDates.addAll(CalendarUtils.getDatesBetweenDates(recordStartDate, recordEndDate));
         }
-        
-        for(Date date:selectedDates){
-            if (allSummerhouseDates.contains(date)){
+
+        for (Date date : selectedDates) {
+            if (allSummerhouseDates.contains(date)) {
                 errorList.add(ResourceBundle.getBundle("/ReservationBundle").getString("BadReservationDates"));
                 return false;
             }
         }
-        
+
         return true;
-    }    
-    
-    private boolean validateAdditionalServiceReservationDate(int additionalServiceID, List<Date> selectedDates){
-        
-        List<AdditionalServicesReservation> reservationHistory =  em.createNamedQuery("AdditionalServicesReservation.findByServiceID")
+    }
+
+    private boolean validateAdditionalServiceReservationDate(int additionalServiceID, List<Date> selectedDates) {
+
+        List<AdditionalServicesReservation> reservationHistory = em.createNamedQuery("AdditionalServicesReservation.findByServiceID")
                 .setParameter("serviceID", additionalServiceID).getResultList();
-        
+
         List<Date> allServiceDates = new ArrayList<>();
-        
-        for(AdditionalServicesReservation record:reservationHistory){
+
+        for (AdditionalServicesReservation record : reservationHistory) {
             Date recordStartDate = record.getAdditionalServicesReservationPK().getBeginDate();
             Date recordEndDate = record.getAdditionalServicesReservationPK().getEndDate();
-            
+
             allServiceDates.addAll(CalendarUtils.getDatesBetweenDates(recordStartDate, recordEndDate));
         }
-        
-        for(Date date:selectedDates){
-            if (allServiceDates.contains(date)){
+
+        for (Date date : selectedDates) {
+            if (allServiceDates.contains(date)) {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
-    public boolean validateAdditionalServicesValidationDates(Date startDate, Date endDate, List<AdditionalServices> allItems, List<AdditionalServices> selectedItems){
-        
+
+    public boolean validateAdditionalServicesValidationDates(Date startDate, Date endDate, List<AdditionalServices> allItems, List<AdditionalServices> selectedItems) {
+
         errorList = new ArrayList<>();
-        
-        List<Date> selectedDates= CalendarUtils.getDatesBetweenDates(startDate, endDate);
-        
-        for(AdditionalServices service:allItems){
-            
-            if (selectedItems.contains(service)){
-            
-                if (!validateAdditionalServiceReservationDate(service.getServiceID(), selectedDates)){
+
+        List<Date> selectedDates = CalendarUtils.getDatesBetweenDates(startDate, endDate);
+
+        for (AdditionalServices service : allItems) {
+
+            if (selectedItems.contains(service)) {
+
+                if (!validateAdditionalServiceReservationDate(service.getServiceID(), selectedDates)) {
                     errorList.add(service.getName());
                     return false;
                 }
             }
-            
+
         }
-        
+
         return true;
-        
+
     }
 
-    public List<SummerhouseReservation> getLoggedAccountAllReservations(){
+    public List<SummerhouseReservation> getLoggedAccountAllReservations() {
         return getAccountAllReservations(sessionBean.getLoggedAccount());
     }
-    
-    public List<SummerhouseReservation> getAccountAllReservations(Account account){
-                
+
+    public List<SummerhouseReservation> getAccountAllReservations(Account account) {
+
         return em.createNamedQuery("SummerhouseReservation.findByAccountID").setParameter("accountID", account.getId()).getResultList();
     }
-        
+
     /**
      * @return the reservationBeginDate
      */
