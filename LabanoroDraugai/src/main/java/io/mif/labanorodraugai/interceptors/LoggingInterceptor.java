@@ -57,9 +57,8 @@ public class LoggingInterceptor implements Serializable {
                PaypalPointsPayment p = (PaypalPointsPayment) params[0];
                int pointAmount = p.getPointsAmount();
                BigDecimal totalCost = p.getTotalCost();
-               Date actionDate = p.getTransferDateTime();
                               
-               stringToLog = "Date: "+dateFormat.format(actionDate)+" Class: "+className+" Method: "+methodName+" - User: "+accountEmail+" Role: "+ statusString+" Points amount: "+pointAmount+" Total cost: "+totalCost; 
+               stringToLog = "Date: "+dateFormat.format(current)+" Class: "+className+" Method: "+methodName+" - User: "+accountEmail+" Role: "+ statusString+" Points amount: "+pointAmount+" Total cost: "+totalCost; 
 
                break;
            case "makeTransaction":
