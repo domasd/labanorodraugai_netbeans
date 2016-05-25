@@ -79,6 +79,7 @@ public class PaypalPointsExecutionController {
             this.payment = payments.get(0);
             paypalService.CompletePayment(this.payment);
             this.payment = em.merge(this.payment);
+            authenticationBean.getLoggedAccount().setPointsQuantity(payment.getAccount().getPointsQuantity());           
         } catch (PayPalRESTException ex) {
             Logger.getLogger(PaypalPointsExecutionController.class.getName()).log(Level.SEVERE, null, ex);
         }       
