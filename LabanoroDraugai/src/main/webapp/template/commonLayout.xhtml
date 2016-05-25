@@ -22,7 +22,11 @@
             </p:layoutUnit>
 
             <p:layoutUnit position="south" size="60">
-                Bottom Content 
+                <p:panelGrid columns="3" layout="grid" styleClass="bottomContent">            
+                    <h:outputText value="Bendrija „Labanoro draugai“. Žalioji g. 5, Molėtai, Molėtų raj."/> 
+                    <h:outputText value="El. paštas: labanorodraugaibendrija@gmail.com"/> 
+                    <h:outputText value="Tel. 8 608 45 450"/> 
+                </p:panelGrid> 
             </p:layoutUnit>
 
             <p:layoutUnit position="center" >
@@ -54,30 +58,6 @@
                         
                         <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Prisijungimas" url="/login/login.html"/>
                         <p:menuitem rendered="#{authenticationBean.loggedAccount!=null}" value="Atsijungti" action="#{authenticationBean.logout()}"/>
-                        
-                        <p:submenu label="File" icon="ui-icon-document">
-                            <p:submenu label="New" icon="ui-icon-contact">
-                                <p:menuitem value="Project" url="#" />
-                                <p:menuitem value="Other" url="#" />
-                            </p:submenu>
-                            <p:menuitem value="Open" url="#" />
-                            <p:menuitem value="Quit" url="#" />
-                        </p:submenu>
-
-                        <p:submenu label="Edit" icon="ui-icon-pencil">
-                            <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w"></p:menuitem>
-                            <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e"></p:menuitem>
-                        </p:submenu>
-
-                        <p:submenu label="Help" icon="ui-icon-help">
-                            <p:menuitem value="Contents" url="#" />
-                            <p:submenu label="Search" icon="ui-icon-search">
-                                <p:submenu label="Text">
-                                    <p:menuitem value="Workspace" url="#" />
-                                </p:submenu>
-                                <p:menuitem value="File" url="#" />
-                            </p:submenu>
-                        </p:submenu>
                     </p:menubar>
                 </h:form>
 

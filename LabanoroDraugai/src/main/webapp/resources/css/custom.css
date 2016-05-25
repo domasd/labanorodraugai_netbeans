@@ -59,3 +59,8 @@ and open the template in the editor.
 .approval-output-panel .ui-panelgrid {
     margin:auto;
 }
+
+.bottomContent .ui-grid-row .ui-panelgrid-cell {
+    text-align: center;
+    font-size: 14px;
+}
