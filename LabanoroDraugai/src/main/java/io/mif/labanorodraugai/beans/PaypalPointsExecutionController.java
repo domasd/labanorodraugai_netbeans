@@ -40,10 +40,13 @@ public class PaypalPointsExecutionController {
     @Inject
     private AuthenticationBean authenticationBean;
 
-    private PaypalPointsPayment payment;
+    private PaypalPointsPayment payment = null;
     
-    @PostConstruct
-    public void init(){
+    /**
+     * @return the payment
+     */
+    public PaypalPointsPayment getPayment() {
+        
         this.payment = null;
         
         String guid = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("guid");
@@ -51,7 +54,7 @@ public class PaypalPointsExecutionController {
         String payerID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("PayerID");
         
         if (guid == null || paymentId == null || payerID == null) {
-            return;
+            return null;
         }
         
         List<PaypalPointsPayment> payments = em.createNamedQuery("PaypalPointsPayment.findByGeneratedId")
@@ -59,16 +62,16 @@ public class PaypalPointsExecutionController {
                 .getResultList();
         
         if (payments.isEmpty()) {
-            return;
+            return null;
         }
         
         if (payments.get(0).getAccount().getId() != authenticationBean.getLoggedAccount().getId()) {
-            return;
+            return null;
         }
         
         if (payments.get(0).getTransferDateTime() != null) {
-            this.payment = payments.get(0);
-            return;
+            payment = payments.get(0);
+            return payment;
         }
         
         try {
@@ -80,23 +83,9 @@ public class PaypalPointsExecutionController {
             this.payment = em.merge(this.payment);
         } catch (PayPalRESTException ex) {
             Logger.getLogger(PaypalPointsExecutionController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * @return the payment
-     */
-    public PaypalPointsPayment getPayment() {
+        }       
+        
         return payment;
     }
-
-    /**
-     * @param payment the payment to set
-     */
-    public void setPayment(PaypalPointsPayment payment) {
-        this.payment = payment;
-    }
-    
-
     
 }
