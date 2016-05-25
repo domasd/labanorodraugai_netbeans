@@ -54,7 +54,7 @@
                             <p:menuitem value="Pakviesti narį" url="/registration/invite.html" icon="fa fa-fw fa-user-plus"/>
                         </p:submenu>
 
-                        <p:menuitem value="Klubo vasarnamiai" url="/summerhouse/List.html" icon="fa fa-fw fa-bed" />
+                        <p:menuitem rendered="#{authenticationBean.loggedAccount!=null}" value="Klubo vasarnamiai" url="/summerhouse/List.html" icon="fa fa-fw fa-bed" />
                         
                         <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Prisijungimas" url="/login/login.html"/>
                         <p:menuitem rendered="#{authenticationBean.loggedAccount!=null}" value="Atsijungti" action="#{authenticationBean.logout()}"/>
