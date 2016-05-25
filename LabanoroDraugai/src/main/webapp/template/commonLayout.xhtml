@@ -44,7 +44,8 @@
 
                         <p:submenu label="#{AccountBundle.Title_MyProfile}" rendered="#{authenticationBean.loggedAccount!=null}" icon="fa fa-fw fa-user">
                             <p:menuitem value="#{AccountBundle.Title_ProfileInformation}" url="/profile/MyProfile.html"/>
-                            <p:menuitem value="#{AccountBundle.Title_ReservationHistory}" url="/profile/History.html"/>
+                            <p:menuitem value="#{AccountBundle.Title_SummerhouseReservationHistory}" url="/profile/History.html"/>
+                            <p:menuitem value="#{AccountBundle.Title_AdditionalServicesReservationHistory}" url="/profile/ServicesHistory.html"/>
                             <p:menuitem value="Pirkti taškų" url="/payment/paypalBuyPoints.html" rendered="#{authenticationBean.authorizedAndNotCandidate}" icon="fa fa-fw fa-paypal" />
                             
                         </p:submenu>

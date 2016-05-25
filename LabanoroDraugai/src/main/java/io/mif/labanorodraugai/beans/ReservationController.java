@@ -295,6 +295,16 @@ public class ReservationController implements Serializable{
                 
         return em.createNamedQuery("SummerhouseReservation.findByAccountID").setParameter("accountID", account.getId()).getResultList();
     }
+    
+    public List<AdditionalServicesReservation> getLoggedAccountAllAdditionalServicesReservations(){
+                
+        return getAccountAllAdditionalServicesReservations(sessionBean.getLoggedAccount());
+    }
+    
+    public List<AdditionalServicesReservation> getAccountAllAdditionalServicesReservations(Account account){
+                
+        return em.createNamedQuery("AdditionalServicesReservation.findByAccountID").setParameter("accountID", account.getId()).getResultList();
+    }
         
     /**
      * @return the reservationBeginDate
