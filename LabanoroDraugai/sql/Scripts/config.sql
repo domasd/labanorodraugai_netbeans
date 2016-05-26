@@ -13,5 +13,5 @@ CREATE TABLE `labanorodraugai_db`.`config` (
 );
 
 -- Default configuration
-INSERT INTO `labanorodraugai_db`.`config` VALUES(1,5, '["Telefonas","Adresas"]','2016-04-01',2,4,'2016-06-01','2016-08-31',365, 500);
+INSERT INTO `labanorodraugai_db`.`config` VALUES(1,1, '["Telefonas","Adresas"]','2016-04-01',2,4,'2016-06-01','2016-08-31',365, 50);
 
