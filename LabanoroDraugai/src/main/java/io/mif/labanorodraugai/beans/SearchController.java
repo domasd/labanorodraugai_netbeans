@@ -41,12 +41,12 @@ public class SearchController implements Serializable{
     
     private FilterParam parameters;
     
-    private int minCapacity;
-    private int maxCapacity;
+    private int minCapacity=4;
+    private int maxCapacity=10;
     private String name;
     private Date beginDate;
     private Date endDate;
-    private int maxPoints;
+    private int maxPoints=16;
     
     public void filter(){
       
@@ -57,9 +57,8 @@ public class SearchController implements Serializable{
         for(Summerhouse summerhouse:allHouses){
             
             if ((summerhouse.getCapacity()>=getMinCapacity() || getMinCapacity()==0)
-                 && (summerhouse.getPointsPerDay().compareTo(new BigDecimal(getMaxPoints()))>0 || getMaxPoints()==0)
+                 && (summerhouse.getPointsPerDay().doubleValue()<getMaxPoints() || getMaxPoints()==0)
                  && (summerhouse.getCapacity()<= getMaxCapacity() || getMaxCapacity()==0)
-                 && (getName()==null || summerhouse.getName().indexOf(getName())>=0 || getName().isEmpty())
                  && (getBeginDate()==null || getEndDate()==null || checkSummerhouseAvailability(getBeginDate(), getEndDate(), summerhouse.getId()))){
                 
                 result.add(summerhouse);   

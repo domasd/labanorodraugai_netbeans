@@ -23,9 +23,6 @@
                 <p:panelGrid columns="2">
                 <h:panelGroup id="searchPanelId">
                     <p:panelGrid columns="2" >
-
-                        <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseTitle}" for="title" />
-                        <p:inputText id="title" value="#{searchController.name}" />
                         
                         <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseMinCapacity}" for="min" />
                         <p:inputText id="min" value="#{searchController.minCapacity}"/>
@@ -36,11 +33,11 @@
                         <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseMaxPoint}" for="maxPoints" />
                         <p:inputText id="maxPoints" value="#{searchController.maxPoints}" />
                         
-                        <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseStartReservationDate}" for="beginDate" />
-                        <p:calendar id="beginDate" value="#{searchController.beginDate}"/>
+                        <p:outputLabel rendered="false" value="#{CommonBundle.SearchParameterSummerhouseStartReservationDate}" for="beginDate" />
+                        <p:calendar rendered ="false" id="beginDate" value="#{searchController.beginDate}"/>
                         
-                        <p:outputLabel value="#{CommonBundle.SearchParameterSummerhouseEndReservationDate}" for="endDate" />
-                        <p:calendar id="endDate" value="#{searchController.endDate}" />
+                        <p:outputLabel rendered ="false" value="#{CommonBundle.SearchParameterSummerhouseEndReservationDate}" for="endDate" />
+                        <p:calendar rendered ="false" id="endDate" value="#{searchController.endDate}" />
 
                     </p:panelGrid>
 
@@ -53,7 +50,7 @@
 
 
                 </h:panelGroup>
-
+                    
                 <h:panelGroup id="result">
 
                     <p:dataTable id="filterdata" value="#{searchController.results}" var="item"
@@ -75,6 +72,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{SummerhouseBundle.Operations}"/> 
                             </f:facet>
+                            
 
                             <p:commandButton icon="ui-icon-search" 
                                              title="#{CommonBundle.View}"
@@ -92,9 +90,6 @@
                 </p:panelGrid>
 
             </h:form>   
-
-
-
         </p:dialog>
     </ui:composition>
 </html>
