@@ -9,7 +9,7 @@ CREATE TABLE `labanorodraugai_db`.`summerhouse` (
   PRIMARY KEY (`Id`),
   UNIQUE INDEX `Name_UNIQUE` (`Name` ASC));
   
-INSERT INTO `labanorodraugai_db`.`summerhouse` (`Number`, `Name`, `Description`, `Capacity`, `PointsPerDay`) VALUES ('1', 'Sausio', 'jaukus namelis', '5', '10');
-INSERT INTO `labanorodraugai_db`.`summerhouse` (`Number`, `Name`, `Description`, `Capacity`, `PointsPerDay`) VALUES ('2', 'Kovo', 'yra kavos aparatas', '10', '15');
-INSERT INTO `labanorodraugai_db`.`summerhouse` (`Number`, `Name`, `Description`, `Capacity`, `PointsPerDay`) VALUES ('3', 'Vasario', 'yra elektra', '23', '20');
+INSERT INTO `labanorodraugai_db`.`summerhouse` (`Number`, `Name`, `Description`, `Capacity`, `PointsPerDay`) VALUES ('1', 'Pietinis', 'Iki  ežero - 200 m. ežeras puikiai tinka buriavimui, kaitavimui, plaukiojimui jachtomis, valtimis, vandens dviračiais. Didelis erdvus sandeliukas, idealus šeimai.', '10', '10');
+INSERT INTO `labanorodraugai_db`.`summerhouse` (`Number`, `Name`, `Description`, `Capacity`, `PointsPerDay`) VALUES ('2', 'Pietryciu', 'Iki ežero 500 m. Puikus namelis porai arba individualiem poilsiautojiam.', '2', '15');
+INSERT INTO `labanorodraugai_db`.`summerhouse` (`Number`, `Name`, `Description`, `Capacity`, `PointsPerDay`) VALUES ('3', 'Vakarinis', 'Erdvus, 8 miegamieji, su sauna. Iki ežero 100 m.', '23', '20');
 

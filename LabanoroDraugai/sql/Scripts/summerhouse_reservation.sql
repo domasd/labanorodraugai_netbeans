@@ -17,4 +17,9 @@ CREATE TABLE `labanorodraugai_db`.`summerhouse_reservation` (
     REFERENCES `labanorodraugai_db`.`account` (`Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
+
+
+INSERT INTO `labanorodraugai_db`.`summerhouse_reservation` (`AccountID`, `SummerhouseID`, `BeginDate`, `EndDate`, `RecordCreated`, `PointsAmount`) 
+VALUES ('1', '1', '2016-06-13', '2016-06-16', '2016-05-01', 17);
+
 	

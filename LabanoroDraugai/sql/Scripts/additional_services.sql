@@ -6,5 +6,7 @@ CREATE TABLE `labanorodraugai_db`.`additional_services` (
   UNIQUE INDEX `Name_UNIQUE` (`Name` ASC),
   PRIMARY KEY (`ServiceID`));
 
-INSERT INTO `labanorodraugai_db`.`additional_services` (`Name`, `Description`, `PointsPerDay`) VALUES ('Dviratis', 'vogtas, bet geras', '2');
-INSERT INTO `labanorodraugai_db`.`additional_services` (`Name`, `Description`, `PointsPerDay`) VALUES ('Valtis', 'biski paseno, bet vis dar plaukia', '3');
+INSERT INTO `labanorodraugai_db`.`additional_services` (`Name`, `Description`, `PointsPerDay`) VALUES ('Dviratis', 'AIST, paprastas, be pavarų.', '2');
+INSERT INTO `labanorodraugai_db`.`additional_services` (`Name`, `Description`, `PointsPerDay`) VALUES ('Valtis', 'Medinė, su irklais, talpina iki 4 žm.', '3');
+INSERT INTO `labanorodraugai_db`.`additional_services` (`Name`, `Description`, `PointsPerDay`) VALUES ('Ląstai', 'Įvairių dydžių, skirta plaukioti paviršiuje.', '1');
+

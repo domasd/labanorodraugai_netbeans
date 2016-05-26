@@ -24,28 +24,9 @@ CREATE TABLE `labanorodraugai_db`.`account` (
 -- test data for account seed
 INSERT INTO `labanorodraugai_db`.`account`
 (`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `FB_URL`, `ReservationGroup`, `PointsQuantity`) VALUES 
-('9005c954a30e7a71d5cf8744e7b', 'Labanoro1', 'Draugai1', 'Test Description', null, 0, 'vytautas.labanoro1@gmail.com', 'https://www.facebook.com/ddziaugys',0,100),
-('77cf552a2fd4c58b4154a245779d19c', 'Labanoro2', 'Draugai2', 'Test Description', null, 0, 'vytautas.labanoro2@gmail.com', 'https://www.facebook.com/ddziaugys',0,100),
-('202cb962ac5975b964b7152d234b70', 'TestName', 'TestLastname', 'Test Description', null, 1, 'test@test.test', 'https://www.facebook.com/ddziaugys',0,100);
-
-INSERT INTO `labanorodraugai_db`.`account`
-(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `FB_URL`, `ReservationGroup`, `PointsQuantity`) 
-VALUES ('cc175b9c0f1b6a831c399e269772661', 'a', 'TestLastname', 'Test Description', null, 0, 'a@a.a', 'https://www.facebook.com/serg.filon',0,0);
-
-INSERT INTO `labanorodraugai_db`.`account`
-(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `ReservationGroup`, `PointsQuantity`) 
-VALUES ('202cb962ac5975b964b7152d234b70', 'User', 'B', 'Test Description2', null, 0, 'userb@somemail.com',0,100);
-
-INSERT INTO `labanorodraugai_db`.`account`
-(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `ReservationGroup`,`PointsQuantity`) 
-VALUES ('202cb962ac5975b964b7152d234b70', 'User', 'C', 'Test Description3', null, 0, 'userc@somemail.com',0,100);
-
-INSERT INTO `labanorodraugai_db`.`account`
-(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `ReservationGroup`,`PointsQuantity`) 
-VALUES ('202cb962ac5975b964b7152d234b70', 'User', 'D', 'Test Description4', null, 0, 'userd@somemail.com',0,100);
-
-INSERT INTO `labanorodraugai_db`.`account`
-(`Password`, `Name`, `Lastname`, `Description`, `Image`, `Status`, `Email`, `ReservationGroup`,`PointsQuantity`) 
-VALUES ('202cb962ac5975b964b7152d234b70', 'User', 'E', 'Test Description5', null, 0, 'usere@somemail.com',0,100);
+('202cb962ac5975b964b7152d234b70', 'Vytautas', 'Traškevičius', 'Duomiuosi politiką', null, 0, 'vytautas.labanoro1@gmail.com', 'https://www.facebook.com/ddziaugys',0,1000),
+('202cb962ac5975b964b7152d234b70', 'Vieslav', 'Lapin', 'Važinėju dviračiu', null, 0, 'vytautas.labanoro2@gmail.com', 'https://www.facebook.com/ddziaugys',1,1000),
+('202cb962ac5975b964b7152d234b70', 'Jonas', 'Jonaitis', 'Labai mėgstu žvejoti, medžioti.', null, 1, 'jonas@jonaitis.lt', 'https://www.facebook.com/serg.filon',0,0),
+('202cb962ac5975b964b7152d234b70', 'Andrius', 'Andriukaitis', 'Adminsitruoju sistemą.', null, 2, 'andrius@andriukaitis.lt', null, 0, 1000);
 
 

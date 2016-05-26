@@ -32,7 +32,6 @@
             <p:layoutUnit position="center" >
                 <h:form>
                     <p:menubar>
-                        <p:menuitem rendered="#{authenticationBean.authorizedAndAdmin}" value="Paslaugos" url="/services/List.html"/>
                         <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Registracija" url="/registration/registration.html"/>
                         <p:menuitem rendered="#{authenticationBean.authorizedAndCandidate}" value="Paskyros patvirtinimas" url="/registration/askingForApproval.html"/>
 
@@ -40,6 +39,7 @@
                             <p:menuitem value="#{AdministrationBundle.UserManagement}" url="/account/List.html" icon="fa fa-fw fa-list"/>
                             <p:menuitem value="#{AdministrationBundle.SystemConfiguration}" url="/administration/configuration.html" icon="fa fa-fw fa-terminal"/>
                             <p:menuitem value="#{AdministrationBundle.SummerhouseManagement}" url="/summerhouse/List.html" icon="fa fa-fw fa-bed" />
+                            <p:menuitem rendered="#{authenticationBean.authorizedAndAdmin}" value="Paslaugos" url="/services/List.html"/>
                         </p:submenu>
 
                         <p:submenu label="#{AccountBundle.Title_MyProfile}" rendered="#{authenticationBean.loggedAccount!=null}" icon="fa fa-fw fa-user">
@@ -47,7 +47,7 @@
                             <p:menuitem value="#{AccountBundle.Title_SummerhouseReservationHistory}" url="/profile/History.html"/>
                             <p:menuitem value="#{AccountBundle.Title_AdditionalServicesReservationHistory}" url="/profile/ServicesHistory.html"/>
                             <p:menuitem value="Pirkti taškų" url="/payment/paypalBuyPoints.html" rendered="#{authenticationBean.authorizedAndNotCandidate}" icon="fa fa-fw fa-paypal" />
-                            
+
                         </p:submenu>
 
                         <p:submenu rendered="#{authenticationBean.loggedAccount!=null}" label="Klubo nariai" icon="fa fa-fw fa-users" >
@@ -56,7 +56,7 @@
                         </p:submenu>
 
                         <p:menuitem rendered="#{authenticationBean.loggedAccount!=null}" value="Klubo vasarnamiai" url="/summerhouse/List.html" icon="fa fa-fw fa-bed" />
-                        
+
                         <p:menuitem rendered="#{authenticationBean.loggedAccount==null}" value="Prisijungimas" url="/login/login.html"/>
                         <p:menuitem rendered="#{authenticationBean.loggedAccount!=null}" value="Atsijungti" action="#{authenticationBean.logout()}"/>
                     </p:menubar>
