@@ -71,6 +71,16 @@ public class Config implements Serializable {
     @Column(name = "CustomRegistrationFields")    
     @NotNull
     private String customRegistrationFields;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "SeasonDays")
+    private int seasonDays;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MembershipPrice")
+    private int membershipPrice;
 
     public Config() {
     }
@@ -171,6 +181,22 @@ public class Config implements Serializable {
 
     public void setLastDateAbleToReserve(Date lastDateAbleToReserve) {
         this.lastDateAbleToReserve = lastDateAbleToReserve;
+    }
+    
+    public int getSeasonDays() {
+        return seasonDays;
+    }
+
+    public void setSeasonDays(int SeasonDays) {
+        this.seasonDays = SeasonDays;
+    }
+    
+    public int getMembershipPrice() {
+        return membershipPrice;
+    }
+
+    public void setMembershipPrice(int MembershipPrice) {
+        this.membershipPrice = MembershipPrice;
     }
     
 }

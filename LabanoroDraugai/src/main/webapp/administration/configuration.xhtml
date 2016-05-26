@@ -70,6 +70,20 @@
                                     required="true" 
                                     requiredMessage="#{CommonBundle.RequiredField} #{AdministrationBundle.LastDateAbleToReserve}"
                                     pattern="yyyy-MM-dd"/>
+                        
+                        <p:outputLabel value="Sezono trukmė dienomis"/>
+                        <p:inputText  
+                                     value="#{administrationController.config.seasonDays}" 
+                                     title="Sezono trukmė dienomis" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} Sezono trukmė dienomis"/>
+                        
+                        <p:outputLabel value="Narystės kaina"/>
+                        <p:inputText  
+                                     value="#{administrationController.config.membershipPrice}" 
+                                     title="Narystės kaina" 
+                                     required="true" 
+                                     requiredMessage="#{CommonBundle.RequiredField} Narystės kaina"/>
                     </h:panelGrid>
 
                     <p:commandButton update=":editPanelId" 

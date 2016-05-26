@@ -49,6 +49,20 @@
                             </div>
                             <div class="ui-grid-col-6 margin-sm">
                                 <h:panelGrid columns="2" cellpadding="5">  
+                                    <p:outputLabel value="#{AccountBundle.Title_membershipValidUntil}" />
+                                    <p:outputLabel id="membershipDateId" value="#{currentAccount.getMembershipValidUntilConverted()}" >
+                                        <f:convertDateTime pattern="yyyy-MM-dd" type="date" />
+                                    </p:outputLabel>
+                                    
+                                    <p:commandButton value="Pratęsti narystę" actionListener="#{dialogView.extendMembership}"  update="membershipDateId @this" disabled="#{dialogView.valid}" rendered="#{authenticationBean.authorizedAndNotCandidate}">
+                                        <p:confirm id="confirmationMessageId" header="Confirmation" message="#{dialogView.formMessage}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                    
                                     <p:outputLabel value="#{AccountBundle.Label_name}" 
                                                    for="name" />
                                     <p:inputText id="name" 

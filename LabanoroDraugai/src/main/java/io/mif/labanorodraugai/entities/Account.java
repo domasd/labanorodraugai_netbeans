@@ -5,14 +5,19 @@
  */
 package io.mif.labanorodraugai.entities;
 
+import io.mif.labanorodraugai.beans.AccountController;
 import io.mif.labanorodraugai.entities.enums.AccountStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -101,7 +106,11 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "PointsQuantity")
-    private BigDecimal pointsQuantity;
+    public BigDecimal pointsQuantity;
+    
+    @Basic(optional = true)
+    @Column(name = "MembershipValidUntil")
+    public Date membershipValidUntil;
     
     @NotNull
     @Version
@@ -227,7 +236,26 @@ public class Account implements Serializable {
     public void setPointsQuantity(BigDecimal pointsQuantity) {
         this.pointsQuantity = pointsQuantity;
     }
+    
+    public Date getMembershipValidUntil() {
+        return membershipValidUntil;
+    }
 
+    public void setMembershipValidUntil(Date membershipValidUntil) {
+        this.membershipValidUntil = membershipValidUntil;
+    }
+    
+    public java.util.Date getMembershipValidUntilConverted() {
+         java.util.Date newDate = membershipValidUntil;
+         return newDate;
+    }
+    
+    public boolean isValid() {
+        if(membershipValidUntil==null) return false; 
+        boolean validity = membershipValidUntil.after(new java.sql.Date(new java.util.Date().getTime())); //after today
+         return validity;
+    }
+    
     public Integer getOptLockVersion() {
         return optLockVersion;
     }
@@ -284,10 +312,6 @@ public class Account implements Serializable {
     public String toString() {
         return "io.mif.labanorodraugai.entities.Account[ id=" + id + " ]";
     }
-    
-        
-    
-    
     
     public List<AccountApproval> getApproversList() {
         return approversList;

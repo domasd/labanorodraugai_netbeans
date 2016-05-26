@@ -55,7 +55,7 @@
                     </p:panelGrid>
                     <p:panelGrid>
                         <p:fieldset style="background: chocolate;" >
-                            <p:commandButton rendered="#{authenticationBean.canReserve()}" value="#{ReservationBundle.ReservatioButtonTitle}" action="../reservation/reserve.html?faces-redirect=true"/>
+                            <p:commandButton rendered="#{authenticationBean.canReserve()}" disabled="#{!authenticationBean.loggedAccount.valid}" value="#{ReservationBundle.ReservatioButtonTitle}" action="../reservation/reserve.html?faces-redirect=true"/>
                             <p:outputLabel rendered="#{!authenticationBean.canReserve()}" value="#{ReservationBundle.DaysLeftTillReservationBegin} #{reservationController.remainingDaysTillReservationBegin}"/>
                             <br/>
                         </p:fieldset>
